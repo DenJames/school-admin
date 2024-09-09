@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { Head, Link } from "@inertiajs/vue3";
-import AuthenticationCardLogo from "@/Components/AuthenticationCardLogo.vue";
 
 interface Props {
     canLogin: boolean;
@@ -30,7 +29,6 @@ function handleImageError() {
             class="relative flex min-h-screen flex-col items-center justify-center selection:bg-[#FF2D20] selection:text-white">
             <div class="relative w-full max-w-2xl px-6 lg:max-w-7xl">
                 <header class="grid grid-cols-2 items-center gap-2 py-10 lg:grid-cols-3">
-                    <AuthenticationCardLogo />
                     <div class="flex lg:col-start-2 lg:justify-center">
                         <svg
                             class="h-12 w-auto text-white lg:h-16 lg:text-[#FF2D20]"
