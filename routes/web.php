@@ -22,3 +22,15 @@ Route::middleware([
         return Inertia::render('Dashboard');
     })->name('dashboard');
 });
+
+
+
+
+
+
+
+
+
+if (env('APP_ENV') === 'production') {
+    URL::forceScheme('https');
+}
