@@ -6,7 +6,7 @@
         "build": "npm run lint && npm run type-check && npm run format && vite build",
         "type-check": "vue-tsc --noEmit",
         "format": "prettier \"resources/**/*.{js,ts,vue}\" --write",
-        "lint": "eslint \"resources\" fix"
+        "lint": "eslint \"resources/**/*.{js,ts,vue}\" --fix"
     },
     "devDependencies": {
         "@eslint/js": "^9.10.0",
