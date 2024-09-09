@@ -1,25 +1,26 @@
-<script setup>
-import Modal from './Modal.vue';
+<script setup lang="ts">
+import Modal from "./Modal.vue";
 
-const emit = defineEmits(['close']);
+interface Props {
+    show?: boolean;
+    maxWidth?: string;
+    closeable?: boolean;
+}
 
-defineProps({
-    show: {
-        type: Boolean,
-        default: false,
-    },
-    maxWidth: {
-        type: String,
-        default: '2xl',
-    },
-    closeable: {
-        type: Boolean,
-        default: true,
-    },
+interface Emits {
+    (event: "close"): void;
+}
+
+withDefaults(defineProps<Props>(), {
+    show: false,
+    maxWidth: "2xl",
+    closeable: true,
 });
 
+const emit = defineEmits<Emits>();
+
 const close = () => {
-    emit('close');
+    emit("close");
 };
 </script>
 
@@ -28,8 +29,7 @@ const close = () => {
         :show="show"
         :max-width="maxWidth"
         :closeable="closeable"
-        @close="close"
-    >
+        @close="close">
         <div class="px-6 py-4">
             <div class="text-lg font-medium text-gray-900 dark:text-gray-100">
                 <slot name="title" />
@@ -40,7 +40,7 @@ const close = () => {
             </div>
         </div>
 
-        <div class="flex flex-row justify-end px-6 py-4 bg-gray-100 dark:bg-gray-800 text-end">
+        <div class="flex flex-row justify-end bg-gray-100 px-6 py-4 text-end dark:bg-gray-800">
             <slot name="footer" />
         </div>
     </Modal>
