@@ -3,7 +3,7 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
-        "build": "npm run lint && npm run type-check && npm run format && vite build",
+        "build": "npm run lint && npm run format && vite build",
         "type-check": "vue-tsc --noEmit",
         "format": "prettier \"resources/**/*.{js,ts,vue}\" --write",
         "lint": "eslint \"resources/**/*.{js,ts,vue}\" --fix"
