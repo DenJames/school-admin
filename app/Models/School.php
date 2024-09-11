@@ -13,6 +13,11 @@ class School extends Model
 
     protected $guarded = [];
 
+    public function teams(): HasMany
+    {
+        return $this->hasMany(Team::class);
+    }
+
     public function location(): BelongsTo
     {
         return $this->belongsTo(SchoolLocation::class);

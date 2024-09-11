@@ -3,7 +3,10 @@
 namespace Database\Seeders;
 
 use App\Models\City;
+use App\Models\ClassCategory;
 use App\Models\Classroom;
+use App\Models\ClassroomReservation;
+use App\Models\Lesson;
 use App\Models\School;
 use App\Models\SchoolLocation;
 use App\Models\Teacher;
@@ -144,24 +147,71 @@ class DatabaseSeeder extends Seeder
             $teachers = Teacher::all();
             $classrooms = Classroom::all();
 
-            $teachers->each(function ($teacher) use ($classrooms) {
-                // Ensure no overlapping reservations by spreading the booked time windows sequentially
-                $startDate = now();
-                $endDate = $startDate->clone()->addDays(10);
-
-                $classrooms->random(random_int(1, 5))->each(function ($classroom) use ($teacher, &$startDate, &$endDate) {
-                    // Create the reservation with a sequential time window
-                    $teacher->classroomReservations()->create([
-                        'classroom_id' => $classroom->id,
-                        'booked_from' => $startDate->clone(),
-                        'booked_to' => $endDate->clone(),
-                    ]);
-
-                    // Update start and end dates for the next reservation to avoid overlap
-                    $startDate = $endDate->clone()->addDays(1);
+            if (!ClassroomReservation::count()) {
+                $teachers->each(function ($teacher) use ($classrooms) {
+                    // Ensure no overlapping reservations by spreading the booked time windows sequentially
+                    $startDate = now();
                     $endDate = $startDate->clone()->addDays(10);
+
+                    $classrooms->random(random_int(1, 5))->each(function ($classroom) use ($teacher, &$startDate, &$endDate) {
+                        // Create the reservation with a sequential time window
+                        $teacher->classroomReservations()->create([
+                            'classroom_id' => $classroom->id,
+                            'booked_from' => $startDate->clone(),
+                            'booked_to' => $endDate->clone(),
+                        ]);
+
+                        // Update start and end dates for the next reservation to avoid overlap
+                        $startDate = $endDate->clone()->addDays(1);
+                        $endDate = $startDate->clone()->addDays(10);
+                    });
                 });
+            }
+
+            $classCategories = collect([
+                'Math',
+                'Science',
+                'History',
+                'Literature',
+                'Physical Education',
+                'Music',
+                'Art',
+                'Computer Science',
+                'Foreign Language',
+                'Geography',
+            ]);
+
+            $classCategories->each(function ($category) {
+                ClassCategory::firstOrCreate(['name' => $category]);
             });
+
+            if (!Lesson::count()) {
+                $classCategories = ClassCategory::all();
+                $classroomReservations = ClassroomReservation::all();
+
+                $classroomReservations->each(function ($reservation) use ($classCategories, $teachers) {
+                    $classCategories->random(random_int(1, 3))->each(function ($category) use ($reservation, $teachers) {
+                        $teacher = $teachers->random();
+
+                        // Ensure the school has teams before selecting a random one
+                        if ($teacher->school->teams->isNotEmpty()) {
+                            $team = $teacher->school->teams->random();
+                        } else {
+                            // Handle the case where there are no teams, e.g., skip or create a fallback team
+                            return;
+                        }
+
+                        $reservation->lessons()->create([
+                            'team_id' => $team->id,
+                            'teacher_id' => $teacher->id,
+                            'class_category_id' => $category->id,
+                            'name' => "{$category->name} Lesson",
+                            'duration' => random_int(30, 120),
+                            'starts_at' => $reservation->booked_from->clone()->addDays(random_int(1, 10)),
+                        ]);
+                    });
+                });
+            }
         }
 
         // Add seeders here
