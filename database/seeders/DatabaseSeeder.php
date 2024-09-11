@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\City;
+use App\Models\Classroom;
 use App\Models\School;
 use App\Models\SchoolLocation;
 use App\Models\Teacher;
@@ -131,6 +132,36 @@ class DatabaseSeeder extends Seeder
                     });
                 });
             }
+
+            $schools->each(function ($school) {
+                foreach (range(1, 10) as $index) {
+                    $school->classrooms()->create([
+                        'name' => "{$school->name} - Classroom $index"
+                    ]);
+                }
+            });
+
+            $teachers = Teacher::all();
+            $classrooms = Classroom::all();
+
+            $teachers->each(function ($teacher) use ($classrooms) {
+                // Ensure no overlapping reservations by spreading the booked time windows sequentially
+                $startDate = now();
+                $endDate = $startDate->clone()->addDays(10);
+
+                $classrooms->random(random_int(1, 5))->each(function ($classroom) use ($teacher, &$startDate, &$endDate) {
+                    // Create the reservation with a sequential time window
+                    $teacher->classroomReservations()->create([
+                        'classroom_id' => $classroom->id,
+                        'booked_from' => $startDate->clone(),
+                        'booked_to' => $endDate->clone(),
+                    ]);
+
+                    // Update start and end dates for the next reservation to avoid overlap
+                    $startDate = $endDate->clone()->addDays(1);
+                    $endDate = $startDate->clone()->addDays(10);
+                });
+            });
         }
 
         // Add seeders here
