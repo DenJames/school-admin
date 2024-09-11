@@ -32,4 +32,9 @@ class Teacher extends Model
     {
         return $this->hasMany(Lesson::class);
     }
+
+    public function assignments(): HasMany
+    {
+        return $this->hasMany(Assignment::class);
+    }
 }
