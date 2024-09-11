@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\City;
 use App\Models\School;
 use App\Models\SchoolLocation;
+use App\Models\Teacher;
 use App\Models\Team;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -109,6 +110,26 @@ class DatabaseSeeder extends Seeder
 
             foreach ($users3 as $newUser) {
                 $team3->users()->attach($newUser, ['role' => 'member']);
+            }
+
+            $userIds = User::pluck('id');
+            if (!Teacher::count()) {
+                $schools->each(function ($school) use (&$userIds) {
+                    $teachersAmount = random_int(1, 7);
+
+                    // Grab unique user ids before creating teachers for this school
+                    $availableUserIds = $userIds->take($teachersAmount);
+
+                    // Remove the selected user ids from the original collection
+                    $userIds = $userIds->diff($availableUserIds);
+
+                    $availableUserIds->each(function ($userId) use ($school) {
+                        Teacher::factory()->create([
+                            'school_id' => $school->id,
+                            'user_id' => $userId,
+                        ]);
+                    });
+                });
             }
         }
 
