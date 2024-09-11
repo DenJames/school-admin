@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\City;
+use App\Models\School;
+use App\Models\SchoolLocation;
 use App\Models\Team;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -87,7 +89,22 @@ class DatabaseSeeder extends Seeder
         }
 
         if (!City::count()) {
-            City::factory(10)->create();
+            $cities = City::factory(10)->create();
+        } else {
+            $cities = City::all();
+        }
+
+        if (!SchoolLocation::count()) {
+            $cities->each(function ($city) {
+                SchoolLocation::factory(3)->create(['city_id' => $city->id]);
+            });
+        }
+
+        $schoolLocations = SchoolLocation::all();
+        if (!School::count()) {
+            $schoolLocations->each(function ($location) {
+                School::factory(2)->create(['school_location_id' => $location->id]);
+            });
         }
 
         // Add seeders here

@@ -3,20 +3,19 @@
 namespace Database\Factories;
 
 use App\Models\City;
-use App\Models\Country;
+use App\Models\SchoolLocation;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Carbon;
 
-class CityFactory extends Factory
+class SchoolLocationFactory extends Factory
 {
-    protected $model = City::class;
+    protected $model = SchoolLocation::class;
 
     public function definition(): array
     {
         return [
-            'country_id' => Country::factory(),
-            'name' => $this->faker->city,
-            'zip_code' => $this->faker->postcode,
+            'city_id' => City::factory(),
+            'address' => $this->faker->address,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ];
