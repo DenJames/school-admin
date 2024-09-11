@@ -3,6 +3,9 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Models\Contracts\HasAvatar;
+use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
@@ -14,7 +17,7 @@ use Laravel\Jetstream\HasTeams;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable
+class User extends Authenticatable implements FilamentUser, HasAvatar
 {
     use HasApiTokens;
     use HasFactory;
@@ -74,8 +77,26 @@ class User extends Authenticatable
         return $this->hasMany(Assignment::class);
     }
 
+    public function teams()
+    {
+        return $this->belongsToMany(Team::class, 'team_user') // Specify the correct pivot table
+        ->withPivot('role')  // Specify 'role' in team_user
+        ->withTimestamps();  // If you have timestamps (created_at, updated_at) in the pivot
+    }
+
     public function documents(): MorphMany
     {
         return $this->morphMany(Document::class, 'documentable');
+    }
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        // TODO: return $this->hasRole('admin');
+        return true;
+    }
+
+    public function getFilamentAvatarUrl(): ?string
+    {
+        return '/' . $this->profile_photo_path;
     }
 }

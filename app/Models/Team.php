@@ -52,6 +52,13 @@ class Team extends JetstreamTeam
         return $this->hasMany(Assignment::class);
     }
 
+    public function members()
+    {
+        return $this->belongsToMany(User::class, 'team_user') // Specify the correct pivot table
+        ->withPivot('role') // Ensure 'role' from team_user is included
+        ->withTimestamps();  // If you have timestamps (created_at, updated_at) in the pivot
+    }
+
     public function documents(): MorphMany
     {
         return $this->morphMany(Document::class, 'documentable');

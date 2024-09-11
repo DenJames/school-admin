@@ -20,7 +20,7 @@ class School extends Model
 
     public function location(): BelongsTo
     {
-        return $this->belongsTo(SchoolLocation::class);
+        return $this->belongsTo(SchoolLocation::class, 'school_location_id');
     }
 
     public function classrooms(): HasMany
