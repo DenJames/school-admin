@@ -16,6 +16,27 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        if (!City::count()) {
+            $cities = City::factory(10)->create();
+        } else {
+            $cities = City::all();
+        }
+
+        if (!SchoolLocation::count()) {
+            $cities->each(function ($city) {
+                SchoolLocation::factory(3)->create(['city_id' => $city->id]);
+            });
+        }
+
+        $schoolLocations = SchoolLocation::all();
+        if (!School::count()) {
+            $schoolLocations->each(function ($location) {
+                School::factory(2)->create(['school_location_id' => $location->id]);
+            });
+        }
+
+        $schools = School::all();
+
         if (!User::count()) {
             // Part 1: Create the first user and team
             $user = User::factory()->create([
@@ -26,7 +47,8 @@ class DatabaseSeeder extends Seeder
             // Create a team for the first user
             $team = Team::factory()->create([
                 'user_id' => $user->id,
-                'name' => "{$user->name}'s Team"
+                'name' => "{$user->name}'s Team",
+                'school_id' => $schools->random()->id,
             ]);
 
             // Set the user's current team
@@ -50,7 +72,8 @@ class DatabaseSeeder extends Seeder
             // Create a team for the second user
             $team2 = Team::factory()->create([
                 'user_id' => $user2->id,
-                'name' => "{$user2->name}'s Team"
+                'name' => "{$user2->name}'s Team",
+                'school_id' => $schools->random()->id,
             ]);
 
             $user2->update(['current_team_id' => $team2->id]);
@@ -73,7 +96,8 @@ class DatabaseSeeder extends Seeder
             // Create a team for the third user
             $team3 = Team::factory()->create([
                 'user_id' => $user3->id,
-                'name' => "{$user3->name}'s Team"
+                'name' => "{$user3->name}'s Team",
+                'school_id' => $schools->random()->id,
             ]);
 
             $user3->update(['current_team_id' => $team3->id]);
@@ -86,25 +110,6 @@ class DatabaseSeeder extends Seeder
             foreach ($users3 as $newUser) {
                 $team3->users()->attach($newUser, ['role' => 'member']);
             }
-        }
-
-        if (!City::count()) {
-            $cities = City::factory(10)->create();
-        } else {
-            $cities = City::all();
-        }
-
-        if (!SchoolLocation::count()) {
-            $cities->each(function ($city) {
-                SchoolLocation::factory(3)->create(['city_id' => $city->id]);
-            });
-        }
-
-        $schoolLocations = SchoolLocation::all();
-        if (!School::count()) {
-            $schoolLocations->each(function ($location) {
-                School::factory(2)->create(['school_location_id' => $location->id]);
-            });
         }
 
         // Add seeders here

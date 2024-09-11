@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\School;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -20,7 +21,8 @@ class TeamFactory extends Factory
         return [
             'name' => $this->faker->unique()->company(),
             'user_id' => User::factory(),
-            'personal_team' => true,
+            'school_id' => School::factory(),
+            'personal_team' => false,
         ];
     }
 }
