@@ -9,7 +9,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('teams', function (Blueprint $table) {
-            $table->foreignIdFor(School::class)->after('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(School::class)->nullable()->after('user_id')->constrained()->cascadeOnDelete();
         });
     }
 
