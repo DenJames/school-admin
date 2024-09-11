@@ -12,11 +12,11 @@ return new class extends Migration {
         Schema::create('classroom_reservations', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignIdFor(Classroom::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Classroom::class)->nullable()->constrained()->cascadeOnDelete();
             $table->foreignIdFor(Teacher::class)->nullable()->constrained()->nullOnDelete();
 
-            $table->timestamp('booked_from');
-            $table->timestamp('booked_to');
+            $table->timestamp('booked_from')->nullable();
+            $table->timestamp('booked_to')->nullable();
 
             $table->timestamps();
         });
