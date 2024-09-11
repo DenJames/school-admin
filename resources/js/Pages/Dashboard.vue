@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import AppLayout from "@/Layouts/AppLayout.vue";
-import Welcome from "@/Components/Welcome.vue";
+import Card from "@/Components/Card.vue";
 </script>
 
 <template>
@@ -11,8 +11,23 @@ import Welcome from "@/Components/Welcome.vue";
 
         <div class="py-12">
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                <div class="overflow-hidden bg-white shadow-xl sm:rounded-lg dark:bg-gray-800">
-                    <Welcome />
+                <div class="grid grid-cols-2 gap-2 overflow-hidden bg-white shadow-xl sm:rounded-lg dark:bg-gray-800">
+                    <Card>
+                        <template #header> Aktuelt </template>
+                        <p class="p-2 text-white">Her kommer der til at være nyheder eller noget</p>
+                    </Card>
+                    <Card>
+                        <template #header> Kommunikation </template>
+                        <p class="p-2 text-white">Beskeder</p>
+                    </Card>
+                    <Card>
+                        <template #header> Undervisning </template>
+                        <p class="p-2 text-white">Foxy was here UwU</p>
+                    </Card>
+                    <Card>
+                        <template #header> Skema </template>
+                        <p class="p-2 text-white">Skema</p>
+                    </Card>
                 </div>
             </div>
         </div>
