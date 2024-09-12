@@ -13,6 +13,8 @@ use Filament\Tables\Table;
 
 class ClassroomReservationResource extends Resource
 {
+    protected static bool $shouldRegisterNavigation = false;
+
     protected static ?string $model = ClassroomReservation::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
