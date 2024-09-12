@@ -21,11 +21,15 @@ class TeamResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('user_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('school_id')
-                    ->numeric()
+                Forms\Components\Select::make('user_id')
+                    ->label('Owner')
+                    ->searchable()
+                    ->relationship('owner', 'name')
+                    ->required(),
+                Forms\Components\Select::make('school_id')
+                    ->label('School')
+                    ->relationship('school', 'name')
+                    ->searchable()
                     ->default(null),
                 Forms\Components\TextInput::make('name')
                     ->required()
@@ -39,10 +43,10 @@ class TeamResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('user_id')
+                Tables\Columns\TextColumn::make('owner.name')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('school_id')
+                Tables\Columns\TextColumn::make('school.name')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('name')

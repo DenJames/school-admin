@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\TeamResource\RelationManagers;
 
+use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -10,23 +11,27 @@ use Filament\Tables\Table;
 
 class MembersRelationManager extends RelationManager
 {
-    protected static string $relationship = 'members';
+    protected static string $relationship = 'members'; // Refers to the many-to-many 'members' relationship
 
     public function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name'),
+                Forms\Components\Select::make('user_id')
+                    ->label('User')
+                    ->searchable()
+                    ->options(User::all()->pluck('name', 'id'))
+                    ->required(),
 
-                // Handle role directly from the 'team_user' pivot relationship.
-                Forms\Components\Select::make('pivot.role') // Access the 'role' from the 'team_user' pivot table
-                ->options([
-                    'admin' => 'Admin',
-                    'member' => 'Member',
-                    'viewer' => 'Viewer',
-                ])
-                    ->required()
-                    ->default('member'),
+                Forms\Components\Select::make('role')
+                    ->label('Role')
+                    ->options([
+                        'admin' => 'Admin',
+                        'member' => 'Member',
+                        'viewer' => 'Viewer',
+                    ])
+                    ->default('member')
+                    ->required(),
             ]);
     }
 
@@ -38,8 +43,9 @@ class MembersRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('name')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('pivot.role') // Access the pivot table's role field
-                ->label('Role')
+
+                Tables\Columns\TextColumn::make('pivot.role')
+                    ->label('Role')
                     ->sortable()
                     ->searchable(),
             ])
@@ -47,22 +53,30 @@ class MembersRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                Tables\Actions\CreateAction::make()
+                    ->label('New Member')
+                    ->action(function ($data) {
+                        $this->ownerRecord->members()->attach($data['user_id'], ['role' => $data['role']]);
+                    }),
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
                     ->mutateFormDataUsing(function (array $data, $record) {
-                        // Manually update the pivot table with the role
                         $this->ownerRecord->members()->updateExistingPivot($record->id, [
-                            'role' => $data['pivot']['role'],
+                            'role' => $data['role'],
                         ]);
-
-                        return $data; // Return the data after mutating
+                        return $data;
                     }),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\DeleteAction::make()
+                    ->action(function ($record) {
+                        $this->ownerRecord->members()->detach($record->id); // Remove user from team
+                    }),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
 }
+
+
+

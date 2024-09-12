@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Laravel\Jetstream\Events\TeamCreated;
@@ -22,6 +23,7 @@ class Team extends JetstreamTeam
     protected $fillable = [
         'name',
         'personal_team',
+        'user_id',
     ];
 
     /**
@@ -52,11 +54,21 @@ class Team extends JetstreamTeam
         return $this->hasMany(Assignment::class);
     }
 
+    public function owner(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function school(): BelongsTo
+    {
+        return $this->belongsTo(School::class);
+    }
+
     public function members()
     {
         return $this->belongsToMany(User::class, 'team_user') // Specify the correct pivot table
-        ->withPivot('role') // Ensure 'role' from team_user is included
-        ->withTimestamps();  // If you have timestamps (created_at, updated_at) in the pivot
+        ->withPivot('role')
+            ->withTimestamps();
     }
 
     public function documents(): MorphMany
