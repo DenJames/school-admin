@@ -2,18 +2,20 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\ClassroomResource\Pages;
-use App\Filament\Resources\ClassroomResource\RelationManagers;
-use App\Models\Classroom;
+use App\Filament\Resources\HomeworkResource\Pages;
+use App\Filament\Resources\HomeworkResource\RelationManagers;
+use App\Models\Homework;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class ClassroomResource extends Resource
+class HomeworkResource extends Resource
 {
-    protected static ?string $model = Classroom::class;
+    protected static ?string $model = Homework::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -21,27 +23,31 @@ class ClassroomResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('school_id')
-                    ->label('School')
-                    ->relationship('school', 'name')
-                    ->required()
-                    ->disabled(),
+                Forms\Components\Select::make('lesson_id')
+                    ->relationship('lesson', 'name')
+                    ->default(null),
                 Forms\Components\TextInput::make('name')
-                    ->maxLength(255)
-                    ->disabled(),
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\Textarea::make('description')
+                    ->required()
+                    ->columnSpanFull(),
+                Forms\Components\DateTimePicker::make('due_date'),
             ]);
     }
-
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('school.name')
+                Tables\Columns\TextColumn::make('lesson.name')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('due_date')
+                    ->dateTime()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -67,17 +73,16 @@ class ClassroomResource extends Resource
     public static function getRelations(): array
     {
         return [
-            RelationManagers\ReservationsRelationManager::class,
-            RelationManagers\SchoolRelationManager::class,
+            //
         ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListClassrooms::route('/'),
-            'create' => Pages\CreateClassroom::route('/create'),
-            'edit' => Pages\EditClassroom::route('/{record}/edit'),
+            'index' => Pages\ListHomework::route('/'),
+            'create' => Pages\CreateHomework::route('/create'),
+            'edit' => Pages\EditHomework::route('/{record}/edit'),
         ];
     }
 }

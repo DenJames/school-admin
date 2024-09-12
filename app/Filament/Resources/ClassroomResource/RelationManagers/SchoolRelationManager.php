@@ -8,32 +8,26 @@ use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
 
-class ReservationsRelationManager extends RelationManager
+class SchoolRelationManager extends RelationManager
 {
-    protected static string $relationship = 'reservations';
+    protected static string $relationship = 'school';
 
     public function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\DateTimePicker::make('booked_from')
-                    ->required(),
-                Forms\Components\DateTimePicker::make('booked_to')
-                    ->required(),
+                Forms\Components\TextInput::make('name')
+                    ->required()
+                    ->maxLength(255),
             ]);
     }
 
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('booked_from')
+            ->recordTitleAttribute('name')
             ->columns([
-                Tables\Columns\TextColumn::make('booked_from')
-                    ->label('Booked From')
-                    ->dateTime(),
-                Tables\Columns\TextColumn::make('booked_to')
-                    ->label('Booked To')
-                    ->dateTime(),
+                Tables\Columns\TextColumn::make('name'),
             ])
             ->filters([
                 //
@@ -42,8 +36,8 @@ class ReservationsRelationManager extends RelationManager
                 Tables\Actions\CreateAction::make(),
             ])
             ->actions([
-                Tables\Actions\EditAction::make()
-                    ->url(fn($record) => route('filament.admin.resources.classroom-reservations.edit', $record)),
+                Tables\Actions\ViewAction::make(),
+                Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
@@ -53,4 +47,3 @@ class ReservationsRelationManager extends RelationManager
             ]);
     }
 }
-
