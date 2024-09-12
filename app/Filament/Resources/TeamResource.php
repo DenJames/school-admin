@@ -90,4 +90,20 @@ class TeamResource extends Resource
             'edit' => Pages\EditTeam::route('/{record}/edit'),
         ];
     }
+
+    // TODO: Change those to be permission bases once such has been implemented properly.
+    public static function canViewAny(): bool
+    {
+        return true;
+    }
+
+    public static function canEdit($record): bool
+    {
+        return true;
+    }
+
+    public static function canDelete($record): bool
+    {
+        return true;
+    }
 }
