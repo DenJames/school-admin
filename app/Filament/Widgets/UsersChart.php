@@ -14,7 +14,7 @@ class UsersChart extends ChartWidget
     protected function getData(): array
     {
         // https://github.com/Flowframe/laravel-trend
-        // https://filamentphp.com/docs/2.x/admin/dashboard/charts
+        // https://filamentphp.com/docs/3.x/widgets/charts
         $data = Trend::model(User::class)
             ->between(now()->subYear(), now())
             ->perMonth()
