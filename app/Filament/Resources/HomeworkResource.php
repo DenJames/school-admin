@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\HomeworkResource\Pages;
 use App\Filament\Resources\HomeworkResource\RelationManagers;
 use App\Models\Homework;
+use App\Models\Lesson;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -22,7 +23,13 @@ class HomeworkResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('lesson_id')
-                    ->relationship('lesson', 'name')
+                    ->options(function () {
+                        return Lesson::with('teacher')
+                            ->get()
+                            ->mapWithKeys(function ($lesson) {
+                                return [$lesson->id => sprintf('%s (%s) (%s)', $lesson->name, $lesson->teacher->user->name, $lesson->starts_at)];
+                            });
+                    })
                     ->preload()
                     ->searchable()
                     ->default(null),
