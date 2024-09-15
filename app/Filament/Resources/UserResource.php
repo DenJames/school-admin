@@ -10,8 +10,6 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class UserResource extends Resource
 {
@@ -33,15 +31,19 @@ class UserResource extends Resource
                 Forms\Components\DateTimePicker::make('email_verified_at'),
                 Forms\Components\TextInput::make('password')
                     ->password()
-                    ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->dehydrateStateUsing(fn($state) => $state ? bcrypt($state) : null)
+                    ->dehydrated(fn($state) => filled($state)),
                 Forms\Components\Textarea::make('two_factor_secret')
                     ->columnSpanFull(),
                 Forms\Components\Textarea::make('two_factor_recovery_codes')
                     ->columnSpanFull(),
                 Forms\Components\DateTimePicker::make('two_factor_confirmed_at'),
-                Forms\Components\TextInput::make('current_team_id')
-                    ->numeric()
+                Forms\Components\Select::make('current_team_id')
+                    ->label('Current Team')
+                    ->relationship('currentTeam', 'name')
+                    ->preload()
+                    ->searchable()
                     ->default(null),
                 Forms\Components\TextInput::make('profile_photo_path')
                     ->maxLength(2048)

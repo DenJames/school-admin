@@ -23,9 +23,13 @@ class TeacherResource extends Resource
             ->schema([
                 Forms\Components\Select::make('school_id')
                     ->relationship('school', 'name')
+                    ->preload()
+                    ->searchable()
                     ->default(null),
                 Forms\Components\Select::make('user_id')
                     ->relationship('user', 'name')
+                    ->preload()
+                    ->searchable()
                     ->required(),
             ]);
     }

@@ -10,8 +10,6 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class HomeworkResource extends Resource
 {
@@ -25,6 +23,8 @@ class HomeworkResource extends Resource
             ->schema([
                 Forms\Components\Select::make('lesson_id')
                     ->relationship('lesson', 'name')
+                    ->preload()
+                    ->searchable()
                     ->default(null),
                 Forms\Components\TextInput::make('name')
                     ->required()

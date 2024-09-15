@@ -24,11 +24,11 @@ class ClassroomResource extends Resource
                 Forms\Components\Select::make('school_id')
                     ->label('School')
                     ->relationship('school', 'name')
-                    ->required()
-                    ->disabled(),
+                    ->preload()
+                    ->searchable()
+                    ->required(),
                 Forms\Components\TextInput::make('name')
-                    ->maxLength(255)
-                    ->disabled(),
+                    ->maxLength(255),
             ]);
     }
 

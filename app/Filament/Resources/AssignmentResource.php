@@ -30,11 +30,13 @@ class AssignmentResource extends Resource
 
                 Forms\Components\Select::make('team_id')
                     ->relationship('team', 'name')
+                    ->preload()
                     ->searchable()
                     ->default(null),
 
                 Forms\Components\Select::make('user_id')
                     ->relationship('user', 'name')
+                    ->preload()
                     ->searchable()
                     ->default(null),
 

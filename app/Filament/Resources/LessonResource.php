@@ -23,6 +23,8 @@ class LessonResource extends Resource
             ->schema([
                 Forms\Components\Select::make('team_id')
                     ->relationship('team', 'name')
+                    ->preload()
+                    ->searchable()
                     ->required(),
                 Forms\Components\Select::make('class_category_id')
                     ->relationship('classCategory', 'name')

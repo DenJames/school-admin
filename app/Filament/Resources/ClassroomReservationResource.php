@@ -25,12 +25,15 @@ class ClassroomReservationResource extends Resource
             ->schema([
                 Forms\Components\Select::make('classroom_id')
                     ->relationship('classroom', 'name')
+                    ->preload()
+                    ->searchable()
                     ->required(),
                 Forms\Components\Select::make('teacher_id')
                     ->label('Teacher')
                     ->options(function () {
                         return \App\Models\Teacher::with('user')->get()->pluck('user.name', 'id');
                     })
+                    ->searchable()
                     ->default(null),
                 Forms\Components\DateTimePicker::make('booked_from')
                     ->required(),

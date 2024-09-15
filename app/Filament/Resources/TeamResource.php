@@ -23,12 +23,14 @@ class TeamResource extends Resource
             ->schema([
                 Forms\Components\Select::make('user_id')
                     ->label('Owner')
-                    ->searchable()
                     ->relationship('owner', 'name')
+                    ->preload()
+                    ->searchable()
                     ->required(),
                 Forms\Components\Select::make('school_id')
                     ->label('School')
                     ->relationship('school', 'name')
+                    ->preload()
                     ->searchable()
                     ->default(null),
                 Forms\Components\TextInput::make('name')
