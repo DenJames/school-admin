@@ -60,6 +60,14 @@ const logout = () => {
                                     Dashboard
                                 </NavLink>
                             </div>
+
+                            <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                                <NavLink
+                                    :href="route('messages.index')"
+                                    :active="route().current('messages.*')">
+                                    Messages
+                                </NavLink>
+                            </div>
                         </div>
 
                         <div class="hidden sm:ms-6 sm:flex sm:items-center">
@@ -366,8 +374,10 @@ const logout = () => {
             </header>
 
             <!-- Page Content -->
-            <main>
-                <slot />
+            <main class="py-12">
+                <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
+                    <slot />
+                </div>
             </main>
         </div>
     </div>
