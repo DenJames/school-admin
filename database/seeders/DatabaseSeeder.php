@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Article;
 use App\Models\AssignedGrade;
 use App\Models\City;
 use App\Models\ClassCategory;
@@ -208,16 +209,34 @@ class DatabaseSeeder extends Seeder
                             'class_category_id' => $category->id,
                             'name' => "{$category->name} Lesson",
                             'duration' => random_int(30, 120),
-                            'starts_at' => $reservation->booked_from->addDays(random_int(1, 10)),
+                            'starts_at' => $reservation->booked_from->clone()->addDays(random_int(1, 10)),
                         ]);
                     });
                 });
             }
         }
 
-        AssignedGrade::factory(35)->create([
-            'comment' => 'This is a test comment for grade',
-        ]);
+        if (!AssignedGrade::count()) {
+            AssignedGrade::factory(35)->create([
+                'comment' => 'This is a test comment for grade',
+            ]);
+        }
+
+        if (!Article::count()) {
+            Article::factory(10)->create();
+            Article::factory(10)->create([
+                'is_global' => true,
+            ]);
+
+            Article::factory(3)->create([
+                'school_id' => School::factory(),
+            ]);
+
+            Article::factory(5)->create([
+                'team_id' => Team::factory(),
+            ]);
+        }
+
 
         // Add seeders here
         /* $this->call([
