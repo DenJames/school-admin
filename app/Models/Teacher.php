@@ -37,4 +37,9 @@ class Teacher extends Model
     {
         return $this->hasMany(Assignment::class);
     }
+
+    public function absences(): HasMany
+    {
+        return $this->hasMany(Absence::class);
+    }
 }
