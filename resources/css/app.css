@@ -5,3 +5,13 @@
 [x-cloak] {
     display: none;
 }
+
+.fc-timegrid-slot-label-cushion, .fc-toolbar-title, .fc-timegrid-axis-cushion {
+    color: #ffffff;
+    font-family: "Roboto", sans-serif;
+}
+
+.fc-day-grid-day > .fc-daygrid-day-frame,
+.fc-day-grid-day > .fc-daygrid-day-top {
+    display: none;
+}

@@ -13,6 +13,11 @@ class Lesson extends Model
 
     protected $guarded = [];
 
+    protected $casts = [
+        'starts_at' => 'datetime',
+        'ends_at' => 'datetime',
+    ];
+
     public function team(): BelongsTo
     {
         return $this->belongsTo(Team::class);
@@ -42,5 +47,10 @@ class Lesson extends Model
     public function homeworks(): HasMany
     {
         return $this->hasMany(Homework::class);
+    }
+
+    public function getEndsAtAttribute()
+    {
+        return $this->starts_at->addMinutes($this->duration);
     }
 }

@@ -21,5 +21,26 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
+
+    Route::get('/lessons', function () {
+        $datetime = new DateTime('now', new DateTimeZone('Europe/Copenhagen'));
+        $datetime_string = $datetime->format('c');
+
+        $lessons = [];
+
+        foreach (Auth::user()->currentTeam->lessons()->get() as $leasson) {
+            $lessons[] = [
+                'title' => $leasson->name . ' • ' . $leasson->teacher->user->name . ' • ' . $leasson->classroom()->name,
+                'start' => $leasson->starts_at->format('c'),
+                'end' => $leasson->ends_at->format('c'),
+                'description' => "Hello",
+            ];
+        }
+
+        return Inertia::render('Lessons', [
+            'now' => $datetime_string,
+            'lessons' => $lessons,
+        ]);
+    })->name('lessons.index');
 });
 
