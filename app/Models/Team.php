@@ -71,13 +71,19 @@ class Team extends JetstreamTeam
             ->withTimestamps();
     }
 
+    public function articles(): HasMany
+    {
+        return $this->hasMany(Article::class);
+    }
+
+    public function groups(): HasMany
+    {
+        return $this->hasMany(Group::class);
+    }
+
     public function documents(): MorphMany
     {
         return $this->morphMany(Document::class, 'documentable');
     }
 
-    public function articles(): HasMany
-    {
-        return $this->hasMany(Article::class);
-    }
 }

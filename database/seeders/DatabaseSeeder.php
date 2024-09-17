@@ -8,6 +8,8 @@ use App\Models\City;
 use App\Models\ClassCategory;
 use App\Models\Classroom;
 use App\Models\ClassroomReservation;
+use App\Models\Group;
+use App\Models\GroupRole;
 use App\Models\Lesson;
 use App\Models\School;
 use App\Models\SchoolLocation;
@@ -235,6 +237,26 @@ class DatabaseSeeder extends Seeder
             Article::factory(5)->create([
                 'team_id' => Team::factory(),
             ]);
+        }
+
+        if (!Group::count()) {
+            $groupRoles = collect([
+                'Admin',
+                'Member',
+            ]);
+
+            $groupRoles->each(function ($role) {
+                GroupRole::firstOrCreate(['name' => $role]);
+            });
+
+
+            $groups = Group::factory(10)->create();
+
+            $groups->each(function ($group) {
+                $group->users()->attach(User::factory(5)->create(), [
+                    'group_role_id' => GroupRole::where('name', 'Member')->first()->id,
+                ]);
+            });
         }
 
 
