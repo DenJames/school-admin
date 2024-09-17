@@ -15,7 +15,9 @@ class ClassroomResource extends Resource
 {
     protected static ?string $model = Classroom::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-s-users';
+
+    protected static ?int $navigationSort = 3;
 
     public static function form(Form $form): Form
     {

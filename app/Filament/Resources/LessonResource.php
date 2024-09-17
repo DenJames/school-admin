@@ -15,7 +15,9 @@ class LessonResource extends Resource
 {
     protected static ?string $model = Lesson::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-s-light-bulb';
+
+    protected static ?int $navigationSort = 4;
 
     public static function form(Form $form): Form
     {
