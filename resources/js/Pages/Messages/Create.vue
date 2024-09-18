@@ -18,10 +18,15 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const form = useForm({
-    receiver: "",
+    recipient: {
+        id: null,
+        name: "",
+    },
     subject: "",
     content: "",
 });
+
+const previousRecipientName = ref("");
 
 function submit() {
     form.post(route("messages.store"), {
@@ -32,25 +37,29 @@ function submit() {
 const potentialRecipients = ref([]);
 
 function selectRecipient(recipient) {
-    form.receiver = recipient.name;
+    console.log("Recipient selected:", recipient);
+    form.recipient.id = recipient.id;
+    form.recipient.name = recipient.name;
     potentialRecipients.value = []; // Clear the list after selection
 }
 
 watch(
-    () => form.receiver,
-    debounce(async (newValue) => {
+    () => form.recipient.name,
+    debounce(async (newValue: string, oldValue: string) => {
         if (newValue.trim().length > 0) {
-            if (form.receiver !== newValue) {
+            if (oldValue !== form.recipient.name) {
                 potentialRecipients.value = [];
             }
 
-            try {
-                const response = await axios.get(route("message.receiver"), {
-                    params: { name: newValue },
-                });
-                potentialRecipients.value = response.data;
-            } catch (error) {
-                console.error("Error fetching recipients:", error);
+            if (oldValue !== form.recipient.name) {
+                try {
+                    const response = await axios.get(route("message.receiver"), {
+                        params: { name: newValue },
+                    });
+                    potentialRecipients.value = response.data;
+                } catch (error) {
+                    console.error("Error fetching recipients:", error);
+                }
             }
         } else {
             potentialRecipients.value = [];
@@ -77,7 +86,7 @@ watch(
                         value="Receiver" />
                     <TextInput
                         id="receiver"
-                        v-model="form.receiver"
+                        v-model="form.recipient.name"
                         type="text"
                         class="mt-1 block w-full"
                         placeholder="Start typing to search for a user"
@@ -86,12 +95,12 @@ watch(
                         autocomplete="off" />
                     <InputError
                         class="mt-2"
-                        :message="form.errors.receiver" />
+                        :message="form.errors.recipient" />
 
                     <div
                         v-if="
                             potentialRecipients.length > 0 &&
-                            !potentialRecipients.some((recipient) => recipient.name === form.receiver)
+                            !potentialRecipients.some((recipient) => recipient.name === form.recipient.name)
                         "
                         class="absolute z-10 mt-1 w-full rounded-md border border-gray-700 bg-gray-800">
                         <ul>

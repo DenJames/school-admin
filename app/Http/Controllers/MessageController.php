@@ -40,7 +40,7 @@ class MessageController extends Controller
 
     public function store(MessageFormRequest $request): RedirectResponse
     {
-        $receiver = User::where('name', $request->get('receiver'))->first();
+        $receiver = User::find($request->input('recipient.id'));
 
         if (!$receiver) {
             return redirect()->back()->withErrors([
@@ -50,8 +50,8 @@ class MessageController extends Controller
 
         $request->user()->messages()->create([
             'receiver_id' => $receiver->id,
-            'subject' => $request->get('subject'),
-            'content' => $request->get('content'),
+            'subject' => $request->input('subject'),
+            'content' => $request->input('content'),
         ]);
 
         return redirect()->route('messages.index')->with('success', 'Message sent.');
