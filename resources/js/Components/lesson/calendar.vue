@@ -12,6 +12,7 @@ import "tippy.js/dist/tippy.css"; // Tippy.js CSS
 const props = defineProps<{
     now: string | Date; // Define the type of the `now` prop, adjust according to your data type
     events: any[]; // Define the type of the `events` prop, adjust according to your data type
+    initialView?: string; // Define the type of the `initialView` prop, adjust according to your data type
 }>();
 
 const calendarRef = ref(null);
@@ -22,7 +23,7 @@ const calendarOptions = {
     weekNumbers: true,
     timeZone: "Europe/Copenhagen",
     plugins: [dayGridPlugin, timeGridPlugin, listPlugin, resourceTimelinePlugin, rrulePlugin],
-    initialView: "timeGridWeek",
+    initialView: props.initialView ?? "timeGridWeek",
     footerToolbar: {
         left: "timeGridDay,timeGridWeek,dayGridMonth,listWeek",
     },

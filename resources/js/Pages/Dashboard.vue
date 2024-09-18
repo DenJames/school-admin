@@ -1,6 +1,14 @@
 <script setup lang="ts">
 import AppLayout from "@/Layouts/AppLayout.vue";
 import Card from "@/Components/Card.vue";
+import Calendar from "@/Components/lesson/calendar.vue";
+
+interface Props {
+    now: string;
+    lessons: any[];
+}
+
+defineProps<Props>();
 </script>
 
 <template>
@@ -26,7 +34,10 @@ import Card from "@/Components/Card.vue";
                     </Card>
                     <Card>
                         <template #header> Skema </template>
-                        <p class="p-2 text-white">Skema</p>
+                        <Calendar
+                            :now="now"
+                            :events="lessons"
+                            initialView="listWeek" />
                     </Card>
                 </div>
             </div>
