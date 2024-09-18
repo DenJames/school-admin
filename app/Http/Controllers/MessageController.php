@@ -42,7 +42,7 @@ class MessageController extends Controller
     {
         $receiver = User::find($request->input('recipient.id'));
 
-        if (!$receiver || !$request->user()->teams->contains($receiver->currentTeam)) {
+        if (!$receiver || !$request->user()->teams->contains($receiver?->currentTeam)) {
             return redirect()->back()->withErrors([
                 'message' => 'The receiver does not exist.',
             ]);
