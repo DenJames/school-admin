@@ -2,10 +2,13 @@
 interface Props {
     contentClasses?: string;
     headerClasses?: string;
+    hasHeader?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
-    classes: "",
+    contentClasses: "",
+    headerClasses: "",
+    hasHeader: true,
 });
 </script>
 
@@ -16,15 +19,17 @@ const props = withDefaults(defineProps<Props>(), {
             contentClasses,
         ]">
         <div
+            v-if="hasHeader"
             :class="[
                 'relative rounded-t-md bg-gray-700 p-1 text-center text-xl font-medium text-gray-500 dark:divide-gray-600 dark:text-gray-400',
                 headerClasses,
             ]">
-            <slot
-                name="header"
-                class="" />
+            <slot name="header" />
         </div>
-        <div class="border-t border-gray-200 dark:border-gray-600">
+
+        <div
+            class="border-gray-200 text-gray-200 dark:border-gray-600"
+            :class="{ 'border-t': hasHeader }">
             <slot />
         </div>
     </div>

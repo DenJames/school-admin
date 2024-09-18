@@ -23,6 +23,7 @@ Route::middleware([
         return Inertia::render('Dashboard');
     })->name('dashboard');
 
+    Route::get('/message/receiver', [MessageController::class, 'fetchRecipients'])->name('message.receiver');
     Route::resource('messages', MessageController::class);
 });
 

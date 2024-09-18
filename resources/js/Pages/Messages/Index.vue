@@ -4,6 +4,7 @@ import Card from "../../Components/Card.vue";
 import { Link } from "@inertiajs/vue3";
 import { route } from "../../../../vendor/tightenco/ziggy";
 import Checkmark from "../../Components/Icons/Checkmark.vue";
+import Pencil from "../../Components/Icons/Pencil.vue";
 import MessageData = App.Data.MessageData;
 
 interface Props {
@@ -20,9 +21,17 @@ const props = defineProps<Props>();
             <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">Messages</h2>
         </template>
 
-        <div class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6">
+        <div class="relative grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6">
             <Card>
-                <template #header>Sent Messages</template>
+                <template #header>
+                    Sent Messages
+
+                    <Link
+                        :href="route('messages.create')"
+                        class="absolute right-1 top-1 rounded-md p-1 transition-all hover:bg-gray-800">
+                        <Pencil class="size-5" />
+                    </Link>
+                </template>
 
                 <div class="max-h-[500px] overflow-y-auto">
                     <template
@@ -30,7 +39,7 @@ const props = defineProps<Props>();
                         :key="message.id">
                         <Link
                             :href="route('messages.show', message.id)"
-                            class="flex items-center justify-between gap-4 border-b p-2 text-sm text-white transition-all hover:bg-gray-700">
+                            class="flex items-center justify-between gap-4 border-b border-b-gray-600 p-2 text-sm text-white transition-all hover:bg-gray-700">
                             <p class="flex items-center gap-2 truncate">
                                 {{ message.subject }}
                                 <span
@@ -61,7 +70,7 @@ const props = defineProps<Props>();
                         :key="message.id">
                         <Link
                             :href="route('messages.show', message.id)"
-                            class="flex items-center justify-between gap-4 border-b p-2 text-sm text-white transition-all hover:bg-gray-700">
+                            class="flex items-center justify-between gap-4 border-b border-b-gray-600 p-2 text-sm text-white transition-all hover:bg-gray-700">
                             <p class="truncate">{{ message.subject }}</p>
 
                             <span
