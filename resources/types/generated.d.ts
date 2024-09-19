@@ -10,9 +10,12 @@ replies?: App.Data.UserData;
 };
 export type ReplyData = {
 id: number;
+userId: number;
 content: string;
 message?: App.Data.MessageData;
 user?: App.Data.UserData;
+createdAt: string | null;
+updatedAt: string | null;
 };
 export type UserData = {
 name: string;

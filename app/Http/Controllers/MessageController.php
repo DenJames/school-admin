@@ -34,7 +34,7 @@ class MessageController extends Controller
         }
 
         return Inertia::render('Messages/Show', [
-            'message' => MessageData::from($message->load(['sender', 'receiver', 'replies.user'])),
+            'message' => MessageData::from($message->load(['sender', 'receiver', 'replies' => fn($query) => $query->with('user')->latest()->get()])),
         ]);
     }
 

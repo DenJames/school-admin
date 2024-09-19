@@ -15,9 +15,12 @@ class ReplyData extends Data
 {
     public function __construct(
         public int              $id,
+        public int              $userId,
         public string           $content,
         public Lazy|MessageData $message,
         public Lazy|UserData    $user,
+        public ?string          $createdAt = null,
+        public ?string          $updatedAt = null,
     )
     {
     }
@@ -26,6 +29,7 @@ class ReplyData extends Data
     {
         return new self(
             id: $reply->id,
+            userId: $reply->user_id,
             content: $reply->content,
             message: Lazy::whenLoaded(
                 'message',
@@ -37,6 +41,8 @@ class ReplyData extends Data
                 $reply,
                 fn() => UserData::from($reply->user)
             ),
+            createdAt: $reply->created_at,
+            updatedAt: $reply->updated_at,
         );
     }
 }
