@@ -19,6 +19,7 @@ createdAt: string | null;
 updatedAt: string | null;
 };
 export type UserData = {
+id: number;
 name: string;
 email: string;
 emailVerifiedAt: string | null;

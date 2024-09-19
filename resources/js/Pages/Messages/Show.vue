@@ -121,7 +121,9 @@ const closeModal = () => {
                                     Sent by: {{ message.sender.name }} - {{ message.createdAt }}
                                 </span>
 
-                                <div class="flex gap-2">
+                                <div
+                                    v-if="message.sender && message.sender.id === user.id"
+                                    class="flex gap-2">
                                     <button
                                         class="transition-all hover:scale-105 hover:text-red-400"
                                         @click="confirmMessageEdit(message)">
@@ -200,7 +202,7 @@ const closeModal = () => {
                     <DangerButton
                         class="ms-3"
                         @click="deleteMessage">
-                        Delete reply
+                        Delete message
                     </DangerButton>
                 </template>
             </DialogModal>
