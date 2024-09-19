@@ -33,6 +33,8 @@ class MessageController extends Controller
             abort(403);
         }
 
+        $message->markAsRead();
+
         return Inertia::render('Messages/Show', [
             'message' => MessageData::from($message->load(['sender', 'receiver', 'replies' => fn($query) => $query->with('user')->latest()->get()])),
         ]);

@@ -18,6 +18,7 @@ class MessageData extends Data
         public string        $subject,
         public string        $content,
         public ?string       $readAt,
+        public ?string       $createdAt,
         public Lazy|UserData $sender,
         public Lazy|UserData $receiver,
         public Lazy|UserData $replies,
@@ -31,7 +32,8 @@ class MessageData extends Data
             id: $message->id,
             subject: $message->subject,
             content: $message->content,
-            readAt: $message->read_at,
+            readAt: $message?->read_at,
+            createdAt: $message?->created_at,
             sender: Lazy::whenLoaded(
                 'sender',
                 $message,

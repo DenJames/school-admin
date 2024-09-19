@@ -118,7 +118,7 @@ const closeModal = () => {
                                 <span
                                     v-if="message.sender"
                                     class="text-xs text-white/50">
-                                    Sent by: {{ message.sender.name }}
+                                    Sent by: {{ message.sender.name }} - {{ message.createdAt }}
                                 </span>
 
                                 <div class="flex gap-2">

@@ -4,6 +4,7 @@ id: number;
 subject: string;
 content: string;
 readAt: string | null;
+createdAt: string | null;
 sender?: App.Data.UserData;
 receiver?: App.Data.UserData;
 replies?: App.Data.UserData;

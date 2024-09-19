@@ -30,6 +30,15 @@ class Message extends Model
         return $this->hasMany(MessageReply::class);
     }
 
+    public function markAsRead(): void
+    {
+        if ($this->read_at || $this->receiver_id !== Auth::id()) {
+            return;
+        }
+
+        $this->update(['read_at' => now()]);
+    }
+
     public function hasAccess(): bool
     {
         return $this->user_id === Auth::id() || $this->receiver_id === Auth::id();
