@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import Pencil from "@/Components/Icons/Pencil.vue";
 import Trash from "@/Components/Icons/Trash.vue";
-import { router, usePage } from "@inertiajs/vue3";
+import { router, useForm, usePage } from "@inertiajs/vue3";
 import { computed, ref } from "vue";
 import DialogModal from "@/Components/DialogModal.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 import DangerButton from "@/Components/DangerButton.vue";
+import PrimaryButton from "../PrimaryButton.vue";
+import InputError from "../InputError.vue";
 import ReplyData = App.Data.ReplyData;
 
 interface Props {
@@ -17,7 +19,24 @@ const props = defineProps<Props>();
 const user = computed(() => usePage().props.auth.user);
 
 const confirmingReplyDeletion = ref(false);
+const confirmingReplyEdit = ref(false);
 const selectedReply = ref(null);
+
+const form = useForm({
+    content: props.reply.content,
+});
+
+function submit() {
+    form.put(route("message.reply.update", props.reply), {
+        onError: () => {
+            form.reset();
+        },
+        onFinish: () => {
+            form.reset();
+            closeModal();
+        },
+    });
+}
 
 function deleteReply() {
     router.delete(route("message.reply.destroy", selectedReply.value), {
@@ -31,11 +50,23 @@ function deleteReply() {
 
 function confirmReplyDeletion(reply: ReplyData) {
     confirmingReplyDeletion.value = true;
+
+    selectReply(reply);
+}
+
+function editReply(reply: ReplyData) {
+    confirmingReplyEdit.value = true;
+
+    selectReply(reply);
+}
+
+function selectReply(reply: ReplyData) {
     selectedReply.value = reply;
 }
 
 const closeModal = () => {
     confirmingReplyDeletion.value = false;
+    confirmingReplyEdit.value = false;
     selectedReply.value = null;
 };
 </script>
@@ -56,7 +87,9 @@ const closeModal = () => {
             <div
                 v-if="reply.userId === user.id"
                 class="flex gap-2">
-                <button class="transition-all hover:scale-105">
+                <button
+                    class="transition-all hover:scale-105"
+                    @click="editReply(reply)">
                     <Pencil class="size-4" />
                 </button>
 
@@ -88,6 +121,33 @@ const closeModal = () => {
                     @click="deleteReply">
                     Delete reply
                 </DangerButton>
+            </template>
+        </DialogModal>
+
+        <!-- Edit modal -->
+        <DialogModal
+            :show="confirmingReplyEdit"
+            @close="closeModal">
+            <template #title> Edit Reply</template>
+
+            <template #content>
+                <textarea
+                    v-model="form.content"
+                    class="w-full rounded-md bg-gray-700 p-2 text-white"
+                    rows="3"
+                    placeholder="Type your reply here"></textarea>
+
+                <InputError :message="form.errors.content" />
+            </template>
+
+            <template #footer>
+                <SecondaryButton @click="closeModal"> Cancel</SecondaryButton>
+
+                <PrimaryButton
+                    class="ms-3"
+                    @click="submit">
+                    Update reply
+                </PrimaryButton>
             </template>
         </DialogModal>
     </Teleport>

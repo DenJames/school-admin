@@ -24,7 +24,20 @@ class MessageReplyController extends Controller
         return redirect()->back()->with('success', 'Reply sent.');
     }
 
-    public function destroy(MessageReply $reply)
+    public function update(MessageReply $reply, MessageReplyFormRequest $request): RedirectResponse
+    {
+        if ($reply->user()->isNot(Auth::user())) {
+            abort(403);
+        }
+
+        $reply->update([
+            'content' => $request->input('content'),
+        ]);
+
+        return redirect()->back()->with('success', 'Reply updated.');
+    }
+
+    public function destroy(MessageReply $reply): RedirectResponse
     {
         if ($reply->user()->isNot(Auth::user())) {
             abort(403);
