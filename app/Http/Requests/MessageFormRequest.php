@@ -9,10 +9,10 @@ class MessageFormRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'recipient.id' => 'required|exists:users,id',
-            'recipient.name' => 'required|exists:users,name',
-            'subject' => 'required|string|max:255',
-            'content' => 'required|string',
+            'recipient.id' => ['sometimes', 'exists:users,id'],
+            'recipient.name' => ['sometimes', 'exists:users,name'],
+            'subject' => ['required', 'string', 'max:255'],
+            'content' => ['required', 'string'],
         ];
     }
 

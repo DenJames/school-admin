@@ -57,6 +57,31 @@ class MessageController extends Controller
         return redirect()->route('messages.index')->with('success', 'Message sent.');
     }
 
+    public function update(Message $message, MessageFormRequest $request)
+    {
+        if ($message->user_id !== Auth::id()) {
+            abort(403);
+        }
+
+        $message->update([
+            'subject' => $request->input('subject'),
+            'content' => $request->input('content'),
+        ]);
+
+        return redirect()->back()->with('success', 'Message updated.');
+    }
+
+    public function destroy(Message $message): RedirectResponse
+    {
+        if ($message->user_id !== Auth::id()) {
+            abort(403);
+        }
+
+        $message->delete();
+
+        return redirect()->route('messages.index')->with('success', 'Message deleted.');
+    }
+
     public function fetchRecipients(Request $request)
     {
         return User::select(['id', 'name'])
