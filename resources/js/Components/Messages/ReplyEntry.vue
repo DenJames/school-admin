@@ -3,9 +3,9 @@ import Pencil from "@/Components/Icons/Pencil.vue";
 import Trash from "@/Components/Icons/Trash.vue";
 import { router, usePage } from "@inertiajs/vue3";
 import { computed, ref } from "vue";
-import DialogModal from "../DialogModal.vue";
-import SecondaryButton from "../SecondaryButton.vue";
-import DangerButton from "../DangerButton.vue";
+import DialogModal from "@/Components/DialogModal.vue";
+import SecondaryButton from "@/Components/SecondaryButton.vue";
+import DangerButton from "@/Components/DangerButton.vue";
 import ReplyData = App.Data.ReplyData;
 
 interface Props {

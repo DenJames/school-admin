@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import AppLayout from "../../Layouts/AppLayout.vue";
-import Card from "../../Components/Card.vue";
+import AppLayout from "@/Layouts/AppLayout.vue";
+import Card from "@/Components/Card.vue";
 import { router, useForm, usePage } from "@inertiajs/vue3";
 import { computed } from "vue";
-import Reload from "../../Components/Icons/Reload.vue";
-import ReplyEntry from "../../Components/Messages/ReplyEntry.vue";
+import Reload from "@/Components/Icons/Reload.vue";
+import ReplyEntry from "@/Components/Messages/ReplyEntry.vue";
 import MessageData = App.Data.MessageData;
 import ReplyData = App.Data.ReplyData;
 
