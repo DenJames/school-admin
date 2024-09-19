@@ -2,55 +2,46 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\AssignmentResource\Pages;
-use App\Models\Assignment;
+use App\Filament\Resources\ArticleResource\Pages;
+use App\Filament\Resources\ArticleResource\RelationManagers;
+use App\Models\Article;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 
-class AssignmentResource extends Resource
+class ArticleResource extends Resource
 {
-    protected static ?string $model = Assignment::class;
+    protected static ?string $model = Article::class;
 
-    protected static ?string $navigationIcon = 'heroicon-s-lock-closed';
+    protected static ?string $navigationIcon = 'heroicon-s-newspaper';
 
-    protected static ?int $navigationSort = 7;
+    protected static ?int $navigationSort = 9;
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('teacher_id')
-                    ->label('Teacher')
-                    ->options(function () {
-                        return \App\Models\Teacher::with('user')->get()->pluck('user.name', 'id');
-                    })
+                Forms\Components\Select::make('school_id')
+                    ->relationship('school', 'name')
+                    ->preload()
                     ->searchable()
-                    ->required(),
-
+                    ->default(null),
                 Forms\Components\Select::make('team_id')
                     ->relationship('team', 'name')
                     ->preload()
                     ->searchable()
                     ->default(null),
-
-                Forms\Components\Select::make('user_id')
-                    ->relationship('user', 'name')
-                    ->preload()
-                    ->searchable()
-                    ->default(null),
-
-                Forms\Components\TextInput::make('name')
+                Forms\Components\Toggle::make('is_global')
+                    ->required(),
+                Forms\Components\TextInput::make('title')
                     ->required()
                     ->maxLength(255),
-
-                Forms\Components\Textarea::make('description')
+                Forms\Components\Textarea::make('content')
                     ->required()
                     ->columnSpanFull(),
-
-                Forms\Components\DateTimePicker::make('due_at'),
+                Forms\Components\DateTimePicker::make('published_at'),
             ]);
     }
 
@@ -58,19 +49,17 @@ class AssignmentResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('teacher.user.name')
+                Tables\Columns\TextColumn::make('school.name')
                     ->numeric()
-                    ->label('Teacher')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('team.name')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('user.name')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('name')
+                Tables\Columns\IconColumn::make('is_global')
+                    ->boolean(),
+                Tables\Columns\TextColumn::make('title')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('due_at')
+                Tables\Columns\TextColumn::make('published_at')
                     ->dateTime()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
@@ -98,16 +87,17 @@ class AssignmentResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\SchoolRelationManager::class,
+            RelationManagers\TeamRelationManager::class,
         ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListAssignments::route('/'),
-            'create' => Pages\CreateAssignment::route('/create'),
-            'edit' => Pages\EditAssignment::route('/{record}/edit'),
+            'index' => Pages\ListArticles::route('/'),
+            'create' => Pages\CreateArticle::route('/create'),
+            'edit' => Pages\EditArticle::route('/{record}/edit'),
         ];
     }
 }

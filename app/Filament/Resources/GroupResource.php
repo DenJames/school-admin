@@ -2,31 +2,39 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\CountryResource\Pages;
-use App\Filament\Resources\CountryResource\RelationManagers;
-use App\Models\Country;
+use App\Filament\Resources\GroupResource\Pages;
+use App\Filament\Resources\GroupResource\RelationManagers;
+use App\Models\Group;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 
-class CountryResource extends Resource
+class GroupResource extends Resource
 {
-    protected static ?string $model = Country::class;
+    protected static ?string $model = Group::class;
 
-    protected static ?string $navigationIcon = 'heroicon-s-globe-asia-australia';
+    protected static ?string $navigationIcon = 'heroicon-s-user-plus';
 
-    protected static ?int $navigationSort = 10;
+    protected static ?int $navigationSort = 6;
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
+                Forms\Components\Select::make('user_id')
+                    ->label('Owner')
+                    ->relationship('user', 'name')
+                    ->preload()
+                    ->searchable()
+                    ->required(),
+                Forms\Components\Select::make('team_id')
+                    ->relationship('team', 'name')
+                    ->preload()
+                    ->searchable()
+                    ->required(),
                 Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('iso')
                     ->required()
                     ->maxLength(255),
             ]);
@@ -36,9 +44,14 @@ class CountryResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('user.name')
+                    ->label('Owner')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('team.name')
+                    ->numeric()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('iso')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -54,6 +67,7 @@ class CountryResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -65,16 +79,16 @@ class CountryResource extends Resource
     public static function getRelations(): array
     {
         return [
-            RelationManagers\CitiesRelationManager::class,
+            RelationManagers\UsersRelationManager::class,
         ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListCountries::route('/'),
-            'create' => Pages\CreateCountry::route('/create'),
-            'edit' => Pages\EditCountry::route('/{record}/edit'),
+            'index' => Pages\ListGroups::route('/'),
+            'create' => Pages\CreateGroup::route('/create'),
+            'edit' => Pages\EditGroup::route('/{record}/edit'),
         ];
     }
 }

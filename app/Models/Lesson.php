@@ -43,4 +43,9 @@ class Lesson extends Model
     {
         return $this->hasMany(Homework::class);
     }
+
+    public function absences(): HasMany
+    {
+        return $this->hasMany(Absence::class);
+    }
 }

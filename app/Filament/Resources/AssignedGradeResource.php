@@ -2,55 +2,69 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\AssignmentResource\Pages;
-use App\Models\Assignment;
+use App\Filament\Resources\AssignedGradeResource\Pages;
+use App\Filament\Resources\AssignedGradeResource\RelationManagers;
+use App\Models\AssignedGrade;
+use App\Models\Teacher;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 
-class AssignmentResource extends Resource
+class AssignedGradeResource extends Resource
 {
-    protected static ?string $model = Assignment::class;
+    protected static ?string $model = AssignedGrade::class;
 
-    protected static ?string $navigationIcon = 'heroicon-s-lock-closed';
+    protected static ?string $navigationIcon = 'heroicon-s-presentation-chart-bar';
 
-    protected static ?int $navigationSort = 7;
+    protected static ?int $navigationSort = 8;
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('teacher_id')
-                    ->label('Teacher')
+                Forms\Components\Select::make('grade')
+                    ->label('Grade')
                     ->options(function () {
-                        return \App\Models\Teacher::with('user')->get()->pluck('user.name', 'id');
+                        return [
+                            '-3',
+                            '00',
+                            '02',
+                            '4',
+                            '7',
+                            '10',
+                            '12',
+                        ];
                     })
                     ->searchable()
-                    ->required(),
-
+                    ->required()
+                    ->default(null),
                 Forms\Components\Select::make('team_id')
                     ->relationship('team', 'name')
                     ->preload()
                     ->searchable()
                     ->default(null),
-
                 Forms\Components\Select::make('user_id')
                     ->relationship('user', 'name')
                     ->preload()
                     ->searchable()
+                    ->required(),
+                Forms\Components\Select::make('teacher_id')
+                    ->label('Teacher')
+                    ->options(function () {
+                        return Teacher::with('user')->get()->pluck('user.name', 'id');
+                    })
+                    ->searchable()
                     ->default(null),
-
-                Forms\Components\TextInput::make('name')
+                Forms\Components\Select::make('class_category_id')
+                    ->relationship('subject', 'name')
+                    ->preload()
+                    ->searchable()
+                    ->required(),
+                Forms\Components\TextInput::make('comment')
                     ->required()
                     ->maxLength(255),
-
-                Forms\Components\Textarea::make('description')
-                    ->required()
-                    ->columnSpanFull(),
-
-                Forms\Components\DateTimePicker::make('due_at'),
             ]);
     }
 
@@ -58,9 +72,7 @@ class AssignmentResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('teacher.user.name')
-                    ->numeric()
-                    ->label('Teacher')
+                Tables\Columns\TextColumn::make('grade')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('team.name')
                     ->numeric()
@@ -68,11 +80,15 @@ class AssignmentResource extends Resource
                 Tables\Columns\TextColumn::make('user.name')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('due_at')
-                    ->dateTime()
+                Tables\Columns\TextColumn::make('teacher.user.name')
+                    ->label('Teacher')
+                    ->numeric()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('subject.name')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('comment')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -98,16 +114,16 @@ class AssignmentResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\TeamRelationManager::class,
         ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListAssignments::route('/'),
-            'create' => Pages\CreateAssignment::route('/create'),
-            'edit' => Pages\EditAssignment::route('/{record}/edit'),
+            'index' => Pages\ListAssignedGrades::route('/'),
+            'create' => Pages\CreateAssignedGrade::route('/create'),
+            'edit' => Pages\EditAssignedGrade::route('/{record}/edit'),
         ];
     }
 }

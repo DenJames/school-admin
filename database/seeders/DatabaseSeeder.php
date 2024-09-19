@@ -2,10 +2,14 @@
 
 namespace Database\Seeders;
 
+use App\Models\Article;
+use App\Models\AssignedGrade;
 use App\Models\City;
 use App\Models\ClassCategory;
 use App\Models\Classroom;
 use App\Models\ClassroomReservation;
+use App\Models\Group;
+use App\Models\GroupRole;
 use App\Models\Lesson;
 use App\Models\School;
 use App\Models\SchoolLocation;
@@ -196,23 +200,62 @@ class DatabaseSeeder extends Seeder
                         // Ensure the school has teams before selecting a random one
                         if ($teacher->school->teams->isNotEmpty()) {
                             $team = $teacher->school->teams->random();
-                        } else {
-                            // Handle the case where there are no teams, e.g., skip or create a fallback team
-                            return;
                         }
 
                         $reservation->lessons()->create([
-                            'team_id' => $team->id,
+                            'team_id' => $team->id ?? Team::factory()->create(['school_id' => $teacher->school->id])->id,
                             'teacher_id' => $teacher->id,
                             'class_category_id' => $category->id,
                             'name' => "{$category->name} Lesson",
                             'duration' => random_int(30, 120),
-                            'starts_at' => $reservation->booked_from->clone()->addDays(random_int(1, 10)),
+                            'starts_at' => $reservation->booked_from,
                         ]);
                     });
                 });
             }
         }
+
+        if (!AssignedGrade::count()) {
+            AssignedGrade::factory(35)->create([
+                'comment' => 'This is a test comment for grade',
+            ]);
+        }
+
+        if (!Article::count()) {
+            Article::factory(10)->create();
+            Article::factory(10)->create([
+                'is_global' => true,
+            ]);
+
+            Article::factory(3)->create([
+                'school_id' => School::factory(),
+            ]);
+
+            Article::factory(5)->create([
+                'team_id' => Team::factory(),
+            ]);
+        }
+
+        if (!Group::count()) {
+            $groupRoles = collect([
+                'Admin',
+                'Member',
+            ]);
+
+            $groupRoles->each(function ($role) {
+                GroupRole::firstOrCreate(['name' => $role]);
+            });
+
+
+            $groups = Group::factory(10)->create();
+
+            $groups->each(function ($group) {
+                $group->users()->attach(User::factory(5)->create(), [
+                    'group_role_id' => GroupRole::where('name', 'Member')->first()->id,
+                ]);
+            });
+        }
+
 
         // Add seeders here
         /* $this->call([

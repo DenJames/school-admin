@@ -1,30 +1,32 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Filament\Resources\UserResource\RelationManagers;
 
-use App\Filament\Resources\HomeworkResource\Pages;
-use App\Filament\Resources\HomeworkResource\RelationManagers;
-use App\Models\Homework;
 use App\Models\Lesson;
+use App\Models\Teacher;
 use Filament\Forms;
 use Filament\Forms\Form;
-use Filament\Resources\Resource;
+use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
 
-class HomeworkResource extends Resource
+class AbsencesRelationManager extends RelationManager
 {
-    protected static ?string $model = Homework::class;
+    protected static string $relationship = 'absences';
 
-    protected static ?string $navigationIcon = 'heroicon-s-book-open';
-
-    protected static ?int $navigationSort = 5;
-
-    public static function form(Form $form): Form
+    public function form(Form $form): Form
     {
         return $form
             ->schema([
+                Forms\Components\Select::make('teacher_id')
+                    ->label('Teacher')
+                    ->options(function () {
+                        return Teacher::with('user')->get()->pluck('user.name', 'id');
+                    })
+                    ->searchable()
+                    ->default(fn($record) => $record?->teacher->user->name),
                 Forms\Components\Select::make('lesson_id')
+                    ->label('Lesson')
                     ->options(function () {
                         return Lesson::with('teacher')
                             ->get()
@@ -35,26 +37,32 @@ class HomeworkResource extends Resource
                     ->preload()
                     ->searchable()
                     ->default(null),
-                Forms\Components\TextInput::make('name')
+                Forms\Components\TextInput::make('reason')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\Textarea::make('description')
-                    ->required()
-                    ->columnSpanFull(),
-                Forms\Components\DateTimePicker::make('due_date'),
+                Forms\Components\Toggle::make('excused')
+                    ->required(),
+                Forms\Components\DateTimePicker::make('approved_at'),
             ]);
     }
 
-    public static function table(Table $table): Table
+    public function table(Table $table): Table
     {
         return $table
+            ->recordTitleAttribute('reason')
             ->columns([
+                Tables\Columns\TextColumn::make('teacher.user.name')
+                    ->label('Teacher')
+                    ->numeric()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('lesson.name')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('name')
+                Tables\Columns\TextColumn::make('reason')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('due_date')
+                Tables\Columns\IconColumn::make('excused')
+                    ->boolean(),
+                Tables\Columns\TextColumn::make('approved_at')
                     ->dateTime()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
@@ -69,29 +77,17 @@ class HomeworkResource extends Resource
             ->filters([
                 //
             ])
+            ->headerActions([
+                Tables\Actions\CreateAction::make(),
+            ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
-
-    public static function getPages(): array
-    {
-        return [
-            'index' => Pages\ListHomework::route('/'),
-            'create' => Pages\CreateHomework::route('/create'),
-            'edit' => Pages\EditHomework::route('/{record}/edit'),
-        ];
     }
 }

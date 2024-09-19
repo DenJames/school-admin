@@ -7,6 +7,7 @@ use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasAvatar;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
@@ -98,11 +99,23 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
         return $this->hasOne(Teacher::class, 'user_id');
     }
 
-    public function teams()
+    public function absences(): HasMany
     {
-        return $this->belongsToMany(Team::class, 'team_user') // Specify the correct pivot table
-        ->withPivot('role')  // Specify 'role' in team_user
-        ->withTimestamps();  // If you have timestamps (created_at, updated_at) in the pivot
+        return $this->hasMany(Absence::class);
+    }
+
+    public function teams(): BelongsToMany
+    {
+        return $this->belongsToMany(Team::class, 'team_user')
+            ->withPivot('role')
+            ->withTimestamps();
+    }
+
+    public function groups(): BelongsToMany
+    {
+        return $this->belongsToMany(Group::class, 'group_members')
+            ->withPivot('group_role_id')
+            ->withTimestamps();
     }
 
     public function documents(): MorphMany
