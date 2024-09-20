@@ -9,12 +9,12 @@ test('team member roles can be updated', function () {
         $otherUser = User::factory()->create(), ['role' => 'admin']
     );
 
-    $this->put('/teams/'.$user->currentTeam->id.'/members/'.$otherUser->id, [
-        'role' => 'editor',
+    $this->put('/teams/' . $user->currentTeam->id . '/members/' . $otherUser->id, [
+        'role' => 'member',
     ]);
 
     expect($otherUser->fresh()->hasTeamRole(
-        $user->currentTeam->fresh(), 'editor'
+        $user->currentTeam->fresh(), 'member'
     ))->toBeTrue();
 });
 
@@ -27,8 +27,8 @@ test('only team owner can update team member roles', function () {
 
     $this->actingAs($otherUser);
 
-    $this->put('/teams/'.$user->currentTeam->id.'/members/'.$otherUser->id, [
-        'role' => 'editor',
+    $this->put('/teams/' . $user->currentTeam->id . '/members/' . $otherUser->id, [
+        'role' => 'member',
     ]);
 
     expect($otherUser->fresh()->hasTeamRole(
