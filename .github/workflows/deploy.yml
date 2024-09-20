@@ -40,7 +40,7 @@ jobs:
 
       - name: Run Pest PHP tests with production configuration
         run: |
-          vendor/bin/pest -c phpunit.prod.xml
+          vendor/bin/pest -c phpunit.xml
 
       # If tests pass, proceed with deployment
       - name: Install SSH client
