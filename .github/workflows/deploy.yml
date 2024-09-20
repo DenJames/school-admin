@@ -23,9 +23,18 @@ jobs:
           composer install
           npm install
 
-      - name: Run Pest PHP tests
+      - name: Create SQLite database file
         run: |
-          vendor/bin/pest
+          mkdir -p database
+          touch database/database.sqlite
+
+      - name: Run migrations
+        run: |
+          php artisan migrate --env=testing
+
+      - name: Run Pest PHP tests with production configuration
+        run: |
+          vendor/bin/pest -c phpunit.prod.xml
 
       # If tests pass, proceed with deployment
       - name: Install SSH client
