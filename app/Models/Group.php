@@ -50,7 +50,7 @@ class Group extends Model
 
     public function setToCurrent()
     {
-        $this->user()->update([
+        $this->owner()->update([
             'current_group_id' => $this->id,
         ]);
     }

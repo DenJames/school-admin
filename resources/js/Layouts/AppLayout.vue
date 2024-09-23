@@ -82,10 +82,7 @@ const logout = () => {
 
                         <div class="hidden sm:ms-6 sm:flex sm:items-center">
                             <div class="relative ms-3">
-                                <!-- Teams Dropdown -->
-                                <!-- TODO: Chec kif user has group -->
                                 <Dropdown
-                                    v-if="$page.props.current_group"
                                     align="right"
                                     width="60">
                                     <template #trigger>
@@ -94,7 +91,9 @@ const logout = () => {
                                                 type="button"
                                                 class="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:bg-gray-50 focus:outline-none active:bg-gray-50 dark:bg-gray-800 dark:text-gray-400 dark:hover:text-gray-300 dark:focus:bg-gray-700 dark:active:bg-gray-700">
                                                 <GroupIcon class="mr-1 size-6" />
-                                                {{ $page.props.current_group.name }}
+                                                {{
+                                                    $page.props.current_group ? $page.props.current_group.name : "Group"
+                                                }}
 
                                                 <svg
                                                     class="-me-0.5 ms-2 h-4 w-4"
@@ -119,6 +118,7 @@ const logout = () => {
 
                                             <!-- Team Settings -->
                                             <DropdownLink
+                                                v-if="$page.props.auth.user.current_group_id"
                                                 :href="route('groups.show', $page.props.auth.user.current_group_id)">
                                                 Group Settings
                                             </DropdownLink>
@@ -130,7 +130,7 @@ const logout = () => {
                                             </DropdownLink>
 
                                             <!-- Team Switcher -->
-                                            <template v-if="$page.props.groups.length > 1">
+                                            <template v-if="$page.props.groups.length > 0">
                                                 <div class="border-t border-gray-200 dark:border-gray-600" />
 
                                                 <div class="block px-4 py-2 text-xs text-gray-400">Switch Groups</div>
@@ -142,7 +142,7 @@ const logout = () => {
                                                         <DropdownLink as="button">
                                                             <div class="flex items-center">
                                                                 <svg
-                                                                    v-if="group.id == $page.props.current_group.id"
+                                                                    v-if="group.id == $page.props.current_group?.id"
                                                                     class="me-2 h-5 w-5 text-green-400"
                                                                     xmlns="http://www.w3.org/2000/svg"
                                                                     fill="none"

@@ -136,8 +136,12 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
         return '/' . $this->profile_photo_path;
     }
 
-    public function currentGroup(): GroupData
+    public function currentGroup(): GroupData|null
     {
+        if (!$this->current_group_id) {
+            return null;
+        }
+
         return GroupData::from(Group::with('users')->find($this->current_group_id));
     }
 }

@@ -59,6 +59,16 @@ class GroupController extends Controller
         if (!$group->isOwner()) {
             abort(403);
         }
+
+        $user = Auth::user();
+
+        $group->delete();
+
+        $user?->update([
+            'current_group_id' => $user->groups->first()?->id,
+        ]);
+
+        return to_route('dashboard')->with('success', 'Group deleted successfully');
     }
 
     public function switch(Request $request)

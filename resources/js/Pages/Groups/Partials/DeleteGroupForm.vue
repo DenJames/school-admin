@@ -5,22 +5,23 @@ import ActionSection from "@/Components/ActionSection.vue";
 import ConfirmationModal from "@/Components/ConfirmationModal.vue";
 import DangerButton from "@/Components/DangerButton.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
+import GroupData = App.Data.GroupData;
 
 interface Props {
-    team: object;
+    group: GroupData;
 }
 
 const props = defineProps<Props>();
 
-const confirmingTeamDeletion = ref(false);
+const confirmingGroupDeletion = ref(false);
 const form = useForm({});
 
-const confirmTeamDeletion = () => {
-    confirmingTeamDeletion.value = true;
+const confirmGroupDeletion = () => {
+    confirmingGroupDeletion.value = true;
 };
 
 const deleteTeam = () => {
-    form.delete(route("teams.destroy", props.team), {
+    form.delete(route("groups.destroy", props.group), {
         errorBag: "deleteTeam",
     });
 };
@@ -28,40 +29,39 @@ const deleteTeam = () => {
 
 <template>
     <ActionSection>
-        <template #title> Delete Team</template>
+        <template #title> Delete Group</template>
 
-        <template #description> Permanently delete this team.</template>
+        <template #description> Permanently delete this group</template>
 
         <template #content>
             <div class="max-w-xl text-sm text-gray-600 dark:text-gray-400">
-                Once a team is deleted, all of its resources and data will be permanently deleted. Before deleting this
-                team, please download any data or information regarding this team that you wish to retain.
+                Once a group is deleted, all of its resources and data will be permanently deleted.
             </div>
 
             <div class="mt-5">
-                <DangerButton @click="confirmTeamDeletion"> Delete Team</DangerButton>
+                <DangerButton @click="confirmGroupDeletion"> Delete Group</DangerButton>
             </div>
 
             <!-- Delete Team Confirmation Modal -->
             <ConfirmationModal
-                :show="confirmingTeamDeletion"
-                @close="confirmingTeamDeletion = false">
-                <template #title> Delete Team</template>
+                :show="confirmingGroupDeletion"
+                @close="confirmingGroupDeletion = false">
+                <template #title> Delete Group</template>
 
                 <template #content>
-                    Are you sure you want to delete this team? Once a team is deleted, all of its resources and data
+                    Are you sure you want to delete this group? Once a group is deleted, all of its resources and data
                     will be permanently deleted.
                 </template>
 
                 <template #footer>
-                    <SecondaryButton @click="confirmingTeamDeletion = false"> Cancel</SecondaryButton>
+                    <SecondaryButton @click="confirmingGroupDeletion = false"> Cancel</SecondaryButton>
 
                     <DangerButton
                         class="ms-3"
                         :class="{ 'opacity-25': form.processing }"
                         :disabled="form.processing"
                         @click="deleteTeam">
-                        Delete Team
+                        Delete group
                     </DangerButton>
                 </template>
             </ConfirmationModal>
