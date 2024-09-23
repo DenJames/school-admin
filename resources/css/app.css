@@ -5,3 +5,17 @@
 [x-cloak] {
     display: none;
 }
+
+.fc-timegrid-slot-label-cushion {
+    color: #ffffff;
+    font-family: "Roboto", sans-serif;
+}
+
+.fc-event.fc-event-start.fc-event-end.fc-event-past.fc-list-event, .fc-toolbar-title, .fc-timegrid-axis-cushion, .fc-daygrid-day-number, .fc-event-time, .fc-event-title {
+    color: #ffffff;
+}
+
+.fc-day-grid-day > .fc-daygrid-day-frame,
+.fc-day-grid-day > .fc-daygrid-day-top {
+    display: none;
+}

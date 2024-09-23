@@ -34,9 +34,19 @@
         "vue-tsc": "^2.1.6"
     },
     "dependencies": {
+        "@fullcalendar/core": "^6.1.15",
+        "@fullcalendar/daygrid": "^6.1.15",
+        "@fullcalendar/interaction": "^6.1.15",
+        "@fullcalendar/list": "^6.1.15",
+        "@fullcalendar/resource": "^6.1.15",
+        "@fullcalendar/resource-timegrid": "^6.1.15",
+        "@fullcalendar/resource-timeline": "^6.1.15",
+        "@fullcalendar/rrule": "^6.1.15",
+        "@fullcalendar/vue3": "^6.1.15",
         "@volar/language-server": "2.4.0-alpha.18",
         "@vue/language-server": "2.0.28",
-        "eslint-define-config": "^2.1.0",
-        "lodash": "^4.17.21"
+        "lodash": "^4.17.21",
+        "tippy.js": "^6.3.7",
+        "eslint-define-config": "^2.1.0"
     }
 }

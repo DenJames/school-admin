@@ -45,6 +45,5 @@ name: string;
 email: string;
 emailVerifiedAt: string | null;
 groups?: any | null;
-currentGroupMembership: any | null;
 };
 }

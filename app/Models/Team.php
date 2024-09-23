@@ -86,4 +86,9 @@ class Team extends JetstreamTeam
         return $this->morphMany(Document::class, 'documentable');
     }
 
+    public function lessons(): HasMany
+    {
+        return $this->hasMany(Lesson::class);
+    }
+
 }
