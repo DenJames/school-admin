@@ -53,4 +53,9 @@ class Lesson extends Model
     {
         return $this->starts_at->addMinutes($this->duration);
     }
+
+    public function absences(): HasMany
+    {
+        return $this->hasMany(Absence::class);
+    }
 }

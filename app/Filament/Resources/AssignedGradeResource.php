@@ -16,7 +16,9 @@ class AssignedGradeResource extends Resource
 {
     protected static ?string $model = AssignedGrade::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-s-presentation-chart-bar';
+
+    protected static ?int $navigationSort = 8;
 
     public static function form(Form $form): Form
     {

@@ -200,18 +200,15 @@ class DatabaseSeeder extends Seeder
                         // Ensure the school has teams before selecting a random one
                         if ($teacher->school->teams->isNotEmpty()) {
                             $team = $teacher->school->teams->random();
-                        } else {
-                            // Handle the case where there are no teams, e.g., skip or create a fallback team
-                            return;
                         }
 
                         $reservation->lessons()->create([
-                            'team_id' => $team->id,
+                            'team_id' => $team->id ?? Team::factory()->create(['school_id' => $teacher->school->id])->id,
                             'teacher_id' => $teacher->id,
                             'class_category_id' => $category->id,
                             'name' => "{$category->name} Lesson",
                             'duration' => random_int(30, 120),
-                            'starts_at' => $reservation->booked_from->clone()->addDays(random_int(1, 10)),
+                            'starts_at' => $reservation->booked_from,
                         ]);
                     });
                 });

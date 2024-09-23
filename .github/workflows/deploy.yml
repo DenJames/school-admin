@@ -3,16 +3,47 @@ name: Deploy to Server
 on:
   push:
     branches:
-      - main  # Change this to your branch name
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Set up PHP 8.2
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Install dependencies
+        run: |
+          composer install
+          npm install
+          npm run build
+
+      - name: Create SQLite database file
+        run: |
+          mkdir -p database
+          touch database/database.sqlite
+
+      - name: Set up environment file for testing
+        run: cp .env.testing.example .env.testing
+
+      - name: Generate application key for testing
+        run: php artisan key:generate --env=testing
+
+      - name: Run migrations
+        run: |
+          php artisan migrate --env=testing
+
+      - name: Run Pest PHP tests with production configuration
+        run: |
+          vendor/bin/pest -c phpunit.xml
+
+      # If tests pass, proceed with deployment
       - name: Install SSH client
         run: sudo apt-get install openssh-client
 
