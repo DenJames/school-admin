@@ -52,6 +52,13 @@ class GroupController extends Controller
 
     public function update(GroupFormRequest $request, Group $group)
     {
+        if (!$group->isOwner()) {
+            abort(403);
+        }
+
+        $group->update($request->validated());
+
+        return redirect()->back()->with('success', 'Group updated successfully');
     }
 
     public function destroy(Group $group)
