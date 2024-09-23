@@ -25,7 +25,7 @@ class UserData extends Data
     }
 
 
-    public static function fromModel(User $user, ?int $groupId = null): self
+    public static function fromModel(User $user): self
     {
         return new self(
             id: $user->id,

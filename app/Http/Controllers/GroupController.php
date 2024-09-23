@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\GroupFormRequest;
 use App\Models\Group;
 use App\Models\GroupRole;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
@@ -58,6 +59,16 @@ class GroupController extends Controller
         if (!$group->isOwner()) {
             abort(403);
         }
+    }
 
+    public function switch(Request $request)
+    {
+        if (!$request->user()->groups->contains($request->group_id)) {
+            abort(403);
+        }
+
+        $request->user()->update([
+            'current_group_id' => $request->group_id,
+        ]);
     }
 }

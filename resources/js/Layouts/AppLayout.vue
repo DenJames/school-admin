@@ -18,11 +18,11 @@ defineProps<Props>();
 
 const showingNavigationDropdown = ref(false);
 
-const switchToTeam = (team) => {
+const swithToGroup = (group) => {
     router.put(
-        route("current-team.update"),
+        route("groups.switch"),
         {
-            team_id: team.id,
+            group_id: group.id,
         },
         {
             preserveState: false,
@@ -122,21 +122,19 @@ const logout = () => {
                                             </DropdownLink>
 
                                             <!-- Team Switcher -->
-                                            <template v-if="$page.props.auth.user.all_teams.length > 1">
+                                            <template v-if="$page.props.groups.length > 1">
                                                 <div class="border-t border-gray-200 dark:border-gray-600" />
 
                                                 <div class="block px-4 py-2 text-xs text-gray-400">Switch Groups</div>
 
                                                 <template
-                                                    v-for="team in $page.props.auth.user.all_teams"
-                                                    :key="team.id">
-                                                    <form @submit.prevent="switchToTeam(team)">
+                                                    v-for="group in $page.props.groups"
+                                                    :key="group.id">
+                                                    <form @submit.prevent="swithToGroup(group)">
                                                         <DropdownLink as="button">
                                                             <div class="flex items-center">
                                                                 <svg
-                                                                    v-if="
-                                                                        team.id == $page.props.auth.user.current_team_id
-                                                                    "
+                                                                    v-if="group.id == $page.props.current_group.id"
                                                                     class="me-2 h-5 w-5 text-green-400"
                                                                     xmlns="http://www.w3.org/2000/svg"
                                                                     fill="none"
@@ -149,7 +147,7 @@ const logout = () => {
                                                                         d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                                                 </svg>
 
-                                                                <div>{{ team.name }}</div>
+                                                                <div>{{ group.name }}</div>
                                                             </div>
                                                         </DropdownLink>
                                                     </form>
@@ -216,7 +214,7 @@ const logout = () => {
                                                 <template
                                                     v-for="team in $page.props.auth.user.all_teams"
                                                     :key="team.id">
-                                                    <form @submit.prevent="switchToTeam(team)">
+                                                    <form @submit.prevent="swithToGroup(team)">
                                                         <DropdownLink as="button">
                                                             <div class="flex items-center">
                                                                 <svg
@@ -426,7 +424,7 @@ const logout = () => {
                                     <template
                                         v-for="team in $page.props.auth.user.all_teams"
                                         :key="team.id">
-                                        <form @submit.prevent="switchToTeam(team)">
+                                        <form @submit.prevent="swithToGroup(team)">
                                             <ResponsiveNavLink as="button">
                                                 <div class="flex items-center">
                                                     <svg

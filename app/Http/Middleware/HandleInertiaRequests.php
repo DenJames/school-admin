@@ -37,6 +37,7 @@ class HandleInertiaRequests extends Middleware
     {
         return array_merge(parent::share($request), [
             'current_group' => $request->user()?->currentGroup(),
+            'groups' => $request->user()?->groups,
         ]);
     }
 }

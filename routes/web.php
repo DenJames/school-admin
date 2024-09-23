@@ -28,6 +28,7 @@ Route::middleware([
     Route::delete('/message/{reply}/delete', [MessageReplyController::class, 'destroy'])->name('message.reply.destroy');
 
     // Groups
+    Route::put('/groups/switch', [GroupController::class, 'switch'])->name('groups.switch');
     Route::resource('groups', GroupController::class);
 });
 
