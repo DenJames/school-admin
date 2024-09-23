@@ -1,10 +1,10 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LessonController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\MessageReplyController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 Route::get('/', function () {
     return to_route('login');
@@ -15,14 +15,7 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/dashboard', function () {
-        $datetime = new DateTime('now', new DateTimeZone('Europe/Copenhagen'));
-        $datetime_string = $datetime->format('c');
-
-        return Inertia::render('Dashboard', [
-            'now' => $datetime_string,
-        ]);
-    })->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/message/receiver', [MessageController::class, 'fetchRecipients'])->name('message.receiver');
 
