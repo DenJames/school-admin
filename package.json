@@ -21,8 +21,8 @@
         "axios": "^1.7.4",
         "eslint": "^8.0",
         "eslint-config-prettier": "^9.1.0",
-        "eslint-plugin-vue": "^9.28.0",
         "eslint-define-config": "^2.1.0",
+        "eslint-plugin-vue": "^9.28.0",
         "laravel-vite-plugin": "^1.0",
         "postcss": "^8.4.32",
         "prettier": "^3.3.3",
@@ -48,5 +48,8 @@
         "@vue/language-server": "2.0.28",
         "lodash": "^4.17.21",
         "tippy.js": "^6.3.7"
+    },
+    "optionalDependencies": {
+        "@rollup/rollup-linux-x64-gnu": "^4.22.4"
     }
 }
