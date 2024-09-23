@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Auth;
 
 class Group extends Model
 {
@@ -35,5 +36,17 @@ class Group extends Model
             ->using(GroupMember::class)
             ->withPivot('group_role_id')
             ->withTimestamps();
+    }
+
+    public function isOwner()
+    {
+        return $this->user_id === Auth::id();
+    }
+
+    public function setToCurrent()
+    {
+        $this->user()->update([
+            'current_group_id' => $this->id,
+        ]);
     }
 }

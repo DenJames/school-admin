@@ -133,4 +133,9 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
     {
         return '/' . $this->profile_photo_path;
     }
+
+    public function set()
+    {
+
+    }
 }

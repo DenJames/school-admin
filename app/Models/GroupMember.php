@@ -10,9 +10,11 @@ class GroupMember extends Pivot
 {
     use HasFactory;
 
+    protected $table = 'group_members';
+
     protected $guarded = [];
 
-    public function role()
+    public function role(): BelongsTo
     {
         return $this->belongsTo(GroupRole::class, 'group_role_id');
     }

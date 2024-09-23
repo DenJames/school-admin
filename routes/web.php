@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\GroupController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\MessageReplyController;
 use Illuminate\Support\Facades\Route;
@@ -25,5 +26,8 @@ Route::middleware([
     Route::post('/message/{message}/reply', [MessageReplyController::class, 'store'])->name('message.reply');
     Route::put('/message/{reply}/update', [MessageReplyController::class, 'update'])->name('message.reply.update');
     Route::delete('/message/{reply}/delete', [MessageReplyController::class, 'destroy'])->name('message.reply.destroy');
+
+    // Groups
+    Route::resource('groups', GroupController::class);
 });
 
