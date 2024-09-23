@@ -11,7 +11,6 @@ import "tippy.js/dist/tippy.css"; // Tippy.js CSS
 
 const props = defineProps<{
     now: string | Date; // Define the type of the `now` prop, adjust according to your data type
-    events: any[]; // Define the type of the `events` prop, adjust according to your data type
     initialView?: string; // Define the type of the `initialView` prop, adjust according to your data type
 }>();
 
@@ -46,7 +45,7 @@ const calendarOptions = {
     nowIndicator: true,
     now: props.now,
     themeSystem: "bootstrap5",
-    events: props.events,
+    events: "/api/lessons",
     firstDay: 1,
     hiddenDays: [0, 6],
     eventDidMount: (info) => {

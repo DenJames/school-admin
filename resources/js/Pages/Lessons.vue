@@ -4,7 +4,6 @@ import Calendar from "@/Components/lesson/calendar.vue";
 
 interface Props {
     now: string;
-    lessons: any[];
 }
 
 defineProps<Props>();
@@ -18,9 +17,7 @@ defineProps<Props>();
 
         <div class="py-12">
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                <Calendar
-                    :now="now"
-                    :events="lessons" />
+                <Calendar :now="now" />
             </div>
         </div>
     </AppLayout>
