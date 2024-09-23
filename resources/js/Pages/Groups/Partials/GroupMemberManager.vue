@@ -13,9 +13,11 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 import SectionBorder from "@/Components/SectionBorder.vue";
 import TextInput from "@/Components/TextInput.vue";
+import GroupData = App.Data.GroupData;
+import UserData = App.Data.UserData;
 
 interface Props {
-    group: object;
+    group: GroupData;
     availableRoles: Array<any>;
     role: string;
 }
@@ -35,8 +37,8 @@ const updateRoleForm = useForm({
 
 const isAdmin = computed(() => props.role === "admin");
 
-const leaveTeamForm = useForm({});
-const removeTeamMemberForm = useForm({});
+const leaveGroupForm = useForm({});
+const removeGroupMemberForm = useForm({});
 
 const currentlyManagingRole = ref(false);
 const managingRoleFor = ref(null);
@@ -75,7 +77,7 @@ const confirmLeavingGroup = () => {
 };
 
 const leaveGroup = () => {
-    leaveTeamForm.delete(route("team-members.destroy", [props.group, page.props.auth.user]));
+    leaveGroupForm.delete(route("team-members.destroy", [props.group, page.props.auth.user]));
 };
 
 const confirmGroupMemberRemoval = (teamMember) => {
@@ -83,7 +85,7 @@ const confirmGroupMemberRemoval = (teamMember) => {
 };
 
 const removeGroupMember = () => {
-    removeTeamMemberForm.delete(route("team-members.destroy", [props.group, GroupMemberBeingRemoved.value]), {
+    removeGroupMemberForm.delete(route("team-members.destroy", [props.group, GroupMemberBeingRemoved.value]), {
         errorBag: "removeGroupMember",
         preserveScroll: true,
         preserveState: true,
@@ -91,8 +93,12 @@ const removeGroupMember = () => {
     });
 };
 
-const displayableRole = (role) => {
-    return props.availableRoles.find((r) => r.key === role).name;
+const displayableRole = (roleId) => {
+    return props.availableRoles.find((r) => r.id === roleId).name;
+};
+
+const membership = (user: UserData) => {
+    return props.group.users.find((u: UserData) => u.id === user.id);
 };
 </script>
 
@@ -103,16 +109,16 @@ const displayableRole = (role) => {
 
             <!-- Add Team Member -->
             <FormSection @submitted="addGroupMember">
-                <template #title> Add Team Member</template>
+                <template #title> Add Group Member</template>
 
                 <template #description>
-                    Add a new team member to your team, allowing them to collaborate with you.
+                    Add a new member to your group, allowing them to collaborate with you.
                 </template>
 
                 <template #form>
                     <div class="col-span-6">
                         <div class="max-w-xl text-sm text-gray-600 dark:text-gray-400">
-                            Please provide the email address of the person you would like to add to this team.
+                            Please provide the email address of the person you would like to add to this group.
                         </div>
                     </div>
 
@@ -203,7 +209,7 @@ const displayableRole = (role) => {
             </FormSection>
         </div>
 
-        <div v-if="team.team_invitations.length > 0 && isAdmin">
+        <div v-if="group.invitations && group.invitations.length > 0 && isAdmin">
             <SectionBorder />
 
             <!-- Team Member Invitations -->
@@ -219,7 +225,7 @@ const displayableRole = (role) => {
                 <template #content>
                     <div class="space-y-6">
                         <div
-                            v-for="invitation in group.group_invitations"
+                            v-for="invitation in group.invitations"
                             :key="invitation.id"
                             class="flex items-center justify-between">
                             <div class="text-gray-600 dark:text-gray-400">
@@ -248,13 +254,13 @@ const displayableRole = (role) => {
             <ActionSection class="mt-10 sm:mt-0">
                 <template #title> Group Members</template>
 
-                <template #description> All of the people that are part of this team.</template>
+                <template #description> All of the people that are part of this group.</template>
 
                 <!-- Team Member List -->
                 <template #content>
                     <div class="space-y-6">
                         <div
-                            v-for="user in team.users"
+                            v-for="user in group.users"
                             :key="user.id"
                             class="flex items-center justify-between">
                             <div class="flex items-center">
@@ -270,21 +276,21 @@ const displayableRole = (role) => {
                             <div class="flex items-center">
                                 <!-- Manage Team Member Role -->
                                 <button
-                                    v-if="role.canUpdateTeamMembers && availableRoles.length"
+                                    v-if="isAdmin && availableRoles.length"
                                     class="ms-2 text-sm text-gray-400 underline"
                                     @click="manageRole(user)">
-                                    {{ displayableRole(user.membership.role) }}
+                                    {{ displayableRole(membership(user).pivot.group_role_id) }}
                                 </button>
 
                                 <div
                                     v-else-if="availableRoles.length"
                                     class="ms-2 text-sm text-gray-400">
-                                    {{ displayableRole(user.membership.role) }}
+                                    {{ displayableRole(membership(user).pivot.group_role_id) }}
                                 </div>
 
                                 <!-- Leave Team -->
                                 <button
-                                    v-if="$page.props.auth.user.id === user.id"
+                                    v-if="$page.props.auth.user.id === user.id && group.user_id !== user.id"
                                     class="ms-6 cursor-pointer text-sm text-red-500"
                                     @click="confirmLeavingGroup">
                                     Leave
@@ -292,7 +298,7 @@ const displayableRole = (role) => {
 
                                 <!-- Remove Team Member -->
                                 <button
-                                    v-else-if="role.canRemoveTeamMembers"
+                                    v-else-if="isAdmin && group.user_id !== user.id"
                                     class="ms-6 cursor-pointer text-sm text-red-500"
                                     @click="confirmGroupMemberRemoval(user)">
                                     Remove
@@ -316,25 +322,25 @@ const displayableRole = (role) => {
                         class="relative z-0 mt-1 cursor-pointer rounded-lg border border-gray-200 dark:border-gray-700">
                         <button
                             v-for="(role, i) in availableRoles"
-                            :key="role.key"
+                            :key="role.id"
                             type="button"
                             class="relative inline-flex w-full rounded-lg px-4 py-3 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:border-indigo-600 dark:focus:ring-indigo-600"
                             :class="{
                                 'rounded-t-none border-t border-gray-200 focus:border-none dark:border-gray-700': i > 0,
                                 'rounded-b-none': i !== Object.keys(availableRoles).length - 1,
                             }"
-                            @click="updateRoleForm.role = role.key">
-                            <div :class="{ 'opacity-50': updateRoleForm.role && updateRoleForm.role !== role.key }">
+                            @click="updateRoleForm.role = role.id">
+                            <div :class="{ 'opacity-50': updateRoleForm.role && updateRoleForm.role !== role.id }">
                                 <!-- Role Name -->
                                 <div class="flex items-center">
                                     <div
                                         class="text-sm text-gray-600 dark:text-gray-400"
-                                        :class="{ 'font-semibold': updateRoleForm.role === role.key }">
+                                        :class="{ 'font-semibold': updateRoleForm.role === role.id }">
                                         {{ role.name }}
                                     </div>
 
                                     <svg
-                                        v-if="updateRoleForm.role == role.key"
+                                        v-if="updateRoleForm.role == role.id"
                                         class="ms-2 h-5 w-5 text-green-400"
                                         xmlns="http://www.w3.org/2000/svg"
                                         fill="none"
@@ -346,11 +352,6 @@ const displayableRole = (role) => {
                                             stroke-linejoin="round"
                                             d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                     </svg>
-                                </div>
-
-                                <!-- Role Description -->
-                                <div class="mt-2 text-xs text-gray-600 dark:text-gray-400">
-                                    {{ role.description }}
                                 </div>
                             </div>
                         </button>
@@ -384,8 +385,8 @@ const displayableRole = (role) => {
 
                 <DangerButton
                     class="ms-3"
-                    :class="{ 'opacity-25': leaveTeamForm.processing }"
-                    :disabled="leaveTeamForm.processing"
+                    :class="{ 'opacity-25': leaveGroupForm.processing }"
+                    :disabled="leaveGroupForm.processing"
                     @click="leaveGroup">
                     Leave
                 </DangerButton>
@@ -405,8 +406,8 @@ const displayableRole = (role) => {
 
                 <DangerButton
                     class="ms-3"
-                    :class="{ 'opacity-25': removeTeamMemberForm.processing }"
-                    :disabled="removeTeamMemberForm.processing"
+                    :class="{ 'opacity-25': removeGroupMemberForm.processing }"
+                    :disabled="removeGroupMemberForm.processing"
                     @click="removeGroupMember">
                     Remove
                 </DangerButton>

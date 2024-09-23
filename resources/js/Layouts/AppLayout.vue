@@ -77,7 +77,7 @@ const logout = () => {
                                 <!-- Teams Dropdown -->
                                 <!-- TODO: Chec kif user has group -->
                                 <Dropdown
-                                    v-if="$page.props.jetstream.hasTeamFeatures"
+                                    v-if="$page.props.current_group"
                                     align="right"
                                     width="60">
                                     <template #trigger>
@@ -86,7 +86,7 @@ const logout = () => {
                                                 type="button"
                                                 class="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:bg-gray-50 focus:outline-none active:bg-gray-50 dark:bg-gray-800 dark:text-gray-400 dark:hover:text-gray-300 dark:focus:bg-gray-700 dark:active:bg-gray-700">
                                                 <GroupIcon class="mr-1 size-6" />
-                                                {{ $page.props.auth.user.current_team.name }}
+                                                {{ $page.props.current_group.name }}
 
                                                 <svg
                                                     class="-me-0.5 ms-2 h-4 w-4"
@@ -111,7 +111,7 @@ const logout = () => {
 
                                             <!-- Team Settings -->
                                             <DropdownLink
-                                                :href="route('groups.show', $page.props.auth.user.current_team)">
+                                                :href="route('groups.show', $page.props.auth.user.current_group_id)">
                                                 Group Settings
                                             </DropdownLink>
 

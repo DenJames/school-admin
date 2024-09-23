@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Data\GroupData;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasAvatar;
 use Filament\Panel;
@@ -134,8 +135,8 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
         return '/' . $this->profile_photo_path;
     }
 
-    public function set()
+    public function currentGroup(): GroupData
     {
-
+        return GroupData::from(Group::with('users')->find($this->current_group_id));
     }
 }

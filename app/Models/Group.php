@@ -20,14 +20,19 @@ class Group extends Model
         return $this->belongsTo(Team::class);
     }
 
-    public function user(): BelongsTo
+    public function owner(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function members(): HasMany
     {
         return $this->hasMany(GroupMember::class);
+    }
+
+    public function invitations(): HasMany
+    {
+        return $this->hasMany(GroupInvitation::class);
     }
 
     public function users(): BelongsToMany

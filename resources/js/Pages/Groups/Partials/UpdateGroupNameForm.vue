@@ -7,9 +7,10 @@ import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import { computed } from "vue";
+import GroupData = App.Data.GroupData;
 
 interface Props {
-    group: object;
+    group: GroupData;
     role: string;
 }
 
@@ -21,24 +22,24 @@ const form = useForm({
 
 const isAdmin = computed(() => props.role === "admin");
 
-const updateTeamName = () => {
-    form.put(route("teams.update", props.group), {
-        errorBag: "updateTeamName",
+const updateGroupName = () => {
+    form.put(route("groups.update", props.group), {
+        errorBag: "updateGroupName",
         preserveScroll: true,
     });
 };
 </script>
 
 <template>
-    <FormSection @submitted="updateTeamName">
-        <template #title> Team Name</template>
+    <FormSection @submitted="updateGroupName">
+        <template #title> Group Name</template>
 
-        <template #description> The team's name and owner information.</template>
+        <template #description> The group's name and owner information.</template>
 
         <template #form>
             <!-- Team Owner Information -->
             <div class="col-span-6">
-                <InputLabel value="Team Owner" />
+                <InputLabel value="Group Owner" />
 
                 <div class="mt-2 flex items-center">
                     <img
@@ -59,7 +60,7 @@ const updateTeamName = () => {
             <div class="col-span-6 sm:col-span-4">
                 <InputLabel
                     for="name"
-                    value="Team Name" />
+                    value="Group Name" />
 
                 <TextInput
                     id="name"

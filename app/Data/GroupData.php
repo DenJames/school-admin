@@ -3,6 +3,7 @@
 namespace App\Data;
 
 use App\Models\Group;
+use Illuminate\Support\Collection;
 use Spatie\LaravelData\Attributes\MapInputName;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Lazy;
@@ -14,13 +15,15 @@ use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 class GroupData extends Data
 {
     public function __construct(
-        public int           $id,
-        public int           $userId,
-        public int           $teamId,
-        public string        $name,
-        public Lazy|UserData $users,
-        public ?string       $createdAt = null,
-        public ?string       $updatedAt = null,
+        public int                  $id,
+        public int                  $userId,
+        public int                  $teamId,
+        public string               $name,
+        public Lazy|Collection|null $users,
+        public Lazy|UserData        $owner,
+        public Lazy|Collection|null $invitations,
+        public ?string              $createdAt = null,
+        public ?string              $updatedAt = null,
     )
     {
     }
@@ -32,13 +35,18 @@ class GroupData extends Data
             userId: $group->user_id,
             teamId: $group->team_id,
             name: $group->name,
-            users: Lazy::whenLoaded(
-                'users',
+            users: $group->relationLoaded('users')
+                ? UserData::collect($group->users)
+                : null,
+            owner: Lazy::whenLoaded(
+                'owner',
                 $group,
-                fn() => UserData::collect($group->users->pivot->map(fn($pivot) => $pivot->user))
-            ),
-            createdAt: $group->created_at,
-            updatedAt: $group->updated_at,
+                fn() => UserData::fromModel($group->owner)),
+            invitations: $group->relationLoaded('invitations')
+                ? GroupInvitationData::collect($group->invitations)
+                : null,
+            createdAt: $group->created_at?->toDateTimeString(),
+            updatedAt: $group->updated_at?->toDateTimeString(),
         );
     }
 }

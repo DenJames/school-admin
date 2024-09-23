@@ -4,9 +4,10 @@ import SectionBorder from "@/Components/SectionBorder.vue";
 import UpdateGroupNameForm from "./Partials/UpdateGroupNameForm.vue";
 import DeleteGroupForm from "./Partials/DeleteGroupForm.vue";
 import GroupMemberManager from "./Partials/GroupMemberManager.vue";
+import GroupData = App.Data.GroupData;
 
 interface Props {
-    group: object;
+    group: GroupData;
     availableRoles: Array<any>;
 }
 

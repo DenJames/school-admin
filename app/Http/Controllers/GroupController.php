@@ -40,7 +40,7 @@ class GroupController extends Controller
     public function show(Group $group)
     {
         return Inertia::render('Groups/Show', [
-            'group' => $group->load('members.user'),
+            'group' => $group->load(['users', 'owner']),
             'availableRoles' => GroupRole::all(),
         ]);
     }
