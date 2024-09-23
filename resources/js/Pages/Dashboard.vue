@@ -55,7 +55,7 @@ defineProps<Props>();
                         <template #header> Skema </template>
                         <Calendar
                             :now="now"
-                            initialView="listWeek" />
+                            initial-view="listWeek" />
                     </Card>
                 </div>
                 <Card>
