@@ -137,13 +137,17 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
         return '/' . $this->profile_photo_path;
     }
 
-    public function currentGroup(): GroupData|null
+    public function currentGroup($loadMembers = true): GroupData|null
     {
         if (!$this->current_group_id) {
             return null;
         }
 
-        return GroupData::from(Group::with('users')->find($this->current_group_id));
+        if ($loadMembers) {
+            return GroupData::from(Group::with('users')->find($this->current_group_id));
+        }
+
+        return GroupData::from(Group::find($this->current_group_id));
     }
 
     public function currentGroupRole(): string|null
@@ -156,6 +160,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
 
     public function isCurrentGroupAdmin(): bool
     {
-        return $this->currentGroupRole() === 'admin';
+
+        return $this->currentGroupRole() === 'admin' || $this->currentGroup(loadMembers: false)?->userId === $this->id;
     }
 }
