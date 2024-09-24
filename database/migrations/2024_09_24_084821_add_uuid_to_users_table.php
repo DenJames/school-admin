@@ -12,7 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->char('uuid', 36)->after('id')->unique()->default(DB::raw('UUID()'));
+            if (!config('database.default') == 'sqlite') {
+                $table->char('uuid', 36)->after('id')->unique()->default(DB::raw('UUID()'));
+            }
         });
     }
 
