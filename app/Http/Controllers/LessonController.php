@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Carbon\Carbon;
 use DateTime;
 use DateTimeZone;
@@ -40,7 +41,7 @@ class LessonController extends Controller
 
     }
 
-    public function export()
+    public function export($uuid)
     {
         $vcalendar = new VCalendar();
 
@@ -48,7 +49,13 @@ class LessonController extends Controller
         $end = (clone($start))->addMonths(12);
         $start->subMonths();
 
-        $teams = Auth::user()->allTeams();
+        $user = User::where('uuid', $uuid)->firstOrFail();
+
+        if(!$user->id){
+            abort(403);
+        }
+
+        $teams = $user->allTeams();
 
         foreach ($teams as $team) {
             $lessons = $team->lessons()->whereBetween('starts_at', [$start, $end])->get();
@@ -70,6 +77,6 @@ class LessonController extends Controller
 
         return response()->streamDownload(function() use($vcalendar) {
             echo $vcalendar->serialize();
-        }, Str::slug(Auth::user()->name).'.ics');
+        }, Str::slug($user->name).'.ics');
     }
 }

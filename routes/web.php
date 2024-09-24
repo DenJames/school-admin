@@ -30,7 +30,7 @@ Route::middleware([
     Route::group(['prefix' => 'api', 'name' => 'api'], function () {
         Route::get('/lessons', [LessonController::class, 'json'])->name('lessons.json');
     });
-
-    Route::get('/export/lessons', [LessonController::class, 'export'])->name('lessons.export');
 });
+
+Route::get('/export/lessons/{uuid}', [LessonController::class, 'export'])->name('lessons.export');
 
