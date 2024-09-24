@@ -60,20 +60,15 @@ class LessonController extends Controller
         foreach ($teams as $team) {
             $lessons = $team->lessons()->whereBetween('starts_at', [$start, $end])->get();
 
-            foreach($lessons as $event){
-                $dateTime = new \DateTime($event->date_start, new \DateTimeZone('Europe/Copenhagen'));
-                $vevent = $vcalendar->add('VEVENT', [
-                    'SUMMARY' => $event->name . ' • ' . $event->teacher->user->name . ' • ' . $event->classroom()->name,
+            foreach($lessons as $lesson){
+                $dateTime = new \DateTime($lesson->starts_at, new \DateTimeZone('Europe/Copenhagen'));
+                $vcalendar->add('VEVENT', [
+                    'SUMMARY' => $lesson->name . ' • ' . $lesson->teacher->user->name . ' • ' . $lesson->classroom()->name,
                     'DTSTART' => $dateTime,
-                    'DTEND'   => new \DateTime($event->date_end),
+                    'DTEND'   => new \DateTime($lesson->ends_at),
                 ]);
-
-                if(isset($event->rrule)){
-                    $vevent->add('RRULE', urldecode($event->rrule));
-                }
             }
         }
-
 
         return response()->streamDownload(function() use($vcalendar) {
             echo $vcalendar->serialize();
