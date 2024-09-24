@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\HomeworkController;
 use App\Http\Controllers\LessonController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\MessageReplyController;
@@ -26,6 +27,10 @@ Route::middleware([
     Route::delete('/message/{reply}/delete', [MessageReplyController::class, 'destroy'])->name('message.reply.destroy');
 
     Route::get('/lessons', [LessonController::class, 'index'])->name('lessons.index');
+
+    Route::get('/homework', [HomeworkController::class, 'index'])->name('homework.index');
+    Route::get('/homework/{homework}', [HomeworkController::class, 'show'])->name('homework.show');
+    Route::post('/homework/{homework}', [HomeworkController::class, 'store'])->name('homework.store');
 
     Route::group(['prefix' => 'api', 'name' => 'api'], function () {
         Route::get('/lessons', [LessonController::class, 'json'])->name('lessons.json');

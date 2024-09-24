@@ -23,6 +23,11 @@ class Homework extends Model
         return $this->morphMany(Document::class, 'documentable');
     }
 
+    public function submissions()
+    {
+        return $this->hasMany(HomeworkSubmission::class);
+    }
+
     // Shortcut to grab the teacher whom the lesson belongs to
     public function teacher(): Teacher
     {
