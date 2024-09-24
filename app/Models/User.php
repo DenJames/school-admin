@@ -160,7 +160,6 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
 
     public function isCurrentGroupAdmin(): bool
     {
-
         return $this->currentGroupRole() === 'admin' || $this->currentGroup(loadMembers: false)?->userId === $this->id;
     }
 }

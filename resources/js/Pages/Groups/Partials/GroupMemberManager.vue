@@ -83,7 +83,7 @@ const confirmLeavingGroup = () => {
 };
 
 const leaveGroup = () => {
-    leaveGroupForm.delete(route("team-members.destroy", [props.group, page.props.auth.user]));
+    leaveGroupForm.delete(route("groups.leave", [props.group]));
 };
 
 const confirmGroupMemberRemoval = (teamMember) => {

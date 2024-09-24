@@ -35,7 +35,7 @@ class GroupController extends Controller
 
         $group->setToCurrent();
 
-        return redirect()->back()->with('success', 'Group created successfully');
+        return to_route('groups.show', $group)->with('success', 'Group created successfully');
     }
 
     public function show(Group $group)
@@ -48,10 +48,6 @@ class GroupController extends Controller
             'group' => $group->load(['users', 'owner', 'invitations.user']),
             'availableRoles' => GroupRole::all(),
         ]);
-    }
-
-    public function edit(Group $group)
-    {
     }
 
     public function update(GroupFormRequest $request, Group $group)

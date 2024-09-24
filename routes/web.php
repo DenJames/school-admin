@@ -7,6 +7,8 @@ use App\Http\Controllers\GroupMemberController;
 use App\Http\Controllers\LessonController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\MessageReplyController;
+use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -20,7 +22,15 @@ Route::middleware([
 ])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    Route::get('/message/receiver', [MessageController::class, 'fetchRecipients'])->name('message.receiver');
+    Route::get('/message/receiver', function (Request $request) {
+        return User::select(['id', 'name'])
+            ->where('id', '!=', $request->user()->id)
+            ->whereHas('teams', function ($query) use ($request) {
+                $query->whereIn('teams.id', $request->user()->teams->pluck('id'));
+            })
+            ->where('name', 'like', '%' . $request->name . '%')
+            ->get();
+    })->name('message.receiver');
 
     Route::resource('messages', MessageController::class);
 
@@ -37,6 +47,7 @@ Route::middleware([
     Route::get('/groups/invite/{token}/accept', [GroupInvitationController::class, 'accept'])->name('groups.invite.accept');
 
     Route::put('/groups/{group}/member/update', [GroupMemberController::class, 'update'])->name('group.member.update');
+    Route::delete('/groups/{group}/leave', [GroupMemberController::class, 'destroy'])->name('groups.leave');
 
     // Lessons
     Route::get('/lessons', [LessonController::class, 'index'])->name('lessons.index');
