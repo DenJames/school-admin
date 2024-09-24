@@ -7,6 +7,8 @@ import Dropdown from "@/Components/Dropdown.vue";
 import DropdownLink from "@/Components/DropdownLink.vue";
 import NavLink from "@/Components/NavLink.vue";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink.vue";
+import GroupIcon from "../Components/Icons/GroupIcon.vue";
+import TeamIcon from "../Components/Icons/TeamIcon.vue";
 
 interface Props {
     title: string;
@@ -16,11 +18,11 @@ defineProps<Props>();
 
 const showingNavigationDropdown = ref(false);
 
-const switchToTeam = (team) => {
+const swithToGroup = (group) => {
     router.put(
-        route("current-team.update"),
+        route("groups.switch"),
         {
-            team_id: team.id,
+            group_id: group.id,
         },
         {
             preserveState: false,
@@ -80,6 +82,91 @@ const logout = () => {
 
                         <div class="hidden sm:ms-6 sm:flex sm:items-center">
                             <div class="relative ms-3">
+                                <Dropdown
+                                    align="right"
+                                    width="60">
+                                    <template #trigger>
+                                        <span class="inline-flex rounded-md">
+                                            <button
+                                                type="button"
+                                                class="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:bg-gray-50 focus:outline-none active:bg-gray-50 dark:bg-gray-800 dark:text-gray-400 dark:hover:text-gray-300 dark:focus:bg-gray-700 dark:active:bg-gray-700">
+                                                <GroupIcon class="mr-1 size-6" />
+                                                {{
+                                                    $page.props.current_group ? $page.props.current_group.name : "Group"
+                                                }}
+
+                                                <svg
+                                                    class="-me-0.5 ms-2 h-4 w-4"
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    fill="none"
+                                                    viewBox="0 0 24 24"
+                                                    stroke-width="1.5"
+                                                    stroke="currentColor">
+                                                    <path
+                                                        stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
+                                                </svg>
+                                            </button>
+                                        </span>
+                                    </template>
+
+                                    <template #content>
+                                        <div class="w-60">
+                                            <!-- Team Management -->
+                                            <div class="block px-4 py-2 text-xs text-gray-400">Manage Group</div>
+
+                                            <!-- Team Settings -->
+                                            <DropdownLink
+                                                v-if="$page.props.auth.user.current_group_id"
+                                                :href="route('groups.show', $page.props.auth.user.current_group_id)">
+                                                Group Settings
+                                            </DropdownLink>
+
+                                            <DropdownLink
+                                                v-if="$page.props.jetstream.canCreateTeams"
+                                                :href="route('groups.create')">
+                                                Create New Group
+                                            </DropdownLink>
+
+                                            <!-- Team Switcher -->
+                                            <template v-if="$page.props.groups.length > 0">
+                                                <div class="border-t border-gray-200 dark:border-gray-600" />
+
+                                                <div class="block px-4 py-2 text-xs text-gray-400">Switch Groups</div>
+
+                                                <template
+                                                    v-for="group in $page.props.groups"
+                                                    :key="group.id">
+                                                    <form @submit.prevent="swithToGroup(group)">
+                                                        <DropdownLink as="button">
+                                                            <div class="flex items-center">
+                                                                <svg
+                                                                    v-if="group.id == $page.props.current_group?.id"
+                                                                    class="me-2 h-5 w-5 text-green-400"
+                                                                    xmlns="http://www.w3.org/2000/svg"
+                                                                    fill="none"
+                                                                    viewBox="0 0 24 24"
+                                                                    stroke-width="1.5"
+                                                                    stroke="currentColor">
+                                                                    <path
+                                                                        stroke-linecap="round"
+                                                                        stroke-linejoin="round"
+                                                                        d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                                </svg>
+
+                                                                <div>{{ group.name }}</div>
+                                                            </div>
+                                                        </DropdownLink>
+                                                    </form>
+                                                </template>
+                                            </template>
+                                        </div>
+                                    </template>
+                                </Dropdown>
+                            </div>
+
+                            <div class="relative ms-3">
                                 <!-- Teams Dropdown -->
                                 <Dropdown
                                     v-if="$page.props.jetstream.hasTeamFeatures"
@@ -90,6 +177,7 @@ const logout = () => {
                                             <button
                                                 type="button"
                                                 class="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:bg-gray-50 focus:outline-none active:bg-gray-50 dark:bg-gray-800 dark:text-gray-400 dark:hover:text-gray-300 dark:focus:bg-gray-700 dark:active:bg-gray-700">
+                                                <TeamIcon class="mr-1 size-6" />
                                                 {{ $page.props.auth.user.current_team.name }}
 
                                                 <svg
@@ -134,7 +222,7 @@ const logout = () => {
                                                 <template
                                                     v-for="team in $page.props.auth.user.all_teams"
                                                     :key="team.id">
-                                                    <form @submit.prevent="switchToTeam(team)">
+                                                    <form @submit.prevent="swithToGroup(team)">
                                                         <DropdownLink as="button">
                                                             <div class="flex items-center">
                                                                 <svg
@@ -360,7 +448,7 @@ const logout = () => {
                                     <template
                                         v-for="team in $page.props.auth.user.all_teams"
                                         :key="team.id">
-                                        <form @submit.prevent="switchToTeam(team)">
+                                        <form @submit.prevent="swithToGroup(team)">
                                             <ResponsiveNavLink as="button">
                                                 <div class="flex items-center">
                                                     <svg

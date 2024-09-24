@@ -3,21 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class GroupMember extends Pivot
+class GroupInvitation extends Model
 {
     use HasFactory;
 
-    protected $table = 'group_members';
-
     protected $guarded = [];
-
-    public function role(): BelongsTo
-    {
-        return $this->belongsTo(GroupRole::class, 'group_role_id');
-    }
 
     public function group(): BelongsTo
     {

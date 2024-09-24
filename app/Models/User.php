@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Data\GroupData;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasAvatar;
 use Filament\Panel;
@@ -13,6 +14,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Jetstream\HasTeams;
@@ -38,6 +40,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
         'name',
         'email',
         'password',
+        'current_group_id',
     ];
 
     /**
@@ -132,5 +135,31 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
     public function getFilamentAvatarUrl(): ?string
     {
         return '/' . $this->profile_photo_path;
+    }
+
+    public function currentGroup($loadMembers = true): GroupData|null
+    {
+        if (!$this->current_group_id) {
+            return null;
+        }
+
+        if ($loadMembers) {
+            return GroupData::from(Group::with('users')->find($this->current_group_id));
+        }
+
+        return GroupData::from(Group::find($this->current_group_id));
+    }
+
+    public function currentGroupRole(): string|null
+    {
+        $roleId = $this->groups()->find($this->current_group_id)?->pivot->group_role_id;
+
+        return Str::lower(GroupRole::find($roleId)?->name);
+    }
+
+
+    public function isCurrentGroupAdmin(): bool
+    {
+        return $this->currentGroupRole() === 'admin' || $this->currentGroup(loadMembers: false)?->userId === $this->id;
     }
 }
