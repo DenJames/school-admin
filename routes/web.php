@@ -47,7 +47,7 @@ Route::middleware([
     Route::get('/groups/invite/{token}/accept', [GroupInvitationController::class, 'accept'])->name('groups.invite.accept');
 
     Route::put('/groups/{group}/member/update', [GroupMemberController::class, 'update'])->name('group.member.update');
-    Route::delete('/groups/{group}/leave', [GroupMemberController::class, 'destroy'])->name('groups.leave');
+    Route::delete('/groups/{group}/{user}/leave', [GroupMemberController::class, 'destroy'])->name('groups.member.destroy');
 
     // Lessons
     Route::get('/lessons', [LessonController::class, 'index'])->name('lessons.index');

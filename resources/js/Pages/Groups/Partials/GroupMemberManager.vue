@@ -83,7 +83,7 @@ const confirmLeavingGroup = () => {
 };
 
 const leaveGroup = () => {
-    leaveGroupForm.delete(route("groups.leave", [props.group]));
+    leaveGroupForm.delete(route("groups.member.destroy", [props.group, page.props.auth.user]));
 };
 
 const confirmGroupMemberRemoval = (teamMember) => {
@@ -91,7 +91,7 @@ const confirmGroupMemberRemoval = (teamMember) => {
 };
 
 const removeGroupMember = () => {
-    removeGroupMemberForm.delete(route("team-members.destroy", [props.group, GroupMemberBeingRemoved.value]), {
+    removeGroupMemberForm.delete(route("groups.member.destroy", [props.group, GroupMemberBeingRemoved.value]), {
         errorBag: "removeGroupMember",
         preserveScroll: true,
         preserveState: true,
@@ -401,9 +401,9 @@ const membership = (user: UserData) => {
         <ConfirmationModal
             :show="GroupMemberBeingRemoved"
             @close="GroupMemberBeingRemoved = null">
-            <template #title> Remove Team Member</template>
+            <template #title> Remove Group Member</template>
 
-            <template #content> Are you sure you would like to remove this person from the team?</template>
+            <template #content> Are you sure you would like to remove this person from the group?</template>
 
             <template #footer>
                 <SecondaryButton @click="GroupMemberBeingRemoved = null"> Cancel</SecondaryButton>
