@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use DateTime;
 use DateTimeZone;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
+use Sabre\VObject\Component\VCalendar;
 
 class LessonController extends Controller
 {
@@ -35,5 +38,38 @@ class LessonController extends Controller
 
         return response()->json($lessons);
 
+    }
+
+    public function export()
+    {
+        $vcalendar = new VCalendar();
+
+        $start = new Carbon();
+        $end = (clone($start))->addMonths(12);
+        $start->subMonths();
+
+        $teams = Auth::user()->allTeams();
+
+        foreach ($teams as $team) {
+            $lessons = $team->lessons()->whereBetween('starts_at', [$start, $end])->get();
+
+            foreach($lessons as $event){
+                $dateTime = new \DateTime($event->date_start, new \DateTimeZone('Europe/Copenhagen'));
+                $vevent = $vcalendar->add('VEVENT', [
+                    'SUMMARY' => $event->name . ' • ' . $event->teacher->user->name . ' • ' . $event->classroom()->name,
+                    'DTSTART' => $dateTime,
+                    'DTEND'   => new \DateTime($event->date_end),
+                ]);
+
+                if(isset($event->rrule)){
+                    $vevent->add('RRULE', urldecode($event->rrule));
+                }
+            }
+        }
+
+
+        return response()->streamDownload(function() use($vcalendar) {
+            echo $vcalendar->serialize();
+        }, Str::slug(Auth::user()->name).'.ics');
     }
 }
