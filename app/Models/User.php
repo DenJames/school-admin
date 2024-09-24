@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Jetstream\HasTeams;
@@ -143,5 +144,18 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
         }
 
         return GroupData::from(Group::with('users')->find($this->current_group_id));
+    }
+
+    public function currentGroupRole(): string|null
+    {
+        $roleId = $this->groups()->find($this->current_group_id)?->pivot->group_role_id;
+
+        return Str::lower(GroupRole::find($roleId)?->name);
+    }
+
+
+    public function isCurrentGroupAdmin(): bool
+    {
+        return $this->currentGroupRole() === 'admin';
     }
 }

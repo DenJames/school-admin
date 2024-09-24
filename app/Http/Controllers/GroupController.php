@@ -40,8 +40,12 @@ class GroupController extends Controller
 
     public function show(Group $group)
     {
+        if (!$group->users->contains(Auth::id())) {
+            abort(403);
+        }
+
         return Inertia::render('Groups/Show', [
-            'group' => $group->load(['users', 'owner']),
+            'group' => $group->load(['users', 'owner', 'invitations.user']),
             'availableRoles' => GroupRole::all(),
         ]);
     }

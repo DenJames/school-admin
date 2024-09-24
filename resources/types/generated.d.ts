@@ -44,6 +44,7 @@ id: number;
 name: string;
 email: string;
 emailVerifiedAt: string | null;
+isGroupAdmin: string;
 groups?: any | null;
 };
 }

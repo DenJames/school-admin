@@ -6,12 +6,11 @@ import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
-import { computed } from "vue";
 import GroupData = App.Data.GroupData;
 
 interface Props {
     group: GroupData;
-    role: string;
+    isAdmin: boolean;
 }
 
 const props = defineProps<Props>();
@@ -20,9 +19,11 @@ const form = useForm({
     name: props.group.name,
 });
 
-const isAdmin = computed(() => props.role === "admin");
-
 const updateGroupName = () => {
+    if (!props.isAdmin) {
+        return;
+    }
+
     form.put(route("groups.update", props.group), {
         errorBag: "updateGroupName",
         preserveScroll: true,

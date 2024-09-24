@@ -61,7 +61,7 @@ watch(
         v-if="
             potentialRecipients.length > 0 && !potentialRecipients.some((recipient) => recipient.name === recipientName)
         "
-        class="absolute z-10 mt-1 w-full rounded-md border border-gray-700 bg-gray-800">
+        class="absolute z-10 mt-1 w-full rounded-md border border-gray-700 bg-gray-800 text-white">
         <ul>
             <li
                 v-for="recipient in potentialRecipients"

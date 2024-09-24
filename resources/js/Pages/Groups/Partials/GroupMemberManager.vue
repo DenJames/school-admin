@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { ref } from "vue";
 import { router, useForm, usePage } from "@inertiajs/vue3";
 import ActionMessage from "@/Components/ActionMessage.vue";
 import ActionSection from "@/Components/ActionSection.vue";
@@ -12,14 +12,14 @@ import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 import SectionBorder from "@/Components/SectionBorder.vue";
-import TextInput from "@/Components/TextInput.vue";
+import LiveUserSearchInput from "../../../Components/LiveUserSearchInput.vue";
 import GroupData = App.Data.GroupData;
 import UserData = App.Data.UserData;
 
 interface Props {
     group: GroupData;
     availableRoles: Array<any>;
-    role: string;
+    isAdmin: boolean;
 }
 
 const props = defineProps<Props>();
@@ -27,15 +27,21 @@ const props = defineProps<Props>();
 const page = usePage();
 
 const addGroupMemberForm = useForm({
-    email: "",
-    role: null,
+    recipient: {
+        id: null,
+        name: "",
+    },
+    group_role_id: null,
 });
+
+function setRecipient(recipient) {
+    addGroupMemberForm.recipient.id = recipient.id;
+    addGroupMemberForm.recipient.name = recipient.name;
+}
 
 const updateRoleForm = useForm({
     role: null,
 });
-
-const isAdmin = computed(() => props.role === "admin");
 
 const leaveGroupForm = useForm({});
 const removeGroupMemberForm = useForm({});
@@ -46,7 +52,7 @@ const confirmingLeavingGroup = ref(false);
 const GroupMemberBeingRemoved = ref(null);
 
 const addGroupMember = () => {
-    addGroupMemberForm.post(route("team-members.store", props.group), {
+    addGroupMemberForm.post(route("groups.invite.store", props.group), {
         errorBag: "addGroupMember",
         preserveScroll: true,
         onSuccess: () => addGroupMemberForm.reset(),
@@ -54,19 +60,19 @@ const addGroupMember = () => {
 };
 
 const cancelGroupInvitation = (invitation) => {
-    router.delete(route("team-invitations.destroy", invitation), {
+    router.delete(route("groups.invite.destroy", invitation), {
         preserveScroll: true,
     });
 };
 
 const manageRole = (groupMember) => {
     managingRoleFor.value = groupMember;
-    updateRoleForm.role = groupMember.membership.role;
+    updateRoleForm.role = membership(groupMember).pivot.group_role_id;
     currentlyManagingRole.value = true;
 };
 
 const updateRole = () => {
-    updateRoleForm.put(route("team-members.update", [props.group, managingRoleFor.value]), {
+    updateRoleForm.put(route("group.member.update", [props.group, managingRoleFor.value]), {
         preserveScroll: true,
         onSuccess: () => (currentlyManagingRole.value = false),
     });
@@ -122,18 +128,14 @@ const membership = (user: UserData) => {
                         </div>
                     </div>
 
-                    <!-- Member Email -->
-                    <div class="col-span-6 sm:col-span-4">
+                    <!-- Member -->
+                    <div class="relative col-span-6 sm:col-span-4">
                         <InputLabel
-                            for="email"
-                            value="Email" />
-                        <TextInput
-                            id="email"
-                            v-model="addGroupMemberForm.email"
-                            type="email"
-                            class="mt-1 block w-full" />
+                            for="username"
+                            value="User" />
+                        <LiveUserSearchInput @selected-recipient="setRecipient($event)" />
                         <InputError
-                            :message="addGroupMemberForm.errors.email"
+                            :message="addGroupMemberForm.errors.recipient"
                             class="mt-2" />
                     </div>
 
@@ -160,21 +162,23 @@ const membership = (user: UserData) => {
                                         i > 0,
                                     'rounded-b-none': i != Object.keys(availableRoles).length - 1,
                                 }"
-                                @click="addGroupMemberForm.role = role.id">
+                                @click="addGroupMemberForm.group_role_id = role.id">
                                 <div
                                     :class="{
-                                        'opacity-50': addGroupMemberForm.role && addGroupMemberForm.role != role.id,
+                                        'opacity-50':
+                                            addGroupMemberForm.group_role_id &&
+                                            addGroupMemberForm.group_role_id != role.id,
                                     }">
                                     <!-- Role Name -->
                                     <div class="flex items-center">
                                         <div
                                             class="text-sm text-gray-600 dark:text-gray-400"
-                                            :class="{ 'font-semibold': addGroupMemberForm.role == role.id }">
+                                            :class="{ 'font-semibold': addGroupMemberForm.group_role_id == role.id }">
                                             {{ role.name }}
                                         </div>
 
                                         <svg
-                                            v-if="addGroupMemberForm.role == role.id"
+                                            v-if="addGroupMemberForm.group_role_id == role.id"
                                             class="ms-2 h-5 w-5 text-green-400"
                                             xmlns="http://www.w3.org/2000/svg"
                                             fill="none"
@@ -214,10 +218,10 @@ const membership = (user: UserData) => {
 
             <!-- Team Member Invitations -->
             <ActionSection class="mt-10 sm:mt-0">
-                <template #title> Pending Team Invitations</template>
+                <template #title> Pending Group Invitations</template>
 
                 <template #description>
-                    These people have been invited to your team and have been sent an invitation email. They may join
+                    These people have been invited to your group and have been sent an invitation email. They may join
                     the team by accepting the email invitation.
                 </template>
 
@@ -229,7 +233,7 @@ const membership = (user: UserData) => {
                             :key="invitation.id"
                             class="flex items-center justify-between">
                             <div class="text-gray-600 dark:text-gray-400">
-                                {{ invitation.email }}
+                                {{ invitation.user.name }}
                             </div>
 
                             <div class="flex items-center">

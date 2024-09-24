@@ -19,6 +19,7 @@ class UserData extends Data
         public string               $name,
         public string               $email,
         public ?string              $emailVerifiedAt,
+        public string               $isGroupAdmin,
         public Lazy|Collection|null $groups,
     )
     {
@@ -32,6 +33,7 @@ class UserData extends Data
             name: $user->name,
             email: $user->email,
             emailVerifiedAt: $user->email_verified_at?->toDateTimeString(),
+            isGroupAdmin: $user->isCurrentGroupAdmin(),
             groups: $user->relationLoaded('groups')
                 ? Lazy::whenLoaded(
                     'groups',

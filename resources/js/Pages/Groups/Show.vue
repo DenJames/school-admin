@@ -24,18 +24,18 @@ defineProps<Props>();
             <div class="mx-auto max-w-7xl py-10 sm:px-6 lg:px-8">
                 <UpdateGroupNameForm
                     :group="group"
-                    role="admin" />
+                    :is-admin="!!$page.props.is_current_group_admin" />
                 <!-- TODO: pass correct role -->
 
                 <GroupMemberManager
                     class="mt-10 sm:mt-0"
                     :group="group"
                     :available-roles="availableRoles"
-                    role="admin" />
+                    :is-admin="!!$page.props.is_current_group_admin" />
                 <!-- TODO: pass correct role -->
 
                 <!-- TODO: Check if user is group owner -->
-                <template v-if="true">
+                <template v-if="!!$page.props.is_current_group_admin">
                     <SectionBorder />
 
                     <DeleteGroupForm

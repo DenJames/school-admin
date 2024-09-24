@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GroupController;
+use App\Http\Controllers\GroupInvitationController;
+use App\Http\Controllers\GroupMemberController;
 use App\Http\Controllers\LessonController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\MessageReplyController;
@@ -30,6 +32,11 @@ Route::middleware([
     // Groups
     Route::put('/groups/switch', [GroupController::class, 'switch'])->name('groups.switch');
     Route::resource('groups', GroupController::class);
+    Route::post('/groups/{group}/invite', [GroupInvitationController::class, 'store'])->name('groups.invite.store');
+    Route::delete('/groups/{groupInvitation}/invite', [GroupInvitationController::class, 'destroy'])->name('groups.invite.destroy');
+    Route::get('/groups/invite/{token}/accept', [GroupInvitationController::class, 'accept'])->name('groups.invite.accept');
+
+    Route::put('/groups/{group}/member/update', [GroupMemberController::class, 'update'])->name('group.member.update');
 
     // Lessons
     Route::get('/lessons', [LessonController::class, 'index'])->name('lessons.index');
