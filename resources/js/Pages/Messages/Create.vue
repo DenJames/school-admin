@@ -5,9 +5,7 @@ import { useForm } from "@inertiajs/vue3";
 import InputLabel from "@/Components/InputLabel.vue";
 import InputError from "@/Components/InputError.vue";
 import TextInput from "@/Components/TextInput.vue";
-import { ref, watch } from "vue";
-import debounce from "lodash/debounce";
-import axios from "axios";
+import LiveUserSearchInput from "../../Components/LiveUserSearchInput.vue";
 
 interface Props {
     hasHeader?: boolean;
@@ -26,46 +24,16 @@ const form = useForm({
     content: "",
 });
 
-const previousRecipientName = ref("");
-
 function submit() {
     form.post(route("messages.store"), {
         onFinish: () => form.reset(),
     });
 }
 
-const potentialRecipients = ref([]);
-
-function selectRecipient(recipient) {
-    console.log("Recipient selected:", recipient);
+function setRecipient(recipient) {
     form.recipient.id = recipient.id;
     form.recipient.name = recipient.name;
-    potentialRecipients.value = []; // Clear the list after selection
 }
-
-watch(
-    () => form.recipient.name,
-    debounce(async (newValue: string, oldValue: string) => {
-        if (newValue.trim().length > 0) {
-            if (oldValue !== form.recipient.name) {
-                potentialRecipients.value = [];
-            }
-
-            if (oldValue !== form.recipient.name) {
-                try {
-                    const response = await axios.get(route("message.receiver"), {
-                        params: { name: newValue },
-                    });
-                    potentialRecipients.value = response.data;
-                } catch (error) {
-                    console.error("Error fetching recipients:", error);
-                }
-            }
-        } else {
-            potentialRecipients.value = [];
-        }
-    }, 500),
-);
 </script>
 
 <template>
@@ -84,35 +52,10 @@ watch(
                     <InputLabel
                         for="receiver"
                         value="Receiver" />
-                    <TextInput
-                        id="receiver"
-                        v-model="form.recipient.name"
-                        type="text"
-                        class="mt-1 block w-full"
-                        placeholder="Start typing to search for a user"
-                        required
-                        autofocus
-                        autocomplete="off" />
+                    <LiveUserSearchInput @selected-recipient="setRecipient($event)" />
                     <InputError
                         class="mt-2"
                         :message="form.errors.recipient" />
-
-                    <div
-                        v-if="
-                            potentialRecipients.length > 0 &&
-                            !potentialRecipients.some((recipient) => recipient.name === form.recipient.name)
-                        "
-                        class="absolute z-10 mt-1 w-full rounded-md border border-gray-700 bg-gray-800">
-                        <ul>
-                            <li
-                                v-for="recipient in potentialRecipients"
-                                :key="recipient.id"
-                                class="cursor-pointer px-4 py-2 transition-all hover:bg-gray-700"
-                                @click="selectRecipient(recipient)">
-                                {{ recipient.name }}
-                            </li>
-                        </ul>
-                    </div>
                 </div>
 
                 <div>
