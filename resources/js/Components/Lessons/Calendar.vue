@@ -9,16 +9,18 @@ import resourceTimelinePlugin from "@fullcalendar/resource-timeline";
 import tippy from "tippy.js";
 import "tippy.js/dist/tippy.css"; // Tippy.js CSS
 
-const props = defineProps<{
-    now: string | Date; // Define the type of the `now` prop, adjust according to your data type
-    initialView?: string; // Define the type of the `initialView` prop, adjust according to your data type
-}>();
+interface Props {
+    now: string | Date;
+    initialView?: string;
+}
+
+const props = defineProps<Props>();
 
 const calendarRef = ref(null);
 
 const calendarOptions = {
     schedulerLicenseKey: "CC-Attribution-NonCommercial-NoDerivatives",
-    locale: "en",
+    locale: "da",
     weekNumbers: true,
     timeZone: "Europe/Copenhagen",
     plugins: [dayGridPlugin, timeGridPlugin, listPlugin, resourceTimelinePlugin, rrulePlugin],
@@ -47,6 +49,13 @@ const calendarOptions = {
     themeSystem: "bootstrap5",
     events: "/api/lessons",
     firstDay: 1,
+    buttonText: {
+        today: "I dag",
+        month: "Måned",
+        week: "Uge",
+        day: "Dag",
+        list: "Liste",
+    },
     hiddenDays: [0, 6],
     eventDidMount: (info) => {
         console.log(info.event.extendedProps.description);
@@ -54,7 +63,7 @@ const calendarOptions = {
             content: info.event.extendedProps.description || "No description available",
             placement: "top",
             trigger: "hover",
-            theme: "light",
+            theme: "dark",
         });
     },
     allDaySlot: false,
@@ -74,8 +83,61 @@ onMounted(() => {
         :options="calendarOptions" />
 </template>
 
-<style scoped>
-.fc-timegrid-slot-label-cushion {
-    color: #fff !important;
+<style>
+:root {
+    --fc-bg-color: #1a1a2e; /* Background color for calendar areas */
+    --fc-border-color: #444; /* Border color */
+    --fc-text-color: #f0f0f0; /* Text color */
+    --fc-button-bg-color: #3a3a5c; /* Button background */
+    --fc-button-hover-bg-color: #4a4a7a; /* Button hover background */
+    --fc-today-bg-color: #333c49; /* Background for today */
+    --fc-event-bg-color: #374151; /* Background for events */
+    --fc-event-bg-hover-color: #303742; /* Background for events */
+    --fc-event-text-color: #ffffff; /* Text color for events */
+}
+
+.fc .fc-list-sticky .fc-list-day > * {
+    background: var(--fc-event-bg-color) !important;
+    color: var(--fc-text-color) !important;
+}
+
+.fc .fc-cell-shaded,
+.fc .fc-day-disabled {
+    background-color: var(--fc-event-bg-color) !important;
+}
+
+.fc .fc-list-event:hover td {
+    background-color: var(--fc-event-bg-hover-color) !important;
+}
+
+.fc .fc-scrollgrid-section-sticky > * {
+    background-color: transparent !important;
+    color: var(--fc-text-color) !important;
+}
+
+.fc-button,
+.fc-button-primary {
+    background-color: var(--fc-event-bg-color) !important;
+    color: var(--fc-text-color) !important;
+}
+
+.fc-button:hover {
+    background-color: var(--fc-event-bg-hover-color) !important;
+}
+
+.fc-event:hover {
+    background-color: var(--fc-event-bg-hover-color) !important;
+    color: var(--fc-event-text-color) !important;
+}
+
+.fc-list-event:hover {
+    background-color: var(--fc-event-bg-hover-color) !important;
+    color: var(--fc-event-text-color) !important;
+}
+
+.fc-theme-standard .fc-list {
+    border: 1px solid var(--fc-border-color);
+    border-radius: 4px !important;
+    overflow: hidden;
 }
 </style>
