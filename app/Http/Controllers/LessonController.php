@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Lesson;
 use App\Models\User;
 use Carbon\Carbon;
 use DateTime;
@@ -24,15 +25,23 @@ class LessonController extends Controller
         ]);
     }
 
+    public function show(Lesson $lesson)
+    {
+        return Inertia::render('Lessons/Index', [
+            'lesson' => $lesson,
+        ]);
+    }
+
     public function json(Request $request)
     {
         $lessons = [];
 
-        foreach (Auth::user()->currentTeam->lessons()->whereBetween('starts_at', [$request->start, $request->end])->get() as $leasson) {
+        foreach (Auth::user()->currentTeam->lessons()->whereBetween('starts_at', [$request->start, $request->end])->get() as $lesson) {
             $lessons[] = [
-                'title' => $leasson->name . ' • ' . $leasson->teacher->user->name . ' • ' . $leasson->classroom()->name,
-                'start' => $leasson->starts_at->format('c'),
-                'end' => $leasson->ends_at->format('c'),
+                'id' => $lesson->id,
+                'title' => $lesson->name . ' • ' . $lesson->teacher->user->name . ' • ' . $lesson->classroom()->name,
+                'start' => $lesson->starts_at->format('c'),
+                'end' => $lesson->ends_at->format('c'),
                 'description' => "Hello",
             ];
         }

@@ -7,7 +7,8 @@ import rrulePlugin from "@fullcalendar/rrule";
 import listPlugin from "@fullcalendar/list";
 import resourceTimelinePlugin from "@fullcalendar/resource-timeline";
 import tippy from "tippy.js";
-import "tippy.js/dist/tippy.css"; // Tippy.js CSS
+import "tippy.js/dist/tippy.css";
+import { router } from "@inertiajs/vue3"; // Tippy.js CSS
 
 interface Props {
     now: string | Date;
@@ -29,14 +30,13 @@ const calendarOptions = {
         left: "timeGridDay,timeGridWeek,dayGridMonth,listWeek",
     },
     aspectRatio: 1,
-    slotDuration: "00:15:00", // Show lines for every 15 minutes
-    slotLabelInterval: "00:15:00", // Label every 15 minutes
+    slotDuration: "00:15:00",
+    slotLabelInterval: "00:15:00",
     height: "auto",
     slotLabelFormat: {
-        // Customize time label format
-        hour: "numeric", // Display hours without leading zeros
-        minute: "2-digit", // Display minutes with two digits (e.g., 8:00, 8:15)
-        hour12: false, // Use 24-hour format, set to true for AM/PM
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: false,
     },
     slotMinTime: "08:00:00",
     slotMaxTime: "16:00:00",
@@ -57,8 +57,10 @@ const calendarOptions = {
         list: "Liste",
     },
     hiddenDays: [0, 6],
+    eventClick: function (info) {
+        router.get(route("lessons.show", info.event.id));
+    },
     eventDidMount: (info) => {
-        console.log(info.event.extendedProps.description);
         tippy(info.el, {
             content: info.event.extendedProps.description || "No description available",
             placement: "top",
@@ -133,6 +135,7 @@ onMounted(() => {
 .fc-list-event:hover {
     background-color: var(--fc-event-bg-hover-color) !important;
     color: var(--fc-event-text-color) !important;
+    cursor: pointer;
 }
 
 .fc-theme-standard .fc-list {
