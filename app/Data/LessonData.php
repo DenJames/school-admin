@@ -16,10 +16,9 @@ class LessonData extends Data
     public function __construct(
         public int    $id,
         public string $name,
-        public string $description,
+        public ?string $description,
         public int   $duration,
         public string $startsAt,
-        public ClassroomData $classroom,
         public Lazy|TeamData $team,
         public Lazy|TeacherData $teacher,
         public Lazy|ClassCategoryData $classCategory,
@@ -38,37 +37,12 @@ class LessonData extends Data
             description: $lesson->description,
             duration: $lesson->duration,
             startsAt: $lesson->starts_at->format('c'),
-            classroom: ClassroomData::fromModel($lesson->classroom()),
-            team: Lazy::whenLoaded(
-                'team',
-                $lesson,
-                fn() => TeamData::fromModel($lesson->team)
-            ),
-            teacher: Lazy::whenLoaded(
-                'teacher',
-                $lesson,
-                fn() => TeacherData::fromModel($lesson->teacher)
-            ),
-            classCategory: Lazy::whenLoaded(
-                'classCategory',
-                $lesson,
-                fn() => ClassCategoryData::fromModel($lesson->classCategory)
-            ),
-            classroomReservation: Lazy::whenLoaded(
-                'classroomReservation',
-                $lesson,
-                fn() => ClassroomReservationData::fromModel($lesson->classroomReservation)
-            ),
-            homeworks: Lazy::whenLoaded(
-                'homeworks',
-                $lesson,
-                fn() => HomeworkData::collect($lesson->homeworks)
-            ),
-            absences: Lazy::whenLoaded(
-                'absences',
-                $lesson,
-                fn() => AbsenceData::collect($lesson->absences)
-            ),
+            team: Lazy::whenLoaded('team', $lesson, fn() => TeamData::fromModel($lesson->team)),
+            teacher: Lazy::whenLoaded('teacher', $lesson, fn() => TeacherData::fromModel($lesson->teacher)),
+            classCategory: Lazy::whenLoaded('classCategory', $lesson, fn() => ClassCategoryData::fromModel($lesson->classCategory)),
+            classroomReservation: Lazy::whenLoaded('classroomReservation', $lesson, fn() => ClassroomReservationData::fromModel($lesson->classroomReservation)),
+            homeworks: Lazy::whenLoaded('homeworks', $lesson, fn() => HomeworkData::collect($lesson->homeworks)),
+            absences: Lazy::whenLoaded('absences', $lesson, fn() => AbsenceData::collect($lesson->absences)),
         );
     }
 }

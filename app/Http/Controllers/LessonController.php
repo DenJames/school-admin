@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Data\LessonData;
 use App\Models\Lesson;
 use App\Models\User;
 use Carbon\Carbon;
@@ -27,8 +28,17 @@ class LessonController extends Controller
 
     public function show(Lesson $lesson)
     {
-        return Inertia::render('Lessons/Index', [
-            'lesson' => $lesson,
+        return Inertia::render('Lessons/Show', [
+            'lesson' => LessonData::fromModel($lesson->load([
+                'classroomReservation.classroom',
+                'classCategory',
+                'team.school',
+                'homeworks',
+                'absences',
+                'teacher' => function($query) {
+                    $query->with(['user', 'school']);
+                }
+            ])),
         ]);
     }
 

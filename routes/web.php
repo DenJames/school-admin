@@ -52,6 +52,7 @@ Route::middleware([
     // Lessons
     Route::get('/lessons', [LessonController::class, 'index'])->name('lessons.index');
     Route::get('/lessons/{lesson}', [LessonController::class, 'show'])->name('lessons.show');
+
     Route::group(['prefix' => 'api', 'name' => 'api'], function () {
         Route::get('/lessons', [LessonController::class, 'json'])->name('lessons.json');
     });

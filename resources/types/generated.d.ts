@@ -66,10 +66,9 @@ lesson?: App.Data.LessonData;
 export type LessonData = {
 id: number;
 name: string;
-description: string;
+description: string | null;
 duration: number;
 startsAt: string;
-classroom: App.Data.ClassroomData;
 team?: App.Data.TeamData;
 teacher?: App.Data.TeacherData;
 classCategory?: App.Data.ClassCategoryData;
@@ -124,6 +123,7 @@ name: string;
 email: string;
 emailVerifiedAt: string | null;
 isGroupAdmin: string;
+profilePhotoUrl: string | null;
 groups?: any | null;
 };
 }
