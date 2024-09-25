@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Support\Facades\Auth;
 
 class Homework extends Model
 {
@@ -32,5 +33,10 @@ class Homework extends Model
     public function teacher(): Teacher
     {
         return $this->lesson->teacher;
+    }
+
+    public function isSubmitted(): bool
+    {
+        return $this->submissions()->where('user_id', Auth::user()->id)->get()->isNotEmpty();
     }
 }

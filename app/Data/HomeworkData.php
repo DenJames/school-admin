@@ -20,8 +20,8 @@ class HomeworkData extends Data
         public string           $name,
         public string           $description,
         public string           $dueDate,
-        public string           $route,
         public string           $dueDateForHumans,
+        public bool             $isSubmitted = false,
     )
     {
     }
@@ -38,8 +38,8 @@ class HomeworkData extends Data
             name: $homework->name,
             description: $homework->description,
             dueDate: $homework->due_date,
-            route: route('homework.show', $homework),
-            dueDateForHumans: Carbon::parse($homework->due_date)->diffForHumans()
+            dueDateForHumans: Carbon::parse($homework->due_date)->diffForHumans(),
+            isSubmitted: $homework->isSubmitted(),
         );
     }
 }

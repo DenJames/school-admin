@@ -2,7 +2,6 @@
 import AppLayout from "@/Layouts/AppLayout.vue";
 import Card from "@/Components/Card.vue";
 import Calendar from "@/Components/lesson/calendar.vue";
-import { route } from "../../../vendor/tightenco/ziggy";
 import { Link } from "@inertiajs/vue3";
 import MessageData = App.Data.MessageData;
 

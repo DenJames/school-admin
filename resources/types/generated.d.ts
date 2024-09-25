@@ -5,8 +5,15 @@ lesson?: App.Data.LessonData;
 name: string;
 description: string;
 dueDate: string;
-route: string;
 dueDateForHumans: string;
+isSubmitted: boolean;
+};
+export type HomeworkSubmissionData = {
+id: number;
+userId?: App.Data.UserData;
+homeworkId?: App.Data.HomeworkData;
+content: string | null;
+feedback: string | null;
 };
 export type LessonData = {
 id: number;

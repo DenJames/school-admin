@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\HomeworkController;
 use App\Http\Controllers\LessonController;
 use App\Http\Controllers\MessageController;
@@ -32,7 +33,13 @@ Route::middleware([
     Route::get('/homework/{homework}', [HomeworkController::class, 'show'])->name('homework.show');
     Route::post('/homework/{homework}', [HomeworkController::class, 'store'])->name('homework.store');
 
-    Route::group(['prefix' => 'api', 'name' => 'api'], function () {
+    Route::group(['prefix' => 'document', 'as' => 'document.'], function () {
+        Route::get('/{document}/download', [DocumentController::class, 'download'])->name('download');
+        Route::get('/{document}/view', [DocumentController::class, 'view'])->name('view');
+        Route::delete('/{document}/delete', [DocumentController::class, 'delete'])->name('delete');
+    });
+
+    Route::group(['prefix' => 'api', 'name' => 'api.'], function () {
         Route::get('/lessons', [LessonController::class, 'json'])->name('lessons.json');
     });
 });
