@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import AppLayout from "@/Layouts/AppLayout.vue";
 import Card from "@/Components/Card.vue";
-import Calendar from "@/Components/lesson/calendar.vue";
+import Calendar from "@/Components/Lessons/Calendar.vue";
 import { Link } from "@inertiajs/vue3";
 import MessageData = App.Data.MessageData;
 
@@ -52,9 +52,11 @@ defineProps<Props>();
                     </div>
                     <Card>
                         <template #header> Skema </template>
-                        <Calendar
-                            :now="now"
-                            initial-view="listWeek" />
+                        <div class="p-2">
+                            <Calendar
+                                :now="now"
+                                initial-view="listWeek" />
+                        </div>
                     </Card>
                 </div>
                 <Card>

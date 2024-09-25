@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Auth;
 
 class Group extends Model
 {
@@ -19,14 +20,19 @@ class Group extends Model
         return $this->belongsTo(Team::class);
     }
 
-    public function user(): BelongsTo
+    public function owner(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function members(): HasMany
     {
         return $this->hasMany(GroupMember::class);
+    }
+
+    public function invitations(): HasMany
+    {
+        return $this->hasMany(GroupInvitation::class);
     }
 
     public function users(): BelongsToMany
@@ -35,5 +41,17 @@ class Group extends Model
             ->using(GroupMember::class)
             ->withPivot('group_role_id')
             ->withTimestamps();
+    }
+
+    public function isOwner()
+    {
+        return $this->user_id === Auth::id();
+    }
+
+    public function setToCurrent()
+    {
+        $this->owner()->update([
+            'current_group_id' => $this->id,
+        ]);
     }
 }

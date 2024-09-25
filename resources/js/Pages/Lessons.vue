@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import AppLayout from "@/Layouts/AppLayout.vue";
-import Calendar from "@/Components/lesson/calendar.vue";
+import Calendar from "@/Components/Lessons/Calendar.vue";
 
 interface Props {
     now: string;
