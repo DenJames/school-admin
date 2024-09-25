@@ -17,6 +17,7 @@ use App\Models\Teacher;
 use App\Models\Team;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Role;
 
 class DatabaseSeeder extends Seeder
 {
@@ -46,12 +47,23 @@ class DatabaseSeeder extends Seeder
 
         $schools = School::all();
 
+        Role::upsert([
+            ['name' => 'admin', 'guard_name' => 'web'],
+            ['name' => 'teacher', 'guard_name' => 'web'],
+            ['name' => 'student', 'guard_name' => 'web'],
+        ], ['name'], ['guard_name']);
+
+        if ($user = User::where('email', 'test@example.com')->first()) {
+            $user->assignRole('admin');
+        }
+
         if (!User::count()) {
-            // Part 1: Create the first user and team
             $user = User::factory()->create([
                 'name' => 'Test User',
                 'email' => 'test@example.com',
             ]);
+
+            $user->assignRole('admin');
 
             // Create a team for the first user
             $team = Team::factory()->create([
