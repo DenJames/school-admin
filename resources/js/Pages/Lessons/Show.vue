@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import AppLayout from "@/Layouts/AppLayout.vue";
 import Card from "@/Components/Card.vue";
+import SecondaryButton from "../../Components/SecondaryButton.vue";
 import LessonData = App.Data.LessonData;
-import { can } from "momentum-lock";
 
 interface Props {
     lesson: LessonData;
@@ -31,13 +31,10 @@ const props = defineProps<Props>();
                 </Card>
             </div>
 
-            <div
-                class="col-span-12 md:col-span-6 lg:col-span-5"
-                style="width:">
+            <div class="col-span-12 md:col-span-6 lg:col-span-5">
                 <Card>
                     <template #header>Lektion</template>
                     <div class="p-2">
-                        Can: {{ can(lesson, "delete") }}
                         <p>Lektion: {{ lesson.name }}</p>
                         <p>Fag: {{ lesson.classCategory.name }}</p>
                         <p>Skole: {{ lesson.teacher?.school?.name }}</p>
@@ -49,7 +46,39 @@ const props = defineProps<Props>();
             <div class="col-span-12 md:col-span-6 lg:col-span-5">
                 <Card>
                     <template #header>Fravær</template>
-                    <div class="p-2">Noget fravær</div>
+                    <div class="space-y-2 p-2">
+                        <template
+                            v-for="absence in lesson.absences"
+                            :key="absence.id">
+                            <div class="flex items-center justify-between gap-4 rounded-md bg-gray-700 p-2">
+                                <div class="flex items-center gap-4">
+                                    <img
+                                        class="h-10 w-10 rounded-full"
+                                        :src="absence.user.profilePhotoUrl"
+                                        alt="" />
+
+                                    <div class="flex flex-col">
+                                        <strong class="text-white/80">{{ absence.user.name }}</strong>
+                                        <small>
+                                            {{ absence.reason }}
+                                        </small>
+                                    </div>
+                                </div>
+
+                                <div v-if="absence.approvedAt && absence.excused">
+                                    <span class="text-xs font-bold text-green-500">Godkendt</span>
+                                </div>
+
+                                <div v-else-if="absence.approvedAt && !absence.excused">
+                                    <span class="text-xs font-bold text-red-500">Ikke godkendt</span>
+                                </div>
+
+                                <div v-if="!absence.approvedAt">
+                                    <SecondaryButton class="text-xs font-bold hover:underline">Håndter</SecondaryButton>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
                 </Card>
             </div>
 

@@ -2,7 +2,9 @@
 
 namespace App\Data;
 
+use App\Actions\Lesson\FetchAbsence;
 use App\Models\Lesson;
+use Illuminate\Support\Collection;
 use Momentum\Lock\Data\DataResource;
 use Spatie\LaravelData\Attributes\MapInputName;
 use Spatie\LaravelData\Lazy;
@@ -27,13 +29,15 @@ class LessonData extends DataResource
         public Lazy|ClassCategoryData $classCategory,
         public Lazy|ClassroomReservationData $classroomReservation,
         public Lazy|HomeworkData $homeworks,
-        public Lazy|AbsenceData $absences,
+        public Collection $absences,
     )
     {
     }
 
     public static function fromModel(Lesson $lesson): self
     {
+        $absence = new FetchAbsence($lesson);
+
         return new self(
             id: $lesson->id,
             name: $lesson->name,
@@ -46,7 +50,7 @@ class LessonData extends DataResource
             classCategory: Lazy::whenLoaded('classCategory', $lesson, fn() => ClassCategoryData::from($lesson->classCategory)),
             classroomReservation: Lazy::whenLoaded('classroomReservation', $lesson, fn() => ClassroomReservationData::from($lesson->classroomReservation)),
             homeworks: Lazy::whenLoaded('homeworks', $lesson, fn() => HomeworkData::collect($lesson->homeworks)),
-            absences: Lazy::whenLoaded('absences', $lesson, fn() => AbsenceData::collect($lesson->absences)),
+            absences: $absence->all() ? AbsenceData::collect($absence->all()) : [],
         );
     }
 }

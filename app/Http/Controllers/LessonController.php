@@ -37,7 +37,6 @@ class LessonController extends Controller
                 'classCategory',
                 'team.school',
                 'homeworks',
-                'absences',
                 'teacher' => function($query) {
                     $query->with(['user', 'school']);
                 }

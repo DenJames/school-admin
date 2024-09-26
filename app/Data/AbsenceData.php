@@ -19,7 +19,7 @@ class AbsenceData extends DataResource
         public int $id,
         public string $reason,
         public bool $excused,
-        public string $approvedAt,
+        public ?string $approvedAt,
         public Lazy|UserData $user,
         public Lazy|LessonData $lesson,
         public Lazy|TeacherData $teacher,

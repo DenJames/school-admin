@@ -3,7 +3,7 @@ export type AbsenceData = {
 id: number;
 reason: string;
 excused: boolean;
-approvedAt: string;
+approvedAt: string | null;
 user?: App.Data.UserData;
 lesson?: App.Data.LessonData;
 teacher?: App.Data.TeacherData;
@@ -75,7 +75,7 @@ teacher?: App.Data.TeacherData;
 classCategory?: App.Data.ClassCategoryData;
 classroomReservation?: App.Data.ClassroomReservationData;
 homeworks?: App.Data.HomeworkData;
-absences?: App.Data.AbsenceData;
+absences: any;
 permissions: { viewAny: boolean;view: boolean;create: boolean;update: boolean;delete: boolean } };
 export type MessageData = {
 id: number;
