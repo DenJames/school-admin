@@ -2,19 +2,19 @@
 
 namespace App\Data;
 
-use App\Models\Lesson;
-use App\Models\Message;
 use App\Models\Team;
+use Momentum\Lock\Data\DataResource;
 use Spatie\LaravelData\Attributes\MapInputName;
-use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Lazy;
 use Spatie\LaravelData\Mappers\SnakeCaseMapper;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
 #[TypeScript]
 #[MapInputName(SnakeCaseMapper::class)]
-class TeamData extends Data
+class TeamData extends DataResource
 {
+    protected $permissions = ['update', 'delete'];
+
     public function __construct(
         public int    $id,
         public string $name,
@@ -32,12 +32,12 @@ class TeamData extends Data
             owner: Lazy::whenLoaded(
                 'owner',
                 $team,
-                fn() => UserData::fromModel($team->owner)
+                fn() => UserData::from($team->owner)
             ),
             school: Lazy::whenLoaded(
                 'school',
                 $team,
-                fn() => SchoolData::fromModel($team->school)
+                fn() => SchoolData::from($team->school)
             ),
         );
     }

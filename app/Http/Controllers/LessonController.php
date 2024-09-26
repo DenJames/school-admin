@@ -29,7 +29,7 @@ class LessonController extends Controller
     public function show(Lesson $lesson)
     {
         return Inertia::render('Lessons/Show', [
-            'lesson' => LessonData::fromModel($lesson->load([
+            'lesson' => LessonData::from($lesson->load([
                 'classroomReservation.classroom',
                 'classCategory',
                 'team.school',

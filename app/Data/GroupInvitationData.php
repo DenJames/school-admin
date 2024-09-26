@@ -3,16 +3,18 @@
 namespace App\Data;
 
 use App\Models\GroupInvitation;
+use Momentum\Lock\Data\DataResource;
 use Spatie\LaravelData\Attributes\MapInputName;
-use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Lazy;
 use Spatie\LaravelData\Mappers\SnakeCaseMapper;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
 #[TypeScript]
 #[MapInputName(SnakeCaseMapper::class)]
-class GroupInvitationData extends Data
+class GroupInvitationData extends DataResource
 {
+    protected $permissions = ['update', 'delete'];
+
     public function __construct(
         public int            $id,
         public int            $groupId,
@@ -36,11 +38,11 @@ class GroupInvitationData extends Data
             group: Lazy::whenLoaded(
                 'group',
                 $groupInvitation,
-                fn() => GroupData::fromModel($groupInvitation->group)),
+                fn() => GroupData::from($groupInvitation->group)),
             user: Lazy::whenLoaded(
                 'user',
                 $groupInvitation,
-                fn() => UserData::fromModel($groupInvitation->user)),
+                fn() => UserData::from($groupInvitation->user)),
             createdAt: $groupInvitation->created_at?->toDateTimeString(),
             updatedAt: $groupInvitation->updated_at?->toDateTimeString(),
         );

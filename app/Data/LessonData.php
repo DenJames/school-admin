@@ -3,16 +3,18 @@
 namespace App\Data;
 
 use App\Models\Lesson;
+use Momentum\Lock\Data\DataResource;
 use Spatie\LaravelData\Attributes\MapInputName;
-use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Lazy;
 use Spatie\LaravelData\Mappers\SnakeCaseMapper;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
 #[TypeScript]
 #[MapInputName(SnakeCaseMapper::class)]
-class LessonData extends Data
+class LessonData extends DataResource
 {
+    protected $permissions = ['update', 'delete'];
+
     public function __construct(
         public int    $id,
         public string $name,
@@ -37,10 +39,10 @@ class LessonData extends Data
             description: $lesson->description,
             duration: $lesson->duration,
             startsAt: $lesson->starts_at->format('c'),
-            team: Lazy::whenLoaded('team', $lesson, fn() => TeamData::fromModel($lesson->team)),
-            teacher: Lazy::whenLoaded('teacher', $lesson, fn() => TeacherData::fromModel($lesson->teacher)),
-            classCategory: Lazy::whenLoaded('classCategory', $lesson, fn() => ClassCategoryData::fromModel($lesson->classCategory)),
-            classroomReservation: Lazy::whenLoaded('classroomReservation', $lesson, fn() => ClassroomReservationData::fromModel($lesson->classroomReservation)),
+            team: Lazy::whenLoaded('team', $lesson, fn() => TeamData::from($lesson->team)),
+            teacher: Lazy::whenLoaded('teacher', $lesson, fn() => TeacherData::from($lesson->teacher)),
+            classCategory: Lazy::whenLoaded('classCategory', $lesson, fn() => ClassCategoryData::from($lesson->classCategory)),
+            classroomReservation: Lazy::whenLoaded('classroomReservation', $lesson, fn() => ClassroomReservationData::from($lesson->classroomReservation)),
             homeworks: Lazy::whenLoaded('homeworks', $lesson, fn() => HomeworkData::collect($lesson->homeworks)),
             absences: Lazy::whenLoaded('absences', $lesson, fn() => AbsenceData::collect($lesson->absences)),
         );

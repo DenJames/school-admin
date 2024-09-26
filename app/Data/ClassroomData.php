@@ -3,16 +3,18 @@
 namespace App\Data;
 
 use App\Models\Classroom;
+use Momentum\Lock\Data\DataResource;
 use Spatie\LaravelData\Attributes\MapInputName;
-use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Lazy;
 use Spatie\LaravelData\Mappers\SnakeCaseMapper;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
 #[TypeScript]
 #[MapInputName(SnakeCaseMapper::class)]
-class ClassroomData extends Data
+class ClassroomData extends DataResource
 {
+    protected $permissions = ['update', 'delete'];
+
     public function __construct(
         public int    $id,
         public string $name,
@@ -29,7 +31,7 @@ class ClassroomData extends Data
             school: Lazy::whenLoaded(
                 'school',
                 $classroom,
-                fn() => SchoolData::fromModel($classroom->school)
+                fn() => SchoolData::from($classroom->school)
             ),
         );
     }

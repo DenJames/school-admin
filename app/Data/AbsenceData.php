@@ -3,16 +3,18 @@
 namespace App\Data;
 
 use App\Models\Absence;
+use Momentum\Lock\Data\DataResource;
 use Spatie\LaravelData\Attributes\MapInputName;
-use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Lazy;
 use Spatie\LaravelData\Mappers\SnakeCaseMapper;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
 #[TypeScript]
 #[MapInputName(SnakeCaseMapper::class)]
-class AbsenceData extends Data
+class AbsenceData extends DataResource
 {
+    protected $permissions = ['update', 'delete'];
+
     public function __construct(
         public int $id,
         public string $reason,
@@ -35,17 +37,17 @@ class AbsenceData extends Data
             user: Lazy::whenLoaded(
                 'user',
                 $absence,
-                fn() => UserData::fromModel($absence->user)
+                fn() => UserData::from($absence->user)
             ),
             lesson: Lazy::whenLoaded(
                 'lesson',
                 $absence,
-                fn() => LessonData::fromModel($absence->lesson)
+                fn() => LessonData::from($absence->lesson)
             ),
             teacher: Lazy::whenLoaded(
                 'teacher',
                 $absence,
-                fn() => TeacherData::fromModel($absence->teacher)
+                fn() => TeacherData::from($absence->teacher)
             ),
         );
     }

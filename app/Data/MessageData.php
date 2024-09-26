@@ -3,16 +3,18 @@
 namespace App\Data;
 
 use App\Models\Message;
+use Momentum\Lock\Data\DataResource;
 use Spatie\LaravelData\Attributes\MapInputName;
-use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Lazy;
 use Spatie\LaravelData\Mappers\SnakeCaseMapper;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
 #[TypeScript]
 #[MapInputName(SnakeCaseMapper::class)]
-class MessageData extends Data
+class MessageData extends DataResource
 {
+    protected $permissions = ['update', 'delete'];
+
     public function __construct(
         public int           $id,
         public string        $subject,

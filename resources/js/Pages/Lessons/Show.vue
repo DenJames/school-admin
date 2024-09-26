@@ -2,6 +2,7 @@
 import AppLayout from "@/Layouts/AppLayout.vue";
 import Card from "@/Components/Card.vue";
 import LessonData = App.Data.LessonData;
+import { can } from "momentum-lock";
 
 interface Props {
     lesson: LessonData;
@@ -36,6 +37,7 @@ const props = defineProps<Props>();
                 <Card>
                     <template #header>Lektion</template>
                     <div class="p-2">
+                        Can: {{ can(lesson, "delete") }}
                         <p>Lektion: {{ lesson.name }}</p>
                         <p>Fag: {{ lesson.classCategory.name }}</p>
                         <p>Skole: {{ lesson.teacher?.school?.name }}</p>
