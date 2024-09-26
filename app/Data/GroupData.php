@@ -3,17 +3,19 @@
 namespace App\Data;
 
 use App\Models\Group;
+use App\MomentumLock\DataResource;
 use Illuminate\Support\Collection;
 use Spatie\LaravelData\Attributes\MapInputName;
-use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Lazy;
 use Spatie\LaravelData\Mappers\SnakeCaseMapper;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
 #[TypeScript]
 #[MapInputName(SnakeCaseMapper::class)]
-class GroupData extends Data
+class GroupData extends DataResource
 {
+    protected $permissions = ['viewAny', 'view', 'create', 'update', 'delete'];
+
     public function __construct(
         public int                  $id,
         public int                  $userId,
@@ -41,7 +43,7 @@ class GroupData extends Data
             owner: Lazy::whenLoaded(
                 'owner',
                 $group,
-                fn() => UserData::fromModel($group->owner)),
+                fn() => UserData::from($group->owner)),
             invitations: $group->relationLoaded('invitations')
                 ? GroupInvitationData::collect($group->invitations)
                 : null,

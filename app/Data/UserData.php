@@ -3,23 +3,26 @@
 namespace App\Data;
 
 use App\Models\User;
+use App\MomentumLock\DataResource;
 use Illuminate\Support\Collection;
 use Spatie\LaravelData\Attributes\MapInputName;
-use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Lazy;
 use Spatie\LaravelData\Mappers\SnakeCaseMapper;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
 #[TypeScript]
 #[MapInputName(SnakeCaseMapper::class)]
-class UserData extends Data
+class UserData extends DataResource
 {
+    protected $permissions = ['viewAny', 'view', 'create', 'update', 'delete'];
+
     public function __construct(
         public int                  $id,
         public string               $name,
         public string               $email,
         public ?string              $emailVerifiedAt,
         public string               $isGroupAdmin,
+        public ?string              $profilePhotoUrl,
         public Lazy|Collection|null $groups,
     )
     {
@@ -34,6 +37,7 @@ class UserData extends Data
             email: $user->email,
             emailVerifiedAt: $user->email_verified_at?->toDateTimeString(),
             isGroupAdmin: $user->isCurrentGroupAdmin(),
+            profilePhotoUrl: $user->profile_photo_url,
             groups: $user->relationLoaded('groups')
                 ? Lazy::whenLoaded(
                     'groups',
