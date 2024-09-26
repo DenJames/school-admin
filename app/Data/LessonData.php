@@ -13,14 +13,15 @@ use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 #[MapInputName(SnakeCaseMapper::class)]
 class LessonData extends DataResource
 {
-    protected $permissions = ['update', 'delete'];
+    protected $permissions = ['update', 'delete', 'view'];
 
     public function __construct(
         public int    $id,
         public string $name,
         public ?string $description,
         public int   $duration,
-        public string $startsAt,
+        public string $start,
+        public string $end,
         public Lazy|TeamData $team,
         public Lazy|TeacherData $teacher,
         public Lazy|ClassCategoryData $classCategory,
@@ -38,7 +39,8 @@ class LessonData extends DataResource
             name: $lesson->name,
             description: $lesson->description,
             duration: $lesson->duration,
-            startsAt: $lesson->starts_at->format('c'),
+            start: $lesson->starts_at->format('c'),
+            end: $lesson->ends_at->format('c'),
             team: Lazy::whenLoaded('team', $lesson, fn() => TeamData::from($lesson->team)),
             teacher: Lazy::whenLoaded('teacher', $lesson, fn() => TeacherData::from($lesson->teacher)),
             classCategory: Lazy::whenLoaded('classCategory', $lesson, fn() => ClassCategoryData::from($lesson->classCategory)),

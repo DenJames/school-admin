@@ -10,6 +10,7 @@ use DateTime;
 use DateTimeZone;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Sabre\VObject\Component\VCalendar;
@@ -21,13 +22,15 @@ class LessonController extends Controller
         $datetime = new DateTime('now', new DateTimeZone('Europe/Copenhagen'));
         $datetime_string = $datetime->format('c');
 
-        return Inertia::render('Lessons', [
+        return Inertia::render('Lessons/Index', [
             'now' => $datetime_string,
         ]);
     }
 
     public function show(Lesson $lesson)
     {
+        Gate::authorize('view', $lesson);
+
         return Inertia::render('Lessons/Show', [
             'lesson' => LessonData::from($lesson->load([
                 'classroomReservation.classroom',
@@ -48,11 +51,8 @@ class LessonController extends Controller
 
         foreach (Auth::user()->currentTeam->lessons()->whereBetween('starts_at', [$request->start, $request->end])->get() as $lesson) {
             $lessons[] = [
-                'id' => $lesson->id,
+                ...LessonData::from($lesson)->toArray(),
                 'title' => $lesson->name . ' • ' . $lesson->teacher->user->name . ' • ' . $lesson->classroom()->name,
-                'start' => $lesson->starts_at->format('c'),
-                'end' => $lesson->ends_at->format('c'),
-                'description' => "Hello",
             ];
         }
 

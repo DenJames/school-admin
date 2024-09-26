@@ -45,7 +45,7 @@ owner?: App.Data.UserData;
 invitations?: any | null;
 createdAt: string | null;
 updatedAt: string | null;
-permissions: { update: boolean;delete: boolean } };
+permissions: { update: boolean;delete: boolean;create: boolean } };
 export type GroupInvitationData = {
 id: number;
 groupId: number;
@@ -68,14 +68,15 @@ id: number;
 name: string;
 description: string | null;
 duration: number;
-startsAt: string;
+start: string;
+end: string;
 team?: App.Data.TeamData;
 teacher?: App.Data.TeacherData;
 classCategory?: App.Data.ClassCategoryData;
 classroomReservation?: App.Data.ClassroomReservationData;
 homeworks?: App.Data.HomeworkData;
 absences?: App.Data.AbsenceData;
-permissions: { update: boolean;delete: boolean } };
+permissions: { update: boolean;delete: boolean;view: boolean } };
 export type MessageData = {
 id: number;
 subject: string;
