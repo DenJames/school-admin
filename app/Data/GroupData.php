@@ -14,7 +14,7 @@ use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 #[MapInputName(SnakeCaseMapper::class)]
 class GroupData extends DataResource
 {
-    protected $permissions = ['update', 'delete', 'create'];
+    protected $permissions = ['viewAny', 'view', 'create', 'update', 'delete'];
 
     public function __construct(
         public int                  $id,

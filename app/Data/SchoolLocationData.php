@@ -13,7 +13,7 @@ use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 #[MapInputName(SnakeCaseMapper::class)]
 class SchoolLocationData extends DataResource
 {
-    protected $permissions = ['update', 'delete'];
+    protected $permissions = ['viewAny', 'view', 'create', 'update', 'delete'];
 
     public function __construct(
         public int    $id,
