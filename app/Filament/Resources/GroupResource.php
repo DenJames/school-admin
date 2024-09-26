@@ -25,7 +25,7 @@ class GroupResource extends Resource
             ->schema([
                 Forms\Components\Select::make('user_id')
                     ->label('Owner')
-                    ->relationship('user', 'name')
+                    ->relationship('owner', 'name')
                     ->preload()
                     ->searchable()
                     ->required(),
@@ -44,7 +44,7 @@ class GroupResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('user.name')
+                Tables\Columns\TextColumn::make('owner.name')
                     ->label('Owner')
                     ->numeric()
                     ->sortable(),
