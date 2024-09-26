@@ -3,7 +3,7 @@
 namespace App\Data;
 
 use App\Models\ClassCategory;
-use Momentum\Lock\Data\DataResource;
+use App\MomentumLock\DataResource;
 use Spatie\LaravelData\Attributes\MapInputName;
 use Spatie\LaravelData\Mappers\SnakeCaseMapper;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;

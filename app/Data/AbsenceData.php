@@ -3,7 +3,7 @@
 namespace App\Data;
 
 use App\Models\Absence;
-use Momentum\Lock\Data\DataResource;
+use App\MomentumLock\DataResource;
 use Spatie\LaravelData\Attributes\MapInputName;
 use Spatie\LaravelData\Lazy;
 use Spatie\LaravelData\Mappers\SnakeCaseMapper;
@@ -13,7 +13,7 @@ use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 #[MapInputName(SnakeCaseMapper::class)]
 class AbsenceData extends DataResource
 {
-    protected $permissions = ['viewAny', 'view', 'create', 'update', 'delete'];
+    protected string $modelClass = Absence::class;
 
     public function __construct(
         public int $id,

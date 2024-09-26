@@ -13,15 +13,11 @@ class FetchAbsence
 
     public function all()
     {
-
-        if ($this->lesson->absences->isEmpty()) {
-            return [];
+        $isTeacher = Auth::id() === $this->lesson->teacher->user_id;
+        if (!$isTeacher && !Auth::user()?->hasRole('admin')) {
+            return $this->lesson->absences()->where('user_id', Auth::id())->with('user:id,name,email,profile_photo_path')->get();
         }
 
-        if (Auth::id() !== $this->lesson->teacher->user_id && !Auth::user()?->hasRole('admin')) {
-            return collect([$this->lesson->absences()->where('user_id', Auth::id())->with('user:id,name,email')->first()]);
-        }
-
-        return $this->lesson->absences->load('user:id,name,email');
+        return $this->lesson->absences->load('user:id,name,email,profile_photo_path');
     }
 }

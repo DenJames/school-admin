@@ -4,8 +4,8 @@ namespace App\Data;
 
 use App\Actions\Lesson\FetchAbsence;
 use App\Models\Lesson;
+use App\MomentumLock\DataResource;
 use Illuminate\Support\Collection;
-use Momentum\Lock\Data\DataResource;
 use Spatie\LaravelData\Attributes\MapInputName;
 use Spatie\LaravelData\Lazy;
 use Spatie\LaravelData\Mappers\SnakeCaseMapper;
@@ -50,7 +50,7 @@ class LessonData extends DataResource
             classCategory: Lazy::whenLoaded('classCategory', $lesson, fn() => ClassCategoryData::from($lesson->classCategory)),
             classroomReservation: Lazy::whenLoaded('classroomReservation', $lesson, fn() => ClassroomReservationData::from($lesson->classroomReservation)),
             homeworks: Lazy::whenLoaded('homeworks', $lesson, fn() => HomeworkData::collect($lesson->homeworks)),
-            absences: $absence->all() ? AbsenceData::collect($absence->all()) : [],
+            absences: AbsenceData::collect($absence->all()),
         );
     }
 }

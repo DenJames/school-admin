@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AbsenceController;
+use App\Http\Controllers\AbsenceStatusController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\GroupInvitationController;
@@ -52,6 +54,11 @@ Route::middleware([
     // Lessons
     Route::get('/lessons', [LessonController::class, 'index'])->name('lessons.index');
     Route::get('/lessons/{lesson}', [LessonController::class, 'show'])->name('lessons.show');
+
+    // Absences
+    Route::post('/lessons/{lesson}/absence', [AbsenceController::class, 'store'])->name('absences.store');
+    Route::delete('/absence/{absence}/delete', [AbsenceController::class, 'destroy'])->name('absences.destroy');
+    Route::post('/absence/{absence}/status', AbsenceStatusController::class)->name('absences.status.store');
 
     Route::group(['prefix' => 'api', 'name' => 'api'], function () {
         Route::get('/lessons', [LessonController::class, 'json'])->name('lessons.json');

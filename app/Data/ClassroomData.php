@@ -3,7 +3,7 @@
 namespace App\Data;
 
 use App\Models\Classroom;
-use Momentum\Lock\Data\DataResource;
+use App\MomentumLock\DataResource;
 use Spatie\LaravelData\Attributes\MapInputName;
 use Spatie\LaravelData\Lazy;
 use Spatie\LaravelData\Mappers\SnakeCaseMapper;

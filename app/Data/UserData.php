@@ -3,8 +3,8 @@
 namespace App\Data;
 
 use App\Models\User;
+use App\MomentumLock\DataResource;
 use Illuminate\Support\Collection;
-use Momentum\Lock\Data\DataResource;
 use Spatie\LaravelData\Attributes\MapInputName;
 use Spatie\LaravelData\Lazy;
 use Spatie\LaravelData\Mappers\SnakeCaseMapper;

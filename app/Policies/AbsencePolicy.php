@@ -32,7 +32,7 @@ class AbsencePolicy
 
     public function delete(User $user, Absence $absence): bool
     {
-        return $user->hasRole('admin');
+        return $user->hasRole('admin') || $user->id === $absence->user_id;
     }
 
     public function restore(User $user, Absence $absence): bool
@@ -43,5 +43,10 @@ class AbsencePolicy
     public function forceDelete(User $user, Absence $absence): bool
     {
         return $user->hasRole('admin');
+    }
+
+    public function updateStatus(User $user, Absence $absence): bool
+    {
+        return $user->hasRole('admin') || $user->id === $absence->teacher->user_id;
     }
 }
