@@ -28,18 +28,22 @@ class AssignedGradeResource extends Resource
                     ->label('Grade')
                     ->options(function () {
                         return [
-                            '-3',
-                            '00',
-                            '02',
-                            '4',
-                            '7',
-                            '10',
-                            '12',
+                            -3 => '-3',
+                            0 => '00',
+                            2 => '02',
+                            4 => '4',
+                            7 => '7',
+                            10 => '10',
+                            12 => '12',
                         ];
                     })
                     ->searchable()
                     ->required()
-                    ->default(null),
+                    ->default(null)
+                    ->afterStateHydrated(function ($component, $state) {
+                        $component->state((int) $state);
+                    })
+                    ->dehydrateStateUsing(fn ($state) => (int) $state),
                 Forms\Components\Select::make('team_id')
                     ->relationship('team', 'name')
                     ->preload()
