@@ -58,10 +58,19 @@ updatedAt: string | null;
 };
 export type HomeworkData = {
 id: number;
+lesson?: App.Data.LessonData;
 name: string;
 description: string;
-due_date: string;
-lesson?: App.Data.LessonData;
+dueDate: string;
+dueDateForHumans: string;
+isSubmitted: boolean;
+};
+export type HomeworkSubmissionData = {
+id: number;
+userId?: App.Data.UserData;
+homeworkId?: App.Data.HomeworkData;
+content: string | null;
+feedback: string | null;
 };
 export type LessonData = {
 id: number;

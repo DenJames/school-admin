@@ -12,8 +12,15 @@ class Document extends Model
 
     protected $guarded = [];
 
+    protected $appends = ['url'];
+
     public function documentable(): MorphTo
     {
         return $this->morphTo();
+    }
+
+    public function getUrlAttribute()
+    {
+        return \Storage::url($this->path);
     }
 }

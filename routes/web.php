@@ -6,6 +6,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\GroupInvitationController;
 use App\Http\Controllers\GroupMemberController;
+use App\Http\Controllers\DocumentController;
+use App\Http\Controllers\HomeworkController;
 use App\Http\Controllers\LessonController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\MessageReplyController;
@@ -51,6 +53,18 @@ Route::middleware([
     Route::put('/groups/{group}/member/update', [GroupMemberController::class, 'update'])->name('group.member.update');
     Route::delete('/groups/{group}/{user}/leave', [GroupMemberController::class, 'destroy'])->name('groups.member.destroy');
 
+    // Homework
+    Route::get('/homework', [HomeworkController::class, 'index'])->name('homework.index');
+    Route::get('/homework/{homework}', [HomeworkController::class, 'show'])->name('homework.show');
+    Route::post('/homework/{homework}', [HomeworkController::class, 'store'])->name('homework.store');
+
+    // Documents
+    Route::group(['prefix' => 'document', 'as' => 'document.'], function () {
+        Route::get('/{document}/download', [DocumentController::class, 'download'])->name('download');
+        Route::get('/{document}/view', [DocumentController::class, 'view'])->name('view');
+        Route::delete('/{document}/delete', [DocumentController::class, 'delete'])->name('delete');
+    });
+
     // Lessons
     Route::get('/lessons', [LessonController::class, 'index'])->name('lessons.index');
     Route::get('/lessons/{lesson}', [LessonController::class, 'show'])->name('lessons.show');
@@ -65,5 +79,6 @@ Route::middleware([
     });
 });
 
+// Calender export
 Route::get('/export/lessons/{uuid}', [LessonController::class, 'export'])->name('lessons.export');
 

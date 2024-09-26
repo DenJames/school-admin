@@ -30,9 +30,7 @@ class LessonData extends DataResource
         public Lazy|ClassroomReservationData $classroomReservation,
         public Lazy|HomeworkData $homeworks,
         public Collection $absences,
-    )
-    {
-    }
+    ) {}
 
     public static function fromModel(Lesson $lesson): self
     {

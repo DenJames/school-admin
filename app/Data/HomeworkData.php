@@ -4,6 +4,7 @@ namespace App\Data;
 
 use App\Models\Homework;
 use App\MomentumLock\DataResource;
+use Carbon\Carbon;
 use Spatie\LaravelData\Attributes\MapInputName;
 use Spatie\LaravelData\Lazy;
 use Spatie\LaravelData\Mappers\SnakeCaseMapper;
@@ -16,11 +17,13 @@ class HomeworkData extends DataResource
     protected $permissions = ['viewAny', 'view', 'create', 'update', 'delete'];
 
     public function __construct(
-        public int    $id,
-        public string $name,
-        public string $description,
-        public string $due_date,
-        public Lazy|LessonData $lesson,
+        public int              $id,
+        public Lazy|LessonData  $lesson,
+        public string           $name,
+        public string           $description,
+        public string           $dueDate,
+        public string           $dueDateForHumans,
+        public bool             $isSubmitted = false,
     )
     {
     }
@@ -29,14 +32,16 @@ class HomeworkData extends DataResource
     {
         return new self(
             id: $homework->id,
-            name: $homework->name,
-            description: $homework->description,
-            due_date: $homework->due_date,
             lesson: Lazy::whenLoaded(
                 'lesson',
                 $homework,
                 fn() => LessonData::from($homework->lesson)
             ),
+            name: $homework->name,
+            description: $homework->description,
+            dueDate: $homework->due_date,
+            dueDateForHumans: Carbon::parse($homework->due_date)->diffForHumans(),
+            isSubmitted: $homework->isSubmitted(),
         );
     }
 }

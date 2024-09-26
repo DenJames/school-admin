@@ -48,6 +48,8 @@
         "eslint-define-config": "^2.1.0",
         "lodash": "^4.17.21",
         "momentum-lock": "^0.1.2",
-        "tippy.js": "^6.3.7"
+        "tippy.js": "^6.3.7",
+        "eslint-define-config": "^2.1.0",
+        "vue-tippy": "^6.4.4"
     }
 }
