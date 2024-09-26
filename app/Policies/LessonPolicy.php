@@ -12,36 +12,36 @@ class LessonPolicy
 
     public function viewAny(User $user): bool
     {
-        return true;
+        return $user->hasRole('admin');
     }
 
     public function view(User $user, Lesson $lesson): bool
     {
-        return true;
+        return $user->hasRole('admin') || $user->current_team_id === $lesson->team_id || $lesson->teacher->user_id === $user->id;
     }
 
     public function create(User $user): bool
     {
-        return true;
+        return $user->hasRole('admin') || $user->hasRole('teacher');
     }
 
     public function update(User $user, Lesson $lesson): bool
     {
-        return false;
+        return $user->hasRole('admin') || $lesson->teacher->user_id === $user->id;
     }
 
     public function delete(User $user, Lesson $lesson): bool
     {
-        return false;
+        return $user->hasRole('admin') || $lesson->teacher->user_id === $user->id;
     }
 
     public function restore(User $user, Lesson $lesson): bool
     {
-        return true;
+        return $user->hasRole('admin') || $lesson->teacher->user_id === $user->id;
     }
 
     public function forceDelete(User $user, Lesson $lesson): bool
     {
-        return true;
+        return $user->hasRole('admin') || $lesson->teacher->user_id === $user->id;
     }
 }
