@@ -8,6 +8,8 @@ use App\Models\Homework;
 use App\Models\HomeworkSubmission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 
 class HomeworkController extends Controller
@@ -21,12 +23,10 @@ class HomeworkController extends Controller
 
     public function show(Homework $homework)
     {
-        if ($submission = $homework->submissions()->where('user_id', Auth::id())->first()) {
-            $homeworkSubmission = HomeworkSubmissionData::fromModel($submission);
-        }
+        $homeworkSubmission = $homework->submissions()->where('user_id', Auth::id())->first();
         return Inertia::render('Homework/Show', [
             'homework' => HomeworkData::from($homework),
-            'homeworkSubmission' => $homeworkSubmission ?? null,
+            'homeworkSubmission' => $homeworkSubmission ? HomeworkSubmissionData::from($homeworkSubmission) : null,
             'files' => $homework->submissions()->where('user_id', Auth::id())->first()?->document()->orderBy('id', 'desc')->get(),
         ]);
     }
@@ -45,20 +45,21 @@ class HomeworkController extends Controller
             $submission = HomeworkSubmission::create([
                 'homework_id' => $homework->id,
                 'user_id' => Auth::id(),
-                'content' => $request->comment,
+                'content' => $request->get('content'),
             ]);
         }
 
-
         // Store the file
         if ($request->hasFile('files')) {
+            $allowedExtensions = ['doc', 'docx', 'rtf', 'xls', 'csv', 'xlsx', 'ppt', 'pptx', 'pdf', 'txt', 'png', 'jpg', 'gif', 'jpeg', 'zip', 'rar', '7z', 'tar', 'gz', 'tgz', 'bz2', 'tbz', 'tbz2', 'tar.gz', 'tar.bz2', 'tar.gz2', 'mp4', 'mp3', 'mkv', 'json', 'xml', 'log', 'yml', 'yaml'];
+
             foreach ($request->file()['files'] as $item) {
-                // if meme type is an executable file deny it
-                if (!in_array($item->getClientOriginalExtension(), ['doc', 'docx', 'rtf', 'xls', 'csv', 'xlsx', 'ppt', 'pptx', 'pdf', 'txt', 'png', 'jpg', 'gif', 'jpeg', 'zip', 'rar', '7z', 'tar', 'gz', 'tgz', 'bz2', 'tbz', 'tbz2', 'tar.gz', 'tar.bz2', 'tar.gz2', 'mp4', 'mp3', 'mkv', 'json', 'xml', 'log', 'yml', 'yaml'])) {
+                // if file type is an executable file deny it
+                if (!in_array($item->getClientOriginalExtension(), $allowedExtensions, true)) {
                         abort(403, 'File type not allowed. (.'.$item->getClientOriginalExtension().')');
                     }
-                $name = \Str::random(40).'.'.$item->extension();
-                $path = \Storage::disk('public')->putFileAs('homeworks/'.Auth::user()->id, $item, $name);
+                $name = Str::random(40).'.'.$item->extension();
+                $path = Storage::disk('public')->putFileAs('homeworks/'.Auth::user()->id, $item, $name);
                 $submission->document()->create([
                     'filename' => $item->getClientOriginalName(),
                     'path' => $path,

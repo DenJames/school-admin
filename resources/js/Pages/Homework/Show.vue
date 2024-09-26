@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed, defineProps } from "vue";
 import AppLayout from "@/Layouts/AppLayout.vue";
-import HomeworkData = App.Data.HomeworkData;
 import Card from "@/Components/Card.vue";
 import Calendar from "@/Components/Icons/Calendar.vue";
 import { useForm } from "@inertiajs/vue3";
+import HomeworkData = App.Data.HomeworkData;
 import HomeworkSubmissionData = App.Data.HomeworkSubmissionData;
 
 interface Props {
@@ -76,7 +76,7 @@ const progress = computed(() => {
 
         <div class="flex flex-col gap-3">
             <div
-                v-if="homeworkSubmission.feedback"
+                v-if="homeworkSubmission?.feedback"
                 class="mb-4 flex rounded-lg bg-blue-50 p-4 text-sm text-blue-800 dark:bg-gray-800 dark:text-blue-400"
                 role="alert">
                 <svg
