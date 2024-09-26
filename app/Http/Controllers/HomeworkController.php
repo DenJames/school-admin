@@ -27,7 +27,7 @@ class HomeworkController extends Controller
         return Inertia::render('Homework/Show', [
             'homework' => HomeworkData::from($homework),
             'homeworkSubmission' => $homeworkSubmission ? HomeworkSubmissionData::from($homeworkSubmission) : null,
-            'files' => $homework->submissions()->where('user_id', Auth::id())->first()?->document()->orderBy('id', 'desc')->get(),
+            'files' => $homework->submissions()->where('user_id', Auth::id())->first()?->document()->orderByDesc(('id'))->get(),
         ]);
     }
 
@@ -68,6 +68,6 @@ class HomeworkController extends Controller
             }
         }
 
-        return redirect()->route('homework.show', $homework)->with('success', 'Homework submitted.');
+        return redirect()->back()->with('success', 'Homework submitted.');
     }
 }

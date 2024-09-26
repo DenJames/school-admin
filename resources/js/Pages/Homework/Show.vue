@@ -30,11 +30,9 @@ const submitForm = () => {
         data: formData,
         forceFormData: true,
         onSuccess: () => {
-            form.reset();
-            // reset the file input
-            const fileInput = document.querySelector('input[type="file"]');
+            let fileInput = document.querySelector('input[type="file"]');
             if (fileInput) {
-                fileInput.value = "";
+                (fileInput as HTMLInputElement).value = "";
             }
         },
     });
