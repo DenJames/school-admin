@@ -19,7 +19,7 @@ import AbsenceData = App.Data.AbsenceData;
 import HomeworkData = App.Data.HomeworkData;
 
 interface Props {
-    lesson: LessonData & { homeworks: HomeworkData[] };
+    lesson: LessonData & { homeworks: HomeworkData[] | null };
 }
 
 const props = defineProps<Props>();
@@ -28,6 +28,10 @@ const showAbsenceStatusModal = ref(false);
 const showAbsenceModal = ref(false);
 const showDeleteAbsenceModal = ref(false);
 const selectedAbsence = ref(null);
+
+const options = { hour: "2-digit", minute: "2-digit", timeZone: "Europe/Copenhagen" };
+const formattedStartTime = new Date(props.lesson.start).toLocaleTimeString("da-DK", options);
+const formattedEndTime = new Date(props.lesson.end).toLocaleTimeString("da-DK", options);
 
 const availableActions = [
     { id: 1, name: "Lovligt" },
@@ -110,10 +114,16 @@ function remove() {
                 <Card>
                     <template #header>Lektion</template>
                     <div class="p-2">
-                        <p>Lektion: {{ lesson.name }}</p>
-                        <p>Fag: {{ lesson.classCategory.name }}</p>
-                        <p>Skole: {{ lesson.teacher?.school?.name }}</p>
-                        <p>Klasseværelse: {{ lesson.classroomReservation.classroom.name }}</p>
+                        <p><span class="font-bold">Lektion:</span> {{ lesson.name }}</p>
+                        <p><span class="font-bold">Fag:</span> {{ lesson.classCategory.name }}</p>
+                        <p><span class="font-bold">Skole:</span> {{ lesson.teacher?.school?.name }}</p>
+                        <p>
+                            <span class="font-bold">Klasseværelse:</span>
+                            {{ lesson.classroomReservation.classroom.name }}
+                        </p>
+                        <p>
+                            <span class="font-bold">Tidspunkt:</span> {{ formattedStartTime }} - {{ formattedEndTime }}
+                        </p>
                     </div>
                 </Card>
             </div>
@@ -193,7 +203,7 @@ function remove() {
                 <Card>
                     <template #header>Lektier</template>
 
-                    <List :homework="lesson.homeworks" />
+                    <List :homework="lesson.homeworks ?? []" />
                 </Card>
             </div>
         </div>
