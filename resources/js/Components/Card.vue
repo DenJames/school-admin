@@ -15,7 +15,7 @@ const props = withDefaults(defineProps<Props>(), {
 <template>
     <div
         :class="[
-            'w-full rounded-lg border border-gray-200 bg-white shadow dark:border-gray-700 dark:bg-gray-800',
+            'w-full overflow-hidden rounded-lg border border-gray-200 bg-white shadow dark:border-gray-700 dark:bg-gray-800',
             contentClasses,
         ]">
         <div
