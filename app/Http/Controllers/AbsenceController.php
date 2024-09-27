@@ -34,8 +34,7 @@ class AbsenceController extends Controller
     public function destroy(Absence $absence)
     {
         Gate::authorize('delete', $absence);
-
-
+        
         $absence->delete();
 
         return redirect()->back()->with('success', 'Fravær er blevet slettet.');

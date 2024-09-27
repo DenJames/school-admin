@@ -32,7 +32,11 @@ class AbsencePolicy
 
     public function delete(User $user, Absence $absence): bool
     {
-        return $user->hasRole('admin') || $user->id === $absence->user_id;
+        if ($absence->approved_at) {
+            return $user->hasAnyRole(['admin', 'teacher']);
+        }
+
+        return $user->hasAnyRole(['admin', 'teacher']) || $user->id === $absence->user_id;
     }
 
     public function restore(User $user, Absence $absence): bool
