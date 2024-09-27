@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -35,10 +36,12 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+
         return array_merge(parent::share($request), [
-            'current_group' => $request->user()?->currentGroup(),
-            'groups' => $request->user()?->groups,
-            'is_current_group_admin' => $request->user()?->isCurrentGroupAdmin(),
+            'current_group' => Auth::user()?->currentGroup(),
+            'groups' => Auth::user()?->groups,
+            'is_current_group_admin' => Auth::user()?->isCurrentGroupAdmin(),
+            'can_access_admin_panel' => Auth::user()?->hasAnyRole(['admin', 'teacher']),
         ]);
     }
 }

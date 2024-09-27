@@ -4,9 +4,12 @@ import { Link } from "@inertiajs/vue3";
 interface Props {
     href: string;
     as?: string;
+    target?: string;
 }
 
-defineProps<Props>();
+withDefaults(defineProps<Props>(), {
+    target: "_self",
+});
 </script>
 
 <template>
@@ -21,6 +24,7 @@ defineProps<Props>();
         <a
             v-else-if="as == 'a'"
             :href="href"
+            :target="target"
             class="block px-4 py-2 text-sm leading-5 text-gray-700 transition duration-150 ease-in-out hover:bg-gray-100 focus:bg-gray-100 focus:outline-none dark:text-gray-300 dark:hover:bg-gray-800 dark:focus:bg-gray-800">
             <slot />
         </a>

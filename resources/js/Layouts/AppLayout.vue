@@ -303,6 +303,13 @@ const logout = () => {
                                         <!-- Account Management -->
                                         <div class="block px-4 py-2 text-xs text-gray-400">Manage Account</div>
 
+                                        <DropdownLink
+                                            v-if="$page.props.can_access_admin_panel"
+                                            href="/admin"
+                                            as="a"
+                                            target="_blank">
+                                            Admin panel</DropdownLink
+                                        >
                                         <DropdownLink :href="route('profile.show')"> Profile</DropdownLink>
 
                                         <DropdownLink
