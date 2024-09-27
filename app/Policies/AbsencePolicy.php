@@ -27,7 +27,7 @@ class AbsencePolicy
 
     public function update(User $user, Absence $absence): bool
     {
-        return $user->hasRole('admin');
+        return $user->hasRole('admin') || $user->teacher->id === $absence->teacher_id;
     }
 
     public function delete(User $user, Absence $absence): bool
@@ -51,6 +51,6 @@ class AbsencePolicy
 
     public function updateStatus(User $user, Absence $absence): bool
     {
-        return $user->hasRole('admin') || $user->id === $absence->teacher->user_id;
+        return $user->hasRole('admin') || $user->teacher->id === $absence->teacher_id;
     }
 }

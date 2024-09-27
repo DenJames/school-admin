@@ -50,7 +50,11 @@ const absenceForm = useForm({
 function selectAbsence(absence: AbsenceData, shouldDelete: boolean = false) {
     selectedAbsence.value = absence;
 
-    if (shouldDelete) {
+    if (!can(selectedAbsence.value, "updateStatus") && !shouldDelete) {
+        return;
+    }
+
+    if (can(selectedAbsence.value, "delete") && shouldDelete) {
         showDeleteAbsenceModal.value = true;
         return;
     }
