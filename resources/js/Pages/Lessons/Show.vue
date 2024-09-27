@@ -13,11 +13,13 @@ import TextInput from "../../Components/TextInput.vue";
 import Trash from "../../Components/Icons/Trash.vue";
 import ConfirmationModal from "../../Components/ConfirmationModal.vue";
 import { can } from "momentum-lock";
+import List from "../../Components/Homework/List.vue";
 import LessonData = App.Data.LessonData;
 import AbsenceData = App.Data.AbsenceData;
+import HomeworkData = App.Data.HomeworkData;
 
 interface Props {
-    lesson: LessonData;
+    lesson: LessonData & { homeworks: HomeworkData[] };
 }
 
 const props = defineProps<Props>();
@@ -190,7 +192,8 @@ function remove() {
             <div class="col-span-12">
                 <Card>
                     <template #header>Lektier</template>
-                    <div class="p-2">Nogle lektier</div>
+
+                    <List :homework="lesson.homeworks" />
                 </Card>
             </div>
         </div>
