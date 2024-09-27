@@ -50,5 +50,9 @@
         "momentum-lock": "^0.1.2",
         "tippy.js": "^6.3.7",
         "vue-tippy": "^6.4.4"
+    },
+    "optionalDependencies": {
+        "@rollup/rollup-linux-x64-gnu": "4.9.5"
     }
+
 }
