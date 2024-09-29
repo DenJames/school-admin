@@ -5,11 +5,13 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\GroupResource\Pages;
 use App\Filament\Resources\GroupResource\RelationManagers;
 use App\Models\Group;
+use Filament\Facades\Filament;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Auth;
 
 class GroupResource extends Resource
 {
@@ -18,6 +20,31 @@ class GroupResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-s-user-plus';
 
     protected static ?int $navigationSort = 6;
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        return Auth::user()->hasAnyRole(['admin', 'school', 'teacher']);
+    }
+
+    public static function canCreate(): bool
+    {
+        return Filament::auth()->user()->can('create', static::getModel());
+    }
+
+    public static function canView($record): bool
+    {
+        return Filament::auth()->user()->can('view', $record);
+    }
+
+    public static function canEdit($record): bool
+    {
+        return Filament::auth()->user()->can('update', $record);
+    }
+
+    public static function canDelete($record): bool
+    {
+        return Filament::auth()->user()->can('delete', $record);
+    }
 
     public static function form(Form $form): Form
     {

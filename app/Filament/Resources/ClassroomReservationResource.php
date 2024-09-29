@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ClassroomReservationResource\Pages;
 use App\Filament\Resources\ClassroomReservationResource\RelationManagers\LessonsRelationManager;
 use App\Models\ClassroomReservation;
+use Filament\Facades\Filament;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -18,6 +19,31 @@ class ClassroomReservationResource extends Resource
     protected static ?string $model = ClassroomReservation::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        return false;
+    }
+
+    public static function canCreate(): bool
+    {
+        return Filament::auth()->user()->can('create', static::getModel());
+    }
+
+    public static function canView($record): bool
+    {
+        return Filament::auth()->user()->can('view', $record);
+    }
+
+    public static function canEdit($record): bool
+    {
+        return Filament::auth()->user()->can('update', $record);
+    }
+
+    public static function canDelete($record): bool
+    {
+        return Filament::auth()->user()->can('delete', $record);
+    }
 
     public static function form(Form $form): Form
     {

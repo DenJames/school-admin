@@ -5,11 +5,13 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\TeamResource\Pages;
 use App\Filament\Resources\TeamResource\RelationManagers;
 use App\Models\Team;
+use Filament\Facades\Filament;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Auth;
 
 class TeamResource extends Resource
 {
@@ -18,6 +20,31 @@ class TeamResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?int $navigationSort = 5;
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        return Auth::user()->hasAnyRole(['admin', 'school', 'teacher']);
+    }
+
+    public static function canCreate(): bool
+    {
+        return Filament::auth()->user()->can('create', static::getModel());
+    }
+
+    public static function canView($record): bool
+    {
+        return Filament::auth()->user()->can('view', $record);
+    }
+
+    public static function canEdit($record): bool
+    {
+        return Filament::auth()->user()->can('update', $record);
+    }
+
+    public static function canDelete($record): bool
+    {
+        return Filament::auth()->user()->can('delete', $record);
+    }
 
     public static function form(Form $form): Form
     {
@@ -93,21 +120,5 @@ class TeamResource extends Resource
             'create' => Pages\CreateTeam::route('/create'),
             'edit' => Pages\EditTeam::route('/{record}/edit'),
         ];
-    }
-
-    // TODO: Change those to be permission bases once such has been implemented properly.
-    public static function canViewAny(): bool
-    {
-        return true;
-    }
-
-    public static function canEdit($record): bool
-    {
-        return true;
-    }
-
-    public static function canDelete($record): bool
-    {
-        return true;
     }
 }
