@@ -3,7 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\AssignedGradeResource\Pages;
-use App\Filament\Resources\AssignedGradeResource\RelationManagers;
 use App\Models\AssignedGrade;
 use App\Models\Teacher;
 use Filament\Facades\Filament;
@@ -145,7 +144,7 @@ class AssignedGradeResource extends Resource
     public static function getRelations(): array
     {
         return [
-            RelationManagers\TeamRelationManager::class,
+            //
         ];
     }
 

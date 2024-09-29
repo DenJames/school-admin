@@ -12,36 +12,36 @@ class ArticlePolicy
 
     public function viewAny(User $user): bool
     {
-        return $user->hasRole('admin');
+        return $user->hasAnyRole(['admin', 'school']);
     }
 
     public function view(User $user, Article $article): bool
     {
-        return $user->hasRole('admin') || $user->id === $article->user_id || $user->currentTeam->school_id === $article->school_id || $user->current_team_id === $article->team_id;
+        return $user->hasAnyRole(['admin', 'school']) || $user->id === $article->user_id || $user->currentTeam->school_id === $article->school_id || $user->current_team_id === $article->team_id;
     }
 
     public function create(User $user): bool
     {
-        return $user->hasRole('admin') || $user->hasRole('school');
+        return $user->hasAnyRole(['admin', 'school']) || $user->hasRole('school');
     }
 
     public function update(User $user, Article $article): bool
     {
-        return $user->hasRole('admin') || $user->id === $article->user_id;
+        return $user->hasAnyRole(['admin', 'school']) || $user->id === $article->user_id;
     }
 
     public function delete(User $user, Article $article): bool
     {
-        return $user->hasRole('admin') || $user->id === $article->user_id;
+        return $user->hasAnyRole(['admin', 'school']) || $user->id === $article->user_id;
     }
 
     public function restore(User $user, Article $article): bool
     {
-        return $user->hasRole('admin');
+        return $user->hasAnyRole(['admin', 'school']);
     }
 
     public function forceDelete(User $user, Article $article): bool
     {
-        return $user->hasRole('admin');
+        return $user->hasAnyRole(['admin', 'school']);
     }
 }

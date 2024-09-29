@@ -2,21 +2,22 @@
 
 namespace App\Policies;
 
+use App\Models\Classroom;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class UserPolicy
+class ClassroomPolicy
 {
     use HandlesAuthorization;
 
     public function viewAny(User $user): bool
     {
-        return $user->hasAnyRole(['admin', 'school']);
+        return $user->hasAnyRole(['admin', 'school', 'teacher']);
     }
 
-    public function view(User $user, User $model): bool
+    public function view(User $user, Classroom $classroom): bool
     {
-        return $user->hasAnyRole(['admin', 'school']);
+        return $user->hasAnyRole(['admin', 'school', 'teacher']);
     }
 
     public function create(User $user): bool
@@ -24,22 +25,22 @@ class UserPolicy
         return $user->hasAnyRole(['admin', 'school']);
     }
 
-    public function update(User $user, User $model): bool
+    public function update(User $user, Classroom $classroom): bool
     {
         return $user->hasAnyRole(['admin', 'school']);
     }
 
-    public function delete(User $user, User $model): bool
+    public function delete(User $user, Classroom $classroom): bool
     {
         return $user->hasAnyRole(['admin', 'school']);
     }
 
-    public function restore(User $user, User $model): bool
+    public function restore(User $user, Classroom $classroom): bool
     {
         return $user->hasAnyRole(['admin', 'school']);
     }
 
-    public function forceDelete(User $user, User $model): bool
+    public function forceDelete(User $user, Classroom $classroom): bool
     {
         return $user->hasAnyRole(['admin', 'school']);
     }
