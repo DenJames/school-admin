@@ -58,7 +58,7 @@ const props = defineProps<Props>();
                             :key="absence.lesson_id">
                             <tr>
                                 <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-white sm:pl-0">
-                                    {{ new Date(absence.starts_at).toLocaleDateString() }}
+                                    {{ new Date(absence.starts_at).toLocaleDateString("da-DK") }}
                                 </td>
                                 <td class="whitespace-nowrap px-3 py-4 text-sm text-white">
                                     {{
