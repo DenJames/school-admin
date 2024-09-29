@@ -107,6 +107,11 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
         return $this->hasMany(Absence::class);
     }
 
+    public function articles(): HasMany
+    {
+        return $this->hasMany(Article::class);
+    }
+
     public function homeworks()
     {
         return $this->currentTeam->lessons()->with('homeworks')->get()->pluck('homeworks')->flatten();

@@ -8,6 +8,16 @@ user?: App.Data.UserData;
 lesson?: App.Data.LessonData;
 teacher?: App.Data.TeacherData;
 };
+export type ArticleData = {
+id: number;
+isGlobal: boolean;
+title: string;
+content: string;
+publishedAt: string | null;
+user?: App.Data.UserData;
+school?: App.Data.SchoolData;
+team?: App.Data.TeamData;
+};
 export type CityData = {
 id: number;
 name: string;
@@ -109,6 +119,7 @@ export type SchoolData = {
 id: number;
 name: string;
 location?: App.Data.SchoolLocationData;
+articles?: App.Data.ArticleData;
 };
 export type SchoolLocationData = {
 id: number;
@@ -126,6 +137,7 @@ id: number;
 name: string;
 owner?: App.Data.UserData;
 school?: App.Data.SchoolData;
+articles?: App.Data.ArticleData;
 };
 export type UserData = {
 id: number;
@@ -135,5 +147,6 @@ emailVerifiedAt: string | null;
 isGroupAdmin: string;
 profilePhotoUrl: string | null;
 groups?: any | null;
+articles?: App.Data.ArticleData;
 };
 }

@@ -66,7 +66,7 @@ watch(
             <li
                 v-for="recipient in potentialRecipients"
                 :key="recipient.id"
-                class="cursor-pointer px-4 py-2 transition-all hover:bg-gray-700"
+                class="hover:bg-custom-primary cursor-pointer px-4 py-2 transition-all"
                 @click="selectRecipient(recipient)">
                 {{ recipient.name }}
             </li>

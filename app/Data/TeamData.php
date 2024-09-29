@@ -20,6 +20,7 @@ class TeamData extends DataResource
         public string $name,
         public Lazy|UserData $owner,
         public Lazy|SchoolData $school,
+        public Lazy|ArticleData $articles,
     )
     {
     }
@@ -38,6 +39,11 @@ class TeamData extends DataResource
                 'school',
                 $team,
                 fn() => SchoolData::from($team->school)
+            ),
+            articles: Lazy::whenLoaded(
+                'articles',
+                $team,
+                fn() => ArticleData::collect($team->articles)
             ),
         );
     }

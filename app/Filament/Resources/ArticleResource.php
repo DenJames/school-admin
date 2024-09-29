@@ -10,6 +10,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\Str;
 
 class ArticleResource extends Resource
 {
@@ -33,15 +34,26 @@ class ArticleResource extends Resource
                     ->preload()
                     ->searchable()
                     ->default(null),
-                Forms\Components\Toggle::make('is_global')
-                    ->required(),
+                Forms\Components\TextInput::make('slug')
+                    ->readOnly() // Use readOnly to ensure the value is still submitted
+                    ->reactive(),
                 Forms\Components\TextInput::make('title')
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->reactive()
+                    ->lazy()
+                    ->debounce(300)
+                    ->afterStateUpdated(function (callable $set, $state) {
+                        if ($state) {
+                            $set('slug', Str::slug($state));
+                        }
+                    }),
                 Forms\Components\Textarea::make('content')
                     ->required()
                     ->columnSpanFull(),
                 Forms\Components\DateTimePicker::make('published_at'),
+                Forms\Components\Toggle::make('is_global')
+                    ->required(),
             ]);
     }
 

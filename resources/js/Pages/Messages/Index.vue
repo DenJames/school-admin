@@ -39,7 +39,7 @@ const props = defineProps<Props>();
                         :key="message.id">
                         <Link
                             :href="route('messages.show', message.id)"
-                            class="flex items-center justify-between gap-4 border-b border-b-gray-600 p-2 text-sm text-white transition-all hover:bg-gray-700">
+                            class="hover:bg-custom-primary flex items-center justify-between gap-4 border-b border-b-gray-600 p-2 text-sm text-white transition-all">
                             <p class="flex items-center gap-2 truncate">
                                 {{ message.subject }}
                                 <span
@@ -70,7 +70,7 @@ const props = defineProps<Props>();
                         :key="message.id">
                         <Link
                             :href="route('messages.show', message.id)"
-                            class="flex items-center justify-between gap-4 border-b border-b-gray-600 p-2 text-sm text-white transition-all hover:bg-gray-700">
+                            class="hover:bg-custom-primary flex items-center justify-between gap-4 border-b border-b-gray-600 p-2 text-sm text-white transition-all">
                             <p class="truncate">{{ message.subject }}</p>
 
                             <span

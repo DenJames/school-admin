@@ -19,6 +19,7 @@ class SchoolData extends DataResource
         public int    $id,
         public string $name,
         public Lazy|SchoolLocationData $location,
+        public Lazy|ArticleData $articles,
     )
     {
     }
@@ -32,6 +33,11 @@ class SchoolData extends DataResource
                 'location',
                 $school,
                 fn() => SchoolLocationData::from($school->location)
+            ),
+            articles: Lazy::whenLoaded(
+                'articles',
+                $school,
+                fn() => ArticleData::collect($school->articles)
             ),
         );
     }

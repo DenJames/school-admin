@@ -2,11 +2,12 @@
 
 use App\Http\Controllers\AbsenceController;
 use App\Http\Controllers\AbsenceStatusController;
+use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\GroupInvitationController;
 use App\Http\Controllers\GroupMemberController;
-use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\HomeworkController;
 use App\Http\Controllers\LessonController;
 use App\Http\Controllers\MessageController;
@@ -77,6 +78,9 @@ Route::middleware([
     Route::group(['prefix' => 'api', 'name' => 'api'], function () {
         Route::get('/lessons', [LessonController::class, 'json'])->name('lessons.json');
     });
+
+    // Articles
+    Route::get('/articles/{article}', ArticleController::class)->name('articles.show');
 });
 
 // Calender export

@@ -24,6 +24,7 @@ class UserData extends DataResource
         public string               $isGroupAdmin,
         public ?string              $profilePhotoUrl,
         public Lazy|Collection|null $groups,
+        public Lazy|ArticleData     $articles,
     )
     {
     }
@@ -45,6 +46,11 @@ class UserData extends DataResource
                     fn() => GroupData::collect($user->groups)
                 )
                 : null,
+            articles: Lazy::whenLoaded(
+                'articles',
+                $user,
+                fn() => ArticleData::collect($user->articles)
+            ),
         );
     }
 }
