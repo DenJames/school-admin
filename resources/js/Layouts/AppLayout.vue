@@ -310,6 +310,7 @@ const logout = () => {
                                             target="_blank">
                                             Admin panel</DropdownLink
                                         >
+                                        <DropdownLink :href="route('absences.index')"> Fraværsoversigt</DropdownLink>
                                         <DropdownLink :href="route('profile.show')"> Profile</DropdownLink>
 
                                         <DropdownLink

@@ -71,6 +71,8 @@ Route::middleware([
     Route::get('/lessons/{lesson}', [LessonController::class, 'show'])->name('lessons.show');
 
     // Absences
+    Route::get('/absences', [AbsenceController::class, 'index'])->name('absences.index');
+    Route::get('/absences/{team}', [AbsenceController::class, 'show'])->name('absences.show');
     Route::post('/lessons/{lesson}/absence', [AbsenceController::class, 'store'])->name('absences.store');
     Route::delete('/absence/{absence}/delete', [AbsenceController::class, 'destroy'])->name('absences.destroy');
     Route::post('/absence/{absence}/status', AbsenceStatusController::class)->name('absences.status.store');
