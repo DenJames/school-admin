@@ -2,6 +2,7 @@
 import AppLayout from "@/Layouts/AppLayout.vue";
 import Calendar from "@/Components/Lessons/Calendar.vue";
 import TextInput from "@/Components/TextInput.vue";
+import { ref } from "vue";
 
 interface Props {
     now: string;
@@ -11,6 +12,19 @@ interface Props {
 const props = defineProps<Props>();
 
 const export_route = props.uuid ? route("lessons.export", props.uuid) : null;
+const copySuccessful = ref(false);
+
+function copyExportRouteUrl() {
+    console.log(export_route);
+    if (export_route) {
+        if (navigator.clipboard.writeText(export_route)) {
+            copySuccessful.value = true;
+            setTimeout(() => {
+                copySuccessful.value = false;
+            }, 3000);
+        }
+    }
+}
 </script>
 
 <template>
@@ -26,8 +40,14 @@ const export_route = props.uuid ? route("lessons.export", props.uuid) : null;
                 <TextInput
                     v-if="export_route"
                     :model-value="export_route"
-                    disabled
-                    class="mt-1 w-full"></TextInput>
+                    readonly
+                    class="mt-1 w-full"
+                    @click="copyExportRouteUrl"></TextInput>
+                <p
+                    v-if="copySuccessful"
+                    class="mt-2 text-green-500">
+                    Kopieret til udklipsholder
+                </p>
             </div>
         </div>
     </AppLayout>
