@@ -1,12 +1,17 @@
 <script setup lang="ts">
 import AppLayout from "@/Layouts/AppLayout.vue";
 import Calendar from "@/Components/Lessons/Calendar.vue";
+import TextInput from "@/Components/TextInput.vue";
+import InputLabel from "@/Components/InputLabel.vue";
 
 interface Props {
     now: string;
+    uuid: string;
 }
 
-defineProps<Props>();
+const props = defineProps<Props>();
+
+const export_route = route("lessons.export", props.uuid);
 </script>
 
 <template>
@@ -18,6 +23,11 @@ defineProps<Props>();
         <div class="py-12">
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
                 <Calendar :now="now" />
+                <p class="mt-2 dark:text-white">Eksporter kalender</p>
+                <TextInput
+                    :model-value="export_route"
+                    disabled
+                    class="mt-1 w-full"></TextInput>
             </div>
         </div>
     </AppLayout>

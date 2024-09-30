@@ -23,6 +23,7 @@ class LessonController extends Controller
 
         return Inertia::render('Lessons/Index', [
             'now' => $datetime_string,
+            'uuid' => auth()->user()->uuid,
         ]);
     }
 
@@ -64,7 +65,7 @@ class LessonController extends Controller
             ];
         }
 
-        
+
 
         return response()->json($lessons);
 
