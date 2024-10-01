@@ -5,6 +5,7 @@ namespace App\Actions\Jetstream;
 use App\Models\Team;
 use App\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\ValidationException;
 use Laravel\Jetstream\Contracts\RemovesTeamMembers;
@@ -17,7 +18,9 @@ class RemoveTeamMember implements RemovesTeamMembers
      */
     public function remove(User $user, Team $team, User $teamMember): void
     {
-        $this->authorize($user, $team, $teamMember);
+        if (!Auth::user()->ownsTeam($team) && Auth::user()->currentTeamRole() !== 'admin') {
+            throw new AuthorizationException;
+        }
 
         $this->ensureUserDoesNotOwnTeam($teamMember, $team);
 

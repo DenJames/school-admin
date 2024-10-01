@@ -7,6 +7,7 @@ use App\Mail\GroupInvitationMail;
 use App\Models\Group;
 use App\Models\GroupInvitation;
 use App\Models\User;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -18,7 +19,7 @@ class GroupInvitationController extends Controller
     public function store(GroupInvitationFormRequest $request, Group $group): RedirectResponse
     {
         if (!Auth::user()?->isCurrentGroupAdmin()) {
-            abort(403);
+            throw new AuthorizationException;
         }
 
         $receiver = User::find($request->input('recipient.id'));
@@ -52,7 +53,7 @@ class GroupInvitationController extends Controller
         $invitation = GroupInvitation::where('token', $token)->firstOrFail();
 
         if ($invitation->user_id !== Auth::id()) {
-            abort(403);
+            throw new AuthorizationException;
         }
 
         $invitation->group->users()->attach($invitation->user_id, ['group_role_id' => $invitation->group_role_id]);
@@ -71,7 +72,7 @@ class GroupInvitationController extends Controller
     public function destroy(GroupInvitation $groupInvitation): RedirectResponse
     {
         if (!Auth::user()?->isCurrentGroupAdmin()) {
-            abort(403);
+            throw new AuthorizationException;
         }
 
         $groupInvitation->delete();

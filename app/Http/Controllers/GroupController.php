@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\GroupFormRequest;
 use App\Models\Group;
 use App\Models\GroupRole;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -41,7 +42,7 @@ class GroupController extends Controller
     public function show(Group $group)
     {
         if (!$group->users->contains(Auth::id())) {
-            abort(403);
+            throw new AuthorizationException;
         }
 
         return Inertia::render('Groups/Show', [
@@ -53,7 +54,7 @@ class GroupController extends Controller
     public function update(GroupFormRequest $request, Group $group)
     {
         if (!$group->isOwner()) {
-            abort(403);
+            throw new AuthorizationException;
         }
 
         $group->update($request->validated());
@@ -64,7 +65,7 @@ class GroupController extends Controller
     public function destroy(Group $group)
     {
         if (!$group->isOwner()) {
-            abort(403);
+            throw new AuthorizationException;
         }
 
         $user = Auth::user();
@@ -81,7 +82,7 @@ class GroupController extends Controller
     public function switch(Request $request)
     {
         if (!$request->user()->groups->contains($request->group_id)) {
-            abort(403);
+            throw new AuthorizationException;
         }
 
         $request->user()->update([

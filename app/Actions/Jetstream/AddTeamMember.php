@@ -5,7 +5,8 @@ namespace App\Actions\Jetstream;
 use App\Models\Team;
 use App\Models\User;
 use Closure;
-use Illuminate\Support\Facades\Gate;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Jetstream\Contracts\AddsTeamMembers;
 use Laravel\Jetstream\Events\AddingTeamMember;
@@ -20,7 +21,9 @@ class AddTeamMember implements AddsTeamMembers
      */
     public function add(User $user, Team $team, string $email, ?string $role = null): void
     {
-        Gate::forUser($user)->authorize('addTeamMember', $team);
+        if (!Auth::user()->ownsTeam($team) && Auth::user()->currentTeamRole() !== 'admin') {
+            throw new AuthorizationException;
+        }
 
         $this->validate($team, $email, $role);
 
@@ -60,8 +63,8 @@ class AddTeamMember implements AddsTeamMembers
         return array_filter([
             'email' => ['required', 'email', 'exists:users'],
             'role' => Jetstream::hasRoles()
-                            ? ['required', 'string', new Role]
-                            : null,
+                ? ['required', 'string', new Role]
+                : null,
         ]);
     }
 

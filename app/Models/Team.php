@@ -90,5 +90,4 @@ class Team extends JetstreamTeam
     {
         return $this->hasMany(Lesson::class);
     }
-
 }

@@ -8,6 +8,7 @@ use App\Models\City;
 use App\Models\ClassCategory;
 use App\Models\Classroom;
 use App\Models\ClassroomReservation;
+use App\Models\Country;
 use App\Models\Group;
 use App\Models\GroupRole;
 use App\Models\Lesson;
@@ -26,6 +27,178 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+
+        // check if app is in production
+        if (config('app.env') === 'production') {
+            if (User::count()) {
+                return;
+            }
+
+            $country = Country::factory()->create([
+                'name' => 'Denmark',
+                'iso' => 'DK',
+            ]);
+
+            $city = City::factory()->create([
+                'name' => 'Viborg',
+                'country_id' => $country->id,
+                'zip_code' => '8800',
+            ]);
+
+            $schoolLocation = SchoolLocation::factory()->create([
+                'city_id' => $city->id,
+                'address' => 'H. C. Andersens Vej 9',
+            ]);
+
+            $school = School::factory()->create([
+                'name' => 'Mercantec',
+                'school_location_id' => $schoolLocation->id,
+            ]);
+
+            Role::upsert([
+                ['name' => 'admin', 'guard_name' => 'web'],
+                ['name' => 'school', 'guard_name' => 'web'],
+                ['name' => 'teacher', 'guard_name' => 'web'],
+                ['name' => 'student', 'guard_name' => 'web'],
+            ], ['name'], ['guard_name']);
+
+            $adminUser = User::factory()->create([
+                'name' => 'Admin',
+                'email' => 'admin@example.com',
+            ]);
+
+            $adminUser->assignRole('admin');
+
+            $schoolUser = User::factory()->create([
+                'name' => 'School',
+                'email' => 'school@example.com',
+            ]);
+
+            $schoolUser->assignRole('school');
+
+            // Create 2 teacher users
+            $teacher1 = User::factory()->create([
+                'name' => 'Henrik',
+                'email' => 'henrik@example.com',
+            ]);
+
+            $teacher1->assignRole('teacher');
+
+            $teacher2 = User::factory()->create([
+                'name' => 'Sensor',
+                'email' => 'sensor@example.com',
+            ]);
+
+            $teacher2->assignRole('teacher');
+
+            $student1 = User::factory()->create([
+                'name' => 'Oliver',
+                'email' => 'oliver@example.com',
+            ]);
+
+            $student1->assignRole('student');
+
+            $student2 = User::factory()->create([
+                'name' => 'Dennis',
+                'email' => 'dennis@example.com',
+            ]);
+
+            $student2->assignRole('student');
+
+            $team = Team::factory()->create([
+                'user_id' => $teacher1->id,
+                'name' => 'Datatek. prg. svendeprøve sep. 2024',
+                'school_id' => $school->id,
+            ]);
+
+            // Set the user's current team
+            $adminUser->update(['current_team_id' => $team->id]);
+            $teacher1->update(['current_team_id' => $team->id]);
+            $teacher2->update(['current_team_id' => $team->id]);
+            $schoolUser->update(['current_team_id' => $team->id]);
+            $student1->update(['current_team_id' => $team->id]);
+            $student2->update(['current_team_id' => $team->id]);
+
+            $team->users()->attach($adminUser, ['role' => 'admin']);
+            $team->users()->attach($teacher1, ['role' => 'admin']);
+            $team->users()->attach($teacher2, ['role' => 'admin']);
+            $team->users()->attach($schoolUser, ['role' => 'admin']);
+            $team->users()->attach($student1, ['role' => 'member']);
+            $team->users()->attach($student2, ['role' => 'member']);
+
+            $classrooms = [
+                [
+                    'school_id' => $school->id,
+                    'name' => 'Bill gates',
+                ],
+                [
+                    'school_id' => $school->id,
+                    'name' => 'Steve Jobs',
+                ],
+                [
+                    'school_id' => $school->id,
+                    'name' => 'Linus Torvalds',
+                ],
+                [
+                    'school_id' => $school->id,
+                    'name' => 'Larry Page',
+                ],
+                [
+                    'school_id' => $school->id,
+                    'name' => 'Sergej Brin',
+                ],
+                [
+                    'school_id' => $school->id,
+                    'name' => 'Charles babbage',
+                ],
+                [
+                    'school_id' => $school->id,
+                    'name' => 'Peter Naur',
+                ],
+                [
+                    'school_id' => $school->id,
+                    'name' => 'Margaret Hamilton',
+                ],
+                [
+                    'school_id' => $school->id,
+                    'name' => 'Bjarne Stroustrup',
+                ],
+            ];
+
+            foreach ($classrooms as $classroom) {
+                Classroom::factory()->create($classroom);
+            }
+
+            $classCategories = collect([
+                'Math',
+                'Science',
+                'History',
+                'Literature',
+                'Physical Education',
+                'Music',
+                'Art',
+                'Computer Science',
+                'Foreign Language',
+                'Geography',
+                'Programmering',
+                'Svendeprøve',
+                'GF1',
+                'GF2',
+                'H1',
+                'H2',
+                'H3',
+                'H4',
+                'H5',
+                'H6',
+            ]);
+
+            $classCategories->each(function ($category) {
+                ClassCategory::firstOrCreate(['name' => $category]);
+            });
+
+            return;
+        }
+
         if (!City::count()) {
             $cities = City::factory(10)->create();
         } else {

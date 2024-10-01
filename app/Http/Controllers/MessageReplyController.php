@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\MessageReplyFormRequest;
 use App\Models\Message;
 use App\Models\MessageReply;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 
@@ -13,7 +14,7 @@ class MessageReplyController extends Controller
     public function store(Message $message, MessageReplyFormRequest $request): RedirectResponse
     {
         if (!$message->hasAccess()) {
-            abort(403);
+            throw new AuthorizationException;
         }
 
         $message->replies()->create([
@@ -27,7 +28,7 @@ class MessageReplyController extends Controller
     public function update(MessageReply $reply, MessageReplyFormRequest $request): RedirectResponse
     {
         if ($reply->user()->isNot(Auth::user())) {
-            abort(403);
+            throw new AuthorizationException;
         }
 
         $reply->update([
@@ -40,7 +41,7 @@ class MessageReplyController extends Controller
     public function destroy(MessageReply $reply): RedirectResponse
     {
         if ($reply->user()->isNot(Auth::user())) {
-            abort(403);
+            throw new AuthorizationException;
         }
 
         $reply->delete();

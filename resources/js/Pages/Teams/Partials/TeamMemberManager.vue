@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { router, useForm, usePage } from "@inertiajs/vue3";
 import ActionMessage from "@/Components/ActionMessage.vue";
 import ActionSection from "@/Components/ActionSection.vue";
@@ -40,6 +40,10 @@ const currentlyManagingRole = ref(false);
 const managingRoleFor = ref(null);
 const confirmingLeavingTeam = ref(false);
 const teamMemberBeingRemoved = ref(null);
+
+const isAdmin = computed(() => {
+    return props.team.users.find((user) => user.id === page.props.auth.user.id)?.membership.role === "admin";
+});
 
 const addTeamMember = () => {
     addTeamMemberForm.post(route("team-members.store", props.team), {
@@ -96,7 +100,7 @@ const displayableRole = (userRole) => {
 
 <template>
     <div>
-        <div v-if="userPermissions.canAddTeamMembers">
+        <div v-if="isAdmin">
             <SectionBorder />
 
             <!-- Add Team Member -->
@@ -206,7 +210,7 @@ const displayableRole = (userRole) => {
             </FormSection>
         </div>
 
-        <div v-if="team.team_invitations.length > 0 && userPermissions.canAddTeamMembers">
+        <div v-if="team.team_invitations.length > 0 && isAdmin">
             <SectionBorder />
 
             <!-- Team Member Invitations -->
@@ -232,7 +236,7 @@ const displayableRole = (userRole) => {
                             <div class="flex items-center">
                                 <!-- Cancel Team Invitation -->
                                 <button
-                                    v-if="userPermissions.canRemoveTeamMembers"
+                                    v-if="isAdmin"
                                     class="ms-6 cursor-pointer text-sm text-red-500 focus:outline-none"
                                     @click="cancelTeamInvitation(invitation)">
                                     Cancel
@@ -273,7 +277,7 @@ const displayableRole = (userRole) => {
                             <div class="flex items-center">
                                 <!-- Manage Team Member Role -->
                                 <button
-                                    v-if="userPermissions.canUpdateTeamMembers && availableRoles.length"
+                                    v-if="isAdmin"
                                     class="ms-2 text-sm text-gray-400 underline"
                                     @click="manageRole(user)">
                                     {{ displayableRole(user.membership.role) }}
@@ -295,7 +299,7 @@ const displayableRole = (userRole) => {
 
                                 <!-- Remove Team Member -->
                                 <button
-                                    v-else-if="userPermissions.canRemoveTeamMembers"
+                                    v-else-if="isAdmin"
                                     class="ms-6 cursor-pointer text-sm text-red-500"
                                     @click="confirmTeamMemberRemoval(user)">
                                     Remove

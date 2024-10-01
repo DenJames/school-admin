@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Document;
-use Illuminate\Http\Request;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
@@ -16,7 +16,7 @@ class DocumentController extends Controller
             return response()->download(Storage::disk('public')->path($document->path), $document->filename);
         }
 
-        abort(403);
+        throw new AuthorizationException;
     }
 
     public function delete(Document $document)
@@ -28,7 +28,7 @@ class DocumentController extends Controller
             return redirect()->back();
         }
 
-        abort(403);
+        throw new AuthorizationException;
     }
 
     public function view(Document $document)
@@ -37,6 +37,6 @@ class DocumentController extends Controller
             return response()->file(Storage::disk('public')->path($document->path));
         }
 
-        abort(403);
+        throw new AuthorizationException;
     }
 }

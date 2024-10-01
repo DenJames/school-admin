@@ -12,6 +12,7 @@ use App\Http\Controllers\HomeworkController;
 use App\Http\Controllers\LessonController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\MessageReplyController;
+use App\Http\Controllers\TeamInvitationController;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -83,6 +84,10 @@ Route::middleware([
 
     // Articles
     Route::get('/articles/{article}', ArticleController::class)->name('articles.show');
+
+    // Override vendor
+    Route::delete('/team-invitations/{invitation}', [TeamInvitationController::class, 'destroy'])
+        ->name('team-invitations.destroy');
 });
 
 // Calender export

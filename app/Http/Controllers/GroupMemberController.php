@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Group;
 use App\Models\User;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -22,7 +23,7 @@ class GroupMemberController extends Controller
     public function destroy(Group $group, User $user): RedirectResponse
     {
         if (!$group->isOwner() && !$user->isCurrentGroupAdmin() && $user->id !== Auth::id()) {
-            abort(403);
+            throw new AuthorizationException;
         }
 
         $group->members()->where('user_id', $user->id)->delete();

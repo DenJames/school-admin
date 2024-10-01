@@ -4,6 +4,8 @@ namespace App\Actions\Jetstream;
 
 use App\Models\Team;
 use App\Models\User;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Laravel\Jetstream\Contracts\DeletesTeams;
 use Laravel\Jetstream\Contracts\DeletesUsers;
@@ -22,6 +24,10 @@ class DeleteUser implements DeletesUsers
      */
     public function delete(User $user): void
     {
+        if (($user->id !== Auth::id() && Auth::user()->currentTeamRole() !== 'admin')) {
+            throw new AuthorizationException;
+        }
+
         DB::transaction(function () use ($user) {
             $this->deleteTeams($user);
             $user->deleteProfilePhoto();

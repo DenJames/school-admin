@@ -6,6 +6,7 @@ use App\Data\MessageData;
 use App\Http\Requests\MessageFormRequest;
 use App\Models\Message;
 use App\Models\User;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -30,7 +31,7 @@ class MessageController extends Controller
     public function show(Message $message)
     {
         if (!$message->hasAccess()) {
-            abort(403);
+            throw new AuthorizationException;
         }
 
         $message->markAsRead();
@@ -62,7 +63,7 @@ class MessageController extends Controller
     public function update(Message $message, MessageFormRequest $request)
     {
         if ($message->user_id !== Auth::id()) {
-            abort(403);
+            throw new AuthorizationException;
         }
 
         $message->update([
@@ -76,7 +77,7 @@ class MessageController extends Controller
     public function destroy(Message $message): RedirectResponse
     {
         if ($message->user_id !== Auth::id()) {
-            abort(403);
+            throw new AuthorizationException;
         }
 
         $message->delete();

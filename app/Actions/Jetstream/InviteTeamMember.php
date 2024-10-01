@@ -5,8 +5,9 @@ namespace App\Actions\Jetstream;
 use App\Models\Team;
 use App\Models\User;
 use Closure;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Query\Builder;
-use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -23,7 +24,9 @@ class InviteTeamMember implements InvitesTeamMembers
      */
     public function invite(User $user, Team $team, string $email, ?string $role = null): void
     {
-        Gate::forUser($user)->authorize('addTeamMember', $team);
+        if (!Auth::user()->ownsTeam($team) && Auth::user()->currentTeamRole() !== 'admin') {
+            throw new AuthorizationException;
+        }
 
         $this->validate($team, $email, $role);
 

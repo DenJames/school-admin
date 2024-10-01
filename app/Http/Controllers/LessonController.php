@@ -8,6 +8,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use DateTime;
 use DateTimeZone;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
@@ -82,7 +83,7 @@ class LessonController extends Controller
         $user = User::where('uuid', $uuid)->firstOrFail();
 
         if (!$user->id) {
-            abort(403);
+            throw new AuthorizationException;
         }
 
         $teams = $user->allTeams();

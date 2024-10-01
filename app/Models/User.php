@@ -171,4 +171,9 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
     {
         return $this->currentGroupRole() === 'admin' || $this->currentGroup(loadMembers: false)?->userId === $this->id;
     }
+
+    public function currentTeamRole(): string|null
+    {
+        return $this->currentTeam->members()->where('user_id', $this->id)->first()->pivot->role;
+    }
 }
