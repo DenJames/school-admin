@@ -18,6 +18,16 @@ defineProps<Props>();
 
 const showingNavigationDropdown = ref(false);
 
+const switchToTeam = (team) => {
+    router.put(
+        route("current-team.update"),
+        { team_id: team.id },
+        {
+            preserveState: false,
+        },
+    );
+};
+
 const swithToGroup = (group) => {
     router.put(
         route("groups.switch"),
@@ -230,7 +240,7 @@ const logout = () => {
                                                 <template
                                                     v-for="team in $page.props.auth.user.all_teams"
                                                     :key="team.id">
-                                                    <form @submit.prevent="swithToGroup(team)">
+                                                    <form @submit.prevent="switchToTeam(team)">
                                                         <DropdownLink as="button">
                                                             <div class="flex items-center">
                                                                 <svg
