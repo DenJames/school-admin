@@ -110,10 +110,10 @@ test('that only the author can delete the message', function () {
     loginAsUser($recipient);
 
     delete(route('messages.destroy', $message))
-        ->assertStatus(403);
+    ->assertStatus(403);
 
-    assert(count($sender->messages) === 1);
-    assert(count($recipient->receivedMessages) === 1);
+    expect($sender->messages)->toHaveCount(1)
+        ->and($recipient->receivedMessages)->toHaveCount(1);
 });
 
 

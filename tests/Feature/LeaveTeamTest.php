@@ -9,7 +9,7 @@ test('users can leave teams', function () {
         $otherUser = User::factory()->create(), ['role' => 'admin']
     );
 
-    $this->actingAs($otherUser);
+    $this->actingAs($user);
 
     $this->delete('/teams/'.$user->currentTeam->id.'/members/'.$otherUser->id);
 

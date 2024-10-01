@@ -174,6 +174,6 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
 
     public function currentTeamRole(): string|null
     {
-        return $this->currentTeam->members()->where('user_id', $this->id)->first()->pivot->role;
+        return $this->currentTeam?->members()->where('user_id', $this->id)->first()->pivot->role;
     }
 }

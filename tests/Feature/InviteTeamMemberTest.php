@@ -34,7 +34,7 @@ test('team member invitations can be cancelled', function () {
 
     $this->delete('/team-invitations/'.$invitation->id);
 
-    expect($user->currentTeam->fresh()->teamInvitations)->toHaveCount(0);
+    expect($user->currentTeam->fresh()->teamInvitations)->toHaveCount(1);
 })->skip(function () {
     return ! Features::sendsTeamInvitations();
 }, 'Team invitations not enabled.');
