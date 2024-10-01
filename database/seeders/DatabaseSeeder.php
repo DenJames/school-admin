@@ -91,6 +91,16 @@ class DatabaseSeeder extends Seeder
 
             $teacher2->assignRole('teacher');
 
+            Teacher::factory()->create([
+                'school_id' => $school->id,
+                'user_id' => $teacher1->id,
+            ]);
+
+            Teacher::factory()->create([
+                'school_id' => $school->id,
+                'user_id' => $teacher2->id,
+            ]);
+
             $student1 = User::factory()->create([
                 'name' => 'Oliver',
                 'email' => 'oliver@example.com',
