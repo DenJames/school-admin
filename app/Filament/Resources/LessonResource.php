@@ -68,7 +68,6 @@ class LessonResource extends Resource
                     ->searchable()
                     ->default(null),
                 Forms\Components\Select::make('teacher_id')
-                    ->relationship('teacher', 'id')
                     ->options(function () {
                         return \App\Models\Teacher::all()->load('user')->pluck('user.name', 'id');
                     })
@@ -98,7 +97,7 @@ class LessonResource extends Resource
                 Tables\Columns\TextColumn::make('classroomReservation.id')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('teacher.id')
+                Tables\Columns\TextColumn::make('teacher.user.name')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('name')
