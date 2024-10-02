@@ -105,16 +105,14 @@ const displayableRole = (userRole) => {
 
             <!-- Add Team Member -->
             <FormSection @submitted="addTeamMember">
-                <template #title> Add Team Member</template>
+                <template #title> Tilføj team medlem</template>
 
-                <template #description>
-                    Add a new team member to your team, allowing them to collaborate with you.
-                </template>
+                <template #description> Tilføj en ny teammedlem til dit team, så de kan samarbejde med dig. </template>
 
                 <template #form>
                     <div class="col-span-6">
                         <div class="max-w-xl text-sm text-gray-600 dark:text-gray-400">
-                            Please provide the email address of the person you would like to add to this team.
+                            Angiv venligst e-mailadressen på den person, du ønsker at tilføje til dette team.
                         </div>
                     </div>
 
@@ -139,7 +137,7 @@ const displayableRole = (userRole) => {
                         class="col-span-6 lg:col-span-4">
                         <InputLabel
                             for="roles"
-                            value="Role" />
+                            value="Rolle" />
                         <InputError
                             :message="addTeamMemberForm.errors.role"
                             class="mt-2" />
@@ -198,13 +196,13 @@ const displayableRole = (userRole) => {
                     <ActionMessage
                         :on="addTeamMemberForm.recentlySuccessful"
                         class="me-3">
-                        Added.
+                        Tilføjet.
                     </ActionMessage>
 
                     <PrimaryButton
                         :class="{ 'opacity-25': addTeamMemberForm.processing }"
                         :disabled="addTeamMemberForm.processing">
-                        Add
+                        Tilføj
                     </PrimaryButton>
                 </template>
             </FormSection>
@@ -215,11 +213,11 @@ const displayableRole = (userRole) => {
 
             <!-- Team Member Invitations -->
             <ActionSection class="mt-10 sm:mt-0">
-                <template #title> Pending Team Invitations</template>
+                <template #title> Afventende teaminvitationer</template>
 
                 <template #description>
-                    These people have been invited to your team and have been sent an invitation email. They may join
-                    the team by accepting the email invitation.
+                    Disse personer er blevet inviteret til dit team og har modtaget en invitationsmail. De kan deltage i
+                    teamet ved at acceptere invitationsmailen.
                 </template>
 
                 <!-- Pending Team Member Invitation List -->
@@ -253,9 +251,9 @@ const displayableRole = (userRole) => {
 
             <!-- Manage Team Members -->
             <ActionSection class="mt-10 sm:mt-0">
-                <template #title> Team Members</template>
+                <template #title> Team medlemmer</template>
 
-                <template #description> All of the people that are part of this team.</template>
+                <template #description> Alle de personer, der er en del af dette team.</template>
 
                 <!-- Team Member List -->
                 <template #content>
@@ -294,7 +292,7 @@ const displayableRole = (userRole) => {
                                     v-if="$page.props.auth.user.id === user.id"
                                     class="ms-6 cursor-pointer text-sm text-red-500"
                                     @click="confirmLeavingTeam">
-                                    Leave
+                                    Forlad
                                 </button>
 
                                 <!-- Remove Team Member -->
@@ -302,7 +300,7 @@ const displayableRole = (userRole) => {
                                     v-else-if="isAdmin"
                                     class="ms-6 cursor-pointer text-sm text-red-500"
                                     @click="confirmTeamMemberRemoval(user)">
-                                    Remove
+                                    Fjern
                                 </button>
                             </div>
                         </div>
@@ -315,7 +313,7 @@ const displayableRole = (userRole) => {
         <DialogModal
             :show="currentlyManagingRole"
             @close="currentlyManagingRole = false">
-            <template #title> Manage Role</template>
+            <template #title> Håndter rolle</template>
 
             <template #content>
                 <div v-if="managingRoleFor">
@@ -373,7 +371,7 @@ const displayableRole = (userRole) => {
                     :class="{ 'opacity-25': updateRoleForm.processing }"
                     :disabled="updateRoleForm.processing"
                     @click="updateRole">
-                    Save
+                    Gem
                 </PrimaryButton>
             </template>
         </DialogModal>
@@ -382,9 +380,9 @@ const displayableRole = (userRole) => {
         <ConfirmationModal
             :show="confirmingLeavingTeam"
             @close="confirmingLeavingTeam = false">
-            <template #title> Leave Team</template>
+            <template #title> Forlad team</template>
 
-            <template #content> Are you sure you would like to leave this team?</template>
+            <template #content> Er du sikker på, at du ønsker at forlade dette team?</template>
 
             <template #footer>
                 <SecondaryButton @click="confirmingLeavingTeam = false"> Cancel</SecondaryButton>
@@ -394,7 +392,7 @@ const displayableRole = (userRole) => {
                     :class="{ 'opacity-25': leaveTeamForm.processing }"
                     :disabled="leaveTeamForm.processing"
                     @click="leaveTeam">
-                    Leave
+                    Forlad
                 </DangerButton>
             </template>
         </ConfirmationModal>
@@ -403,9 +401,9 @@ const displayableRole = (userRole) => {
         <ConfirmationModal
             :show="teamMemberBeingRemoved"
             @close="teamMemberBeingRemoved = null">
-            <template #title> Remove Team Member</template>
+            <template #title> Fjern team medlem</template>
 
-            <template #content> Are you sure you would like to remove this person from the team?</template>
+            <template #content> Er du sikker på, at du ønsker at fjerne denne person fra teamet?</template>
 
             <template #footer>
                 <SecondaryButton @click="teamMemberBeingRemoved = null"> Cancel</SecondaryButton>
@@ -415,7 +413,7 @@ const displayableRole = (userRole) => {
                     :class="{ 'opacity-25': removeTeamMemberForm.processing }"
                     :disabled="removeTeamMemberForm.processing"
                     @click="removeTeamMember">
-                    Remove
+                    Fjern
                 </DangerButton>
             </template>
         </ConfirmationModal>

@@ -96,7 +96,7 @@ const closeModal = () => {
 </script>
 
 <template>
-    <AppLayout title="Messages">
+    <AppLayout title="Beskeder">
         <template #header>
             <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">{{ message.subject }}</h2>
         </template>
@@ -118,7 +118,7 @@ const closeModal = () => {
                                 <span
                                     v-if="message.sender"
                                     class="text-xs text-white/50">
-                                    Sent by: {{ message.sender.name }} - {{ message.createdAt }}
+                                    Sendt af: {{ message.sender.name }} - {{ message.createdAt }}
                                 </span>
 
                                 <div
@@ -145,7 +145,7 @@ const closeModal = () => {
             <div>
                 <Card>
                     <template #header>
-                        Replies
+                        Svar
 
                         <button
                             class="absolute right-2 top-1 rounded-md p-1 transition-all hover:bg-gray-800"
@@ -162,7 +162,7 @@ const closeModal = () => {
                                 v-model="form.content"
                                 class="w-full rounded-md bg-gray-700 p-2"
                                 rows="3"
-                                placeholder="Type your reply here"
+                                placeholder="Skriv dit svar her"
                                 required></textarea>
 
                             <button
@@ -188,12 +188,12 @@ const closeModal = () => {
             <DialogModal
                 :show="confirmingMessageDeletion"
                 @close="closeModal">
-                <template #title> Delete Message</template>
+                <template #title> Slet besked</template>
 
                 <template #content>
-                    Are you sure you want to delete your message? Once deleted, we won't be able to restore any data
-                    related to it. Please enter your password to confirm you would like to permanently delete your
-                    message.
+                    Er du sikker på, at du vil slette din besked? Når den er slettet, kan vi ikke gendanne nogen data
+                    relateret til den. Indtast venligst din adgangskode for at bekræfte, at du vil slette din besked
+                    permanent.
                 </template>
 
                 <template #footer>
@@ -202,7 +202,7 @@ const closeModal = () => {
                     <DangerButton
                         class="ms-3"
                         @click="deleteMessage">
-                        Delete message
+                        Slet besked
                     </DangerButton>
                 </template>
             </DialogModal>
@@ -211,41 +211,41 @@ const closeModal = () => {
             <DialogModal
                 :show="confirmingMessageEdit"
                 @close="closeModal">
-                <template #title> Edit Message</template>
+                <template #title> Rediger besked</template>
 
                 <template #content>
                     <InputLabel
                         for="subject"
-                        value="Subject">
+                        value="Emne">
                     </InputLabel>
                     <input
                         v-model="messageForm.subject"
                         class="mt-1 w-full rounded-md bg-gray-700 p-2 text-white"
                         type="text"
-                        placeholder="Type your subject here" />
+                        placeholder="Skriv dit emne her" />
                     <InputError :message="messageForm.errors.subject" />
 
                     <InputLabel
                         class="mt-4"
                         for="content"
-                        value="Content">
+                        value="Besked">
                     </InputLabel>
                     <textarea
                         v-model="messageForm.content"
                         class="mt-1 w-full rounded-md bg-gray-700 p-2 text-white"
                         rows="3"
-                        placeholder="Type your reply here"></textarea>
+                        placeholder="Skriv dit svar her"></textarea>
 
                     <InputError :message="messageForm.errors.content" />
                 </template>
 
                 <template #footer>
-                    <SecondaryButton @click="closeModal"> Cancel</SecondaryButton>
+                    <SecondaryButton @click="closeModal"> Annuller</SecondaryButton>
 
                     <PrimaryButton
                         class="ms-3"
                         @click="submitEdit">
-                        Update message
+                        Opdater besked
                     </PrimaryButton>
                 </template>
             </DialogModal>

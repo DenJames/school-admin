@@ -37,9 +37,9 @@ function setRecipient(recipient) {
 </script>
 
 <template>
-    <AppLayout title="Messages">
+    <AppLayout title="Beskeder">
         <template #header>
-            <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">Send message</h2>
+            <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">Send besked</h2>
         </template>
 
         <Card
@@ -61,13 +61,13 @@ function setRecipient(recipient) {
                 <div>
                     <InputLabel
                         for="subject"
-                        value="Subject" />
+                        value="Emne" />
                     <TextInput
                         id="subject"
                         v-model="form.subject"
                         type="text"
                         class="mt-1 block w-full"
-                        placeholder="Enter a subject for the message"
+                        placeholder="Indtast et emne for beskeden"
                         required
                         autofocus
                         autocomplete="off" />
@@ -79,7 +79,7 @@ function setRecipient(recipient) {
                 <div class="col-span-2">
                     <InputLabel
                         for="content"
-                        value="Message" />
+                        value="Besked" />
                     <textarea
                         id="content"
                         v-model="form.content"

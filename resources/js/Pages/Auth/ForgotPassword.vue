@@ -23,7 +23,7 @@ const submit = () => {
 </script>
 
 <template>
-    <Head title="Forgot Password" />
+    <Head title="Glemt adgangskode" />
 
     <AuthenticationCard>
         <template #logo>
@@ -31,8 +31,8 @@ const submit = () => {
         </template>
 
         <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">
-            Forgot your password? No problem. Just let us know your email address and we will email you a password reset
-            link that will allow you to choose a new one.
+            Glemt din adgangskode? Intet problem. Giv os blot din e-mailadresse, så sender vi dig et link til
+            nulstilling af adgangskoden, der giver dig mulighed for at vælge en ny.
         </div>
 
         <div
@@ -63,7 +63,7 @@ const submit = () => {
                 <PrimaryButton
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing">
-                    Email Password Reset Link
+                    Send link til nulstilling af adgangskode
                 </PrimaryButton>
             </div>
         </form>

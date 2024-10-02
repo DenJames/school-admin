@@ -39,15 +39,17 @@ const updatePassword = () => {
 
 <template>
     <FormSection @submitted="updatePassword">
-        <template #title> Update Password</template>
+        <template #title> Opdater adgangskode</template>
 
-        <template #description> Ensure your account is using a long, random password to stay secure.</template>
+        <template #description>
+            Sørg for, at din konto bruger en lang, tilfældig adgangskode for at være sikker.</template
+        >
 
         <template #form>
             <div class="col-span-6 sm:col-span-4">
                 <InputLabel
                     for="current_password"
-                    value="Current Password" />
+                    value="Aktuel adgangskode" />
                 <TextInput
                     id="current_password"
                     ref="currentPasswordInput"
@@ -63,7 +65,7 @@ const updatePassword = () => {
             <div class="col-span-6 sm:col-span-4">
                 <InputLabel
                     for="password"
-                    value="New Password" />
+                    value="Ny adgangskode" />
                 <TextInput
                     id="password"
                     ref="passwordInput"
@@ -79,7 +81,7 @@ const updatePassword = () => {
             <div class="col-span-6 sm:col-span-4">
                 <InputLabel
                     for="password_confirmation"
-                    value="Confirm Password" />
+                    value="Bekræft adgangskode" />
                 <TextInput
                     id="password_confirmation"
                     v-model="form.password_confirmation"
@@ -96,13 +98,13 @@ const updatePassword = () => {
             <ActionMessage
                 :on="form.recentlySuccessful"
                 class="me-3">
-                Saved.
+                Gemt.
             </ActionMessage>
 
             <PrimaryButton
                 :class="{ 'opacity-25': form.processing }"
                 :disabled="form.processing">
-                Save
+                Gem
             </PrimaryButton>
         </template>
     </FormSection>

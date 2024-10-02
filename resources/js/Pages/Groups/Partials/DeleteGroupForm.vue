@@ -29,39 +29,39 @@ const deleteTeam = () => {
 
 <template>
     <ActionSection>
-        <template #title> Delete Group</template>
+        <template #title> Slet gruppe</template>
 
-        <template #description> Permanently delete this group</template>
+        <template #description> Slet denne gruppe permanent</template>
 
         <template #content>
             <div class="max-w-xl text-sm text-gray-600 dark:text-gray-400">
-                Once a group is deleted, all of its resources and data will be permanently deleted.
+                Når en gruppe er slettet, vil alle dens ressourcer og data blive slettet permanent.
             </div>
 
             <div class="mt-5">
-                <DangerButton @click="confirmGroupDeletion"> Delete Group</DangerButton>
+                <DangerButton @click="confirmGroupDeletion"> Slet gruppe</DangerButton>
             </div>
 
             <!-- Delete Team Confirmation Modal -->
             <ConfirmationModal
                 :show="confirmingGroupDeletion"
                 @close="confirmingGroupDeletion = false">
-                <template #title> Delete Group</template>
+                <template #title> Slet gruppe</template>
 
                 <template #content>
-                    Are you sure you want to delete this group? Once a group is deleted, all of its resources and data
-                    will be permanently deleted.
+                    Er du sikker på, at du vil slette denne gruppe? Når en gruppe er slettet, vil alle dens ressourcer
+                    og data blive slettet permanent.
                 </template>
 
                 <template #footer>
-                    <SecondaryButton @click="confirmingGroupDeletion = false"> Cancel</SecondaryButton>
+                    <SecondaryButton @click="confirmingGroupDeletion = false"> Annuller</SecondaryButton>
 
                     <DangerButton
                         class="ms-3"
                         :class="{ 'opacity-25': form.processing }"
                         :disabled="form.processing"
                         @click="deleteTeam">
-                        Delete group
+                        Slet gruppe
                     </DangerButton>
                 </template>
             </ConfirmationModal>

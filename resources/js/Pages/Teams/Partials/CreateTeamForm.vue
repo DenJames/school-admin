@@ -20,9 +20,9 @@ const createTeam = () => {
 
 <template>
     <FormSection @submitted="createTeam">
-        <template #title> Team Details</template>
+        <template #title> Teamoplysninger</template>
 
-        <template #description> Create a new team to collaborate with others on projects.</template>
+        <template #description> Opret et nyt team for at samarbejde med andre om projekter.</template>
 
         <template #form>
             <div class="col-span-6">
@@ -46,7 +46,7 @@ const createTeam = () => {
             <div class="col-span-6 sm:col-span-4">
                 <InputLabel
                     for="name"
-                    value="Team Name" />
+                    value="Team navn" />
                 <TextInput
                     id="name"
                     v-model="form.name"
@@ -63,7 +63,7 @@ const createTeam = () => {
             <PrimaryButton
                 :class="{ 'opacity-25': form.processing }"
                 :disabled="form.processing">
-                Create
+                Opret
             </PrimaryButton>
         </template>
     </FormSection>

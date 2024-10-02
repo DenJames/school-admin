@@ -15,9 +15,9 @@ defineProps<Props>();
 </script>
 
 <template>
-    <AppLayout title="Group Settings">
+    <AppLayout title="Gruppe indstillinger">
         <template #header>
-            <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">Group Settings</h2>
+            <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">Gruppe indstillinger</h2>
         </template>
 
         <div>
@@ -25,16 +25,13 @@ defineProps<Props>();
                 <UpdateGroupNameForm
                     :group="group"
                     :is-admin="!!$page.props.is_current_group_admin" />
-                <!-- TODO: pass correct role -->
 
                 <GroupMemberManager
                     class="mt-10 sm:mt-0"
                     :group="group"
                     :available-roles="availableRoles"
                     :is-admin="!!$page.props.is_current_group_admin" />
-                <!-- TODO: pass correct role -->
 
-                <!-- TODO: Check if user is group owner -->
                 <template v-if="!!$page.props.is_current_group_admin">
                     <SectionBorder />
 

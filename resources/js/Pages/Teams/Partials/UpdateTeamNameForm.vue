@@ -28,9 +28,9 @@ const updateTeamName = () => {
 
 <template>
     <FormSection @submitted="updateTeamName">
-        <template #title> Team Name</template>
+        <template #title> Team navn</template>
 
-        <template #description> The team's name and owner information.</template>
+        <template #description> Teamets navn og ejeroplysninger.</template>
 
         <template #form>
             <!-- Team Owner Information -->
@@ -56,7 +56,7 @@ const updateTeamName = () => {
             <div class="col-span-6 sm:col-span-4">
                 <InputLabel
                     for="name"
-                    value="Team Name" />
+                    value="Team navn" />
 
                 <TextInput
                     id="name"
@@ -77,13 +77,13 @@ const updateTeamName = () => {
             <ActionMessage
                 :on="form.recentlySuccessful"
                 class="me-3">
-                Saved.
+                Gemt.
             </ActionMessage>
 
             <PrimaryButton
                 :class="{ 'opacity-25': form.processing }"
                 :disabled="form.processing">
-                Save
+                Gem
             </PrimaryButton>
         </template>
     </FormSection>

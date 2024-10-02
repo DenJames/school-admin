@@ -106,11 +106,12 @@ const closeModal = () => {
         <DialogModal
             :show="confirmingReplyDeletion"
             @close="closeModal">
-            <template #title> Delete Reply</template>
+            <template #title> Slet svar</template>
 
             <template #content>
-                Are you sure you want to delete your reply? Once deleted, we won't be able to restore any data related
-                to it. Please enter your password to confirm you would like to permanently delete your reply.
+                Er du sikker på, at du vil slette dit svar? Når det er slettet, kan vi ikke gendanne nogen data
+                relateret til det. Indtast venligst din adgangskode for at bekræfte, at du vil slette dit svar
+                permanent.
             </template>
 
             <template #footer>
@@ -119,7 +120,7 @@ const closeModal = () => {
                 <DangerButton
                     class="ms-3"
                     @click="deleteReply">
-                    Delete reply
+                    Slet svar
                 </DangerButton>
             </template>
         </DialogModal>
@@ -128,25 +129,25 @@ const closeModal = () => {
         <DialogModal
             :show="confirmingReplyEdit"
             @close="closeModal">
-            <template #title> Edit Reply</template>
+            <template #title> Rediger svar</template>
 
             <template #content>
                 <textarea
                     v-model="form.content"
                     class="w-full rounded-md bg-gray-700 p-2 text-white"
                     rows="3"
-                    placeholder="Type your reply here"></textarea>
+                    placeholder="Skriv dit svar her"></textarea>
 
                 <InputError :message="form.errors.content" />
             </template>
 
             <template #footer>
-                <SecondaryButton @click="closeModal"> Cancel</SecondaryButton>
+                <SecondaryButton @click="closeModal"> Annuller</SecondaryButton>
 
                 <PrimaryButton
                     class="ms-3"
                     @click="submit">
-                    Update reply
+                    Opdater svar
                 </PrimaryButton>
             </template>
         </DialogModal>

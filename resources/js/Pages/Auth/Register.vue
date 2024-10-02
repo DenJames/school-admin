@@ -24,7 +24,7 @@ const submit = () => {
 </script>
 
 <template>
-    <Head title="Register" />
+    <Head title="Oprettelse" />
 
     <AuthenticationCard>
         <template #logo>
@@ -35,7 +35,7 @@ const submit = () => {
             <div>
                 <InputLabel
                     for="name"
-                    value="Name" />
+                    value="Navn" />
                 <TextInput
                     id="name"
                     v-model="form.name"
@@ -68,7 +68,7 @@ const submit = () => {
             <div class="mt-4">
                 <InputLabel
                     for="password"
-                    value="Password" />
+                    value="Adgangskode" />
                 <TextInput
                     id="password"
                     v-model="form.password"
@@ -84,7 +84,7 @@ const submit = () => {
             <div class="mt-4">
                 <InputLabel
                     for="password_confirmation"
-                    value="Confirm Password" />
+                    value="Bekræft adgangskode" />
                 <TextInput
                     id="password_confirmation"
                     v-model="form.password_confirmation"
@@ -109,19 +109,19 @@ const submit = () => {
                             required />
 
                         <div class="ms-2">
-                            I agree to the
+                            Jeg accepterer
                             <a
                                 target="_blank"
                                 :href="route('terms.show')"
                                 class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:text-gray-400 dark:hover:text-gray-100 dark:focus:ring-offset-gray-800"
-                                >Terms of Service</a
+                                >Servicevilkår</a
                             >
-                            and
+                            og
                             <a
                                 target="_blank"
                                 :href="route('policy.show')"
                                 class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:text-gray-400 dark:hover:text-gray-100 dark:focus:ring-offset-gray-800"
-                                >Privacy Policy</a
+                                >Fortrolighedspolitik</a
                             >
                         </div>
                     </div>
@@ -135,14 +135,14 @@ const submit = () => {
                 <Link
                     :href="route('login')"
                     class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:text-gray-400 dark:hover:text-gray-100 dark:focus:ring-offset-gray-800">
-                    Already registered?
+                    Allerede registreret?
                 </Link>
 
                 <PrimaryButton
                     class="ms-4"
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing">
-                    Register
+                    Registrer
                 </PrimaryButton>
             </div>
         </form>

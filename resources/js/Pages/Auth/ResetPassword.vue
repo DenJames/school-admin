@@ -29,7 +29,7 @@ const submit = () => {
 </script>
 
 <template>
-    <Head title="Reset Password" />
+    <Head title="Nulstil adgangskode" />
 
     <AuthenticationCard>
         <template #logo>
@@ -57,7 +57,7 @@ const submit = () => {
             <div class="mt-4">
                 <InputLabel
                     for="password"
-                    value="Password" />
+                    value="Adgangskode" />
                 <TextInput
                     id="password"
                     v-model="form.password"
@@ -73,7 +73,7 @@ const submit = () => {
             <div class="mt-4">
                 <InputLabel
                     for="password_confirmation"
-                    value="Confirm Password" />
+                    value="Bekræft adgangskode" />
                 <TextInput
                     id="password_confirmation"
                     v-model="form.password_confirmation"
@@ -90,7 +90,7 @@ const submit = () => {
                 <PrimaryButton
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing">
-                    Reset Password
+                    Nulstil adgangskode
                 </PrimaryButton>
             </div>
         </form>

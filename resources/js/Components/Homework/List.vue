@@ -23,22 +23,22 @@ const props = defineProps<Props>();
                 <th
                     scope="col"
                     class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-white">
-                    Title
+                    Titel
                 </th>
                 <th
                     scope="col"
                     class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-white">
-                    Description
+                    Beskrivelse
                 </th>
                 <th
                     scope="col"
                     class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-white">
-                    Due Date
+                    Forfaldsdato
                 </th>
                 <th
                     scope="col"
                     class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-white">
-                    Actions
+                    Handlinger
                 </th>
             </tr>
         </thead>
@@ -67,7 +67,7 @@ const props = defineProps<Props>();
                     <a
                         :href="route('homework.show', item.id)"
                         class="text-indigo-600 hover:text-indigo-900"
-                        >View</a
+                        >Vis</a
                     >
                 </td>
             </tr>

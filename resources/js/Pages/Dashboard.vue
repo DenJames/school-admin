@@ -17,9 +17,9 @@ defineProps<Props>();
 </script>
 
 <template>
-    <AppLayout title="Dashboard">
+    <AppLayout title="Forside">
         <template #header>
-            <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">Dashboard</h2>
+            <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">Forside</h2>
         </template>
 
         <div class="mb-2 grid grid-cols-2 gap-4 overflow-hidden sm:rounded-lg">
@@ -33,7 +33,7 @@ defineProps<Props>();
                             :key="article.id">
                             <Link
                                 :href="route('articles.show', article.id)"
-                                class="hover:bg-custom-primary flex items-center justify-between gap-4 border-b border-b-gray-600 p-2 text-sm text-white transition-all">
+                                class="flex items-center justify-between gap-4 border-b border-b-gray-600 p-2 text-sm text-white transition-all hover:bg-custom-primary">
                                 {{ article.title }}
                             </Link>
                         </template>
@@ -49,7 +49,7 @@ defineProps<Props>();
                             :key="message.id">
                             <Link
                                 :href="route('messages.show', message.id)"
-                                class="hover:bg-custom-primary flex items-center justify-between gap-4 border-b border-b-gray-600 p-2 text-sm text-white transition-all">
+                                class="flex items-center justify-between gap-4 border-b border-b-gray-600 p-2 text-sm text-white transition-all hover:bg-custom-primary">
                                 <p class="truncate">{{ message.subject }}</p>
 
                                 <span

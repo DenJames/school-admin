@@ -46,15 +46,15 @@ const closeModal = () => {
 
 <template>
     <ActionSection>
-        <template #title> Browser Sessions</template>
+        <template #title> Browser-sessioner</template>
 
-        <template #description> Manage and log out your active sessions on other browsers and devices.</template>
+        <template #description> Håndter og log ud af dine aktive sessioner på andre browsere og enheder.</template>
 
         <template #content>
             <div class="max-w-xl text-sm text-gray-600 dark:text-gray-400">
-                If necessary, you may log out of all of your other browser sessions across all of your devices. Some of
-                your recent sessions are listed below; however, this list may not be exhaustive. If you feel your
-                account has been compromised, you should also update your password.
+                Hvis nødvendigt, kan du logge ud af alle dine andre browser-sessioner på alle dine enheder. Nogle af
+                dine seneste sessioner er angivet nedenfor; denne liste er dog muligvis ikke udtømmende. Hvis du mener,
+                at din konto er blevet kompromitteret, bør du også opdatere din adgangskode.
             </div>
 
             <!-- Other Browser Sessions -->
@@ -110,7 +110,7 @@ const closeModal = () => {
                                     class="font-semibold text-green-500"
                                     >This device</span
                                 >
-                                <span v-else>Last active {{ session.last_active }}</span>
+                                <span v-else>Sidst aktiv {{ session.last_active }}</span>
                             </div>
                         </div>
                     </div>
@@ -118,7 +118,7 @@ const closeModal = () => {
             </div>
 
             <div class="mt-5 flex items-center">
-                <PrimaryButton @click="confirmLogout"> Log Out Other Browser Sessions</PrimaryButton>
+                <PrimaryButton @click="confirmLogout"> Log ud af andre browser-sessioner</PrimaryButton>
 
                 <ActionMessage
                     :on="form.recentlySuccessful"
@@ -131,11 +131,11 @@ const closeModal = () => {
             <DialogModal
                 :show="confirmingLogout"
                 @close="closeModal">
-                <template #title> Log Out Other Browser Sessions</template>
+                <template #title> Log ud af andre browser-sessioner</template>
 
                 <template #content>
-                    Please enter your password to confirm you would like to log out of your other browser sessions
-                    across all of your devices.
+                    Indtast venligst din adgangskode for at bekræfte, at du ønsker at logge ud af dine andre
+                    browser-sessioner på alle dine enheder.
 
                     <div class="mt-4">
                         <TextInput
@@ -143,7 +143,7 @@ const closeModal = () => {
                             v-model="form.password"
                             type="password"
                             class="mt-1 block w-3/4"
-                            placeholder="Password"
+                            placeholder="Adgangskode"
                             autocomplete="current-password"
                             @keyup.enter="logoutOtherBrowserSessions" />
 
@@ -154,14 +154,14 @@ const closeModal = () => {
                 </template>
 
                 <template #footer>
-                    <SecondaryButton @click="closeModal"> Cancel</SecondaryButton>
+                    <SecondaryButton @click="closeModal"> Annuller</SecondaryButton>
 
                     <PrimaryButton
                         class="ms-3"
                         :class="{ 'opacity-25': form.processing }"
                         :disabled="form.processing"
                         @click="logoutOtherBrowserSessions">
-                        Log Out Other Browser Sessions
+                        Log ud af andre browser-sessioner
                     </PrimaryButton>
                 </template>
             </DialogModal>

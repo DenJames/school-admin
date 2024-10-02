@@ -11,7 +11,7 @@ const props = defineProps<Props>();
 </script>
 
 <template>
-    <AppLayout title="Dashboard">
+    <AppLayout title="Artikler">
         <template #header>
             <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">{{ article.title }}</h2>
         </template>

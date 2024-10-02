@@ -115,16 +115,14 @@ const membership = (user: UserData) => {
 
             <!-- Add Team Member -->
             <FormSection @submitted="addGroupMember">
-                <template #title> Add Group Member</template>
+                <template #title> Tilføj gruppe medlem</template>
 
-                <template #description>
-                    Add a new member to your group, allowing them to collaborate with you.
-                </template>
+                <template #description> Tilføj et nyt medlem til din gruppe, så de kan samarbejde med dig. </template>
 
                 <template #form>
                     <div class="col-span-6">
                         <div class="max-w-xl text-sm text-gray-600 dark:text-gray-400">
-                            Please provide the email address of the person you would like to add to this group.
+                            Angiv venligst e-mailadressen på den person, du ønsker at tilføje til denne gruppe.
                         </div>
                     </div>
 
@@ -132,7 +130,7 @@ const membership = (user: UserData) => {
                     <div class="relative col-span-6 sm:col-span-4">
                         <InputLabel
                             for="username"
-                            value="User" />
+                            value="Bruger" />
                         <LiveUserSearchInput @selected-recipient="setRecipient($event)" />
                         <InputError
                             :message="addGroupMemberForm.errors.recipient"
@@ -145,7 +143,7 @@ const membership = (user: UserData) => {
                         class="col-span-6 lg:col-span-4">
                         <InputLabel
                             for="roles"
-                            value="Role" />
+                            value="Rolle" />
                         <InputError
                             :message="addGroupMemberForm.errors.role"
                             class="mt-2" />
@@ -201,13 +199,13 @@ const membership = (user: UserData) => {
                     <ActionMessage
                         :on="addGroupMemberForm.recentlySuccessful"
                         class="me-3">
-                        Added.
+                        Tilføjet.
                     </ActionMessage>
 
                     <PrimaryButton
                         :class="{ 'opacity-25': addGroupMemberForm.processing }"
                         :disabled="addGroupMemberForm.processing">
-                        Add
+                        Tilføj
                     </PrimaryButton>
                 </template>
             </FormSection>
@@ -218,11 +216,11 @@ const membership = (user: UserData) => {
 
             <!-- Team Member Invitations -->
             <ActionSection class="mt-10 sm:mt-0">
-                <template #title> Pending Group Invitations</template>
+                <template #title>Afventende gruppeinvitationer</template>
 
                 <template #description>
-                    These people have been invited to your group and have been sent an invitation email. They may join
-                    the team by accepting the email invitation.
+                    Disse personer er blevet inviteret til din gruppe og har modtaget en invitationsmail. De kan deltage
+                    i gruppen ved at acceptere e-mailinvitationen.
                 </template>
 
                 <!-- Pending Team Member Invitation List -->
@@ -256,9 +254,9 @@ const membership = (user: UserData) => {
 
             <!-- Manage Team Members -->
             <ActionSection class="mt-10 sm:mt-0">
-                <template #title> Group Members</template>
+                <template #title> Gruppe medlemmer</template>
 
-                <template #description> All of the people that are part of this group.</template>
+                <template #description> Alle de personer, der er en del af denne gruppe.</template>
 
                 <!-- Team Member List -->
                 <template #content>
@@ -318,7 +316,7 @@ const membership = (user: UserData) => {
         <DialogModal
             :show="currentlyManagingRole"
             @close="currentlyManagingRole = false">
-            <template #title> Manage Role</template>
+            <template #title> Administrer rolle</template>
 
             <template #content>
                 <div v-if="managingRoleFor">
@@ -380,19 +378,19 @@ const membership = (user: UserData) => {
         <ConfirmationModal
             :show="confirmingLeavingGroup"
             @close="confirmingLeavingGroup = false">
-            <template #title> Leave Team</template>
+            <template #title> Forlad gruppe</template>
 
-            <template #content> Are you sure you would like to leave this team?</template>
+            <template #content> Er du sikker på, at du ønsker at forlade denne gruppe?</template>
 
             <template #footer>
-                <SecondaryButton @click="confirmingLeavingGroup = false"> Cancel</SecondaryButton>
+                <SecondaryButton @click="confirmingLeavingGroup = false"> Annuller</SecondaryButton>
 
                 <DangerButton
                     class="ms-3"
                     :class="{ 'opacity-25': leaveGroupForm.processing }"
                     :disabled="leaveGroupForm.processing"
                     @click="leaveGroup">
-                    Leave
+                    Forlad
                 </DangerButton>
             </template>
         </ConfirmationModal>
@@ -401,9 +399,9 @@ const membership = (user: UserData) => {
         <ConfirmationModal
             :show="GroupMemberBeingRemoved"
             @close="GroupMemberBeingRemoved = null">
-            <template #title> Remove Group Member</template>
+            <template #title> Fjern gruppe medlem</template>
 
-            <template #content> Are you sure you would like to remove this person from the group?</template>
+            <template #content> Er du sikker på, at du vil fjerne denne person fra gruppen?</template>
 
             <template #footer>
                 <SecondaryButton @click="GroupMemberBeingRemoved = null"> Cancel</SecondaryButton>
@@ -413,7 +411,7 @@ const membership = (user: UserData) => {
                     :class="{ 'opacity-25': removeGroupMemberForm.processing }"
                     :disabled="removeGroupMemberForm.processing"
                     @click="removeGroupMember">
-                    Remove
+                    Fjern
                 </DangerButton>
             </template>
         </ConfirmationModal>

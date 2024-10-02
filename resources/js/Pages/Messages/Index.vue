@@ -16,15 +16,15 @@ const props = defineProps<Props>();
 </script>
 
 <template>
-    <AppLayout title="Messages">
+    <AppLayout title="Beskeder">
         <template #header>
-            <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">Messages</h2>
+            <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">Beskeder</h2>
         </template>
 
         <div class="relative grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6">
             <Card>
                 <template #header>
-                    Sent Messages
+                    Sendte beskeder
 
                     <Link
                         :href="route('messages.create')"
@@ -39,7 +39,7 @@ const props = defineProps<Props>();
                         :key="message.id">
                         <Link
                             :href="route('messages.show', message.id)"
-                            class="hover:bg-custom-primary flex items-center justify-between gap-4 border-b border-b-gray-600 p-2 text-sm text-white transition-all">
+                            class="flex items-center justify-between gap-4 border-b border-b-gray-600 p-2 text-sm text-white transition-all hover:bg-custom-primary">
                             <p class="flex items-center gap-2 truncate">
                                 {{ message.subject }}
                                 <span
@@ -53,7 +53,7 @@ const props = defineProps<Props>();
                                 <span
                                     v-if="message.receiver"
                                     class="text-nowrap text-xs text-white/50">
-                                    Receiver: {{ message.receiver.name }}
+                                    Modtager: {{ message.receiver.name }}
                                 </span>
                             </div>
                         </Link>
@@ -62,7 +62,7 @@ const props = defineProps<Props>();
             </Card>
 
             <Card>
-                <template #header>Received messages</template>
+                <template #header>Modtaget beskeder</template>
 
                 <div class="max-h-[500px] overflow-y-auto">
                     <template
@@ -70,7 +70,7 @@ const props = defineProps<Props>();
                         :key="message.id">
                         <Link
                             :href="route('messages.show', message.id)"
-                            class="hover:bg-custom-primary flex items-center justify-between gap-4 border-b border-b-gray-600 p-2 text-sm text-white transition-all">
+                            class="flex items-center justify-between gap-4 border-b border-b-gray-600 p-2 text-sm text-white transition-all hover:bg-custom-primary">
                             <p class="truncate">{{ message.subject }}</p>
 
                             <span

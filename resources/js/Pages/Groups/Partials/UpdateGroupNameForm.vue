@@ -33,14 +33,14 @@ const updateGroupName = () => {
 
 <template>
     <FormSection @submitted="updateGroupName">
-        <template #title> Group Name</template>
+        <template #title> Gruppe navn</template>
 
-        <template #description> The group's name and owner information.</template>
+        <template #description> Gruppe navn og ejer informationer</template>
 
         <template #form>
             <!-- Team Owner Information -->
             <div class="col-span-6">
-                <InputLabel value="Group Owner" />
+                <InputLabel value="Gruppe ejer" />
 
                 <div class="mt-2 flex items-center">
                     <img
@@ -57,11 +57,11 @@ const updateGroupName = () => {
                 </div>
             </div>
 
-            <!-- Team Name -->
+            <!-- Group Name -->
             <div class="col-span-6 sm:col-span-4">
                 <InputLabel
                     for="name"
-                    value="Group Name" />
+                    value="Gruppe navn" />
 
                 <TextInput
                     id="name"

@@ -60,14 +60,6 @@ const calendarOptions = {
     eventClick: function (info) {
         router.get(route("lessons.show", info.event.id));
     },
-    eventDidMount: (info) => {
-        tippy(info.el, {
-            content: info.event.extendedProps.description || "No description available",
-            placement: "top",
-            trigger: "hover",
-            theme: "dark",
-        });
-    },
     allDaySlot: false,
 };
 

@@ -79,9 +79,9 @@ const clearPhotoFileInput = () => {
 
 <template>
     <FormSection @submitted="updateProfileInformation">
-        <template #title> Profile Information</template>
+        <template #title> Profilinformation</template>
 
-        <template #description> Update your account's profile information and email address.</template>
+        <template #description> Opdater din kontos profilinformation og e-mailadresse.</template>
 
         <template #form>
             <!-- Profile Photo -->
@@ -98,7 +98,7 @@ const clearPhotoFileInput = () => {
 
                 <InputLabel
                     for="photo"
-                    value="Photo" />
+                    value="Foto" />
 
                 <!-- Current Profile Photo -->
                 <div
@@ -123,7 +123,7 @@ const clearPhotoFileInput = () => {
                     class="me-2 mt-2"
                     type="button"
                     @click.prevent="selectNewPhoto">
-                    Select A New Photo
+                    Vælg et nyt foto
                 </SecondaryButton>
 
                 <SecondaryButton
@@ -131,7 +131,7 @@ const clearPhotoFileInput = () => {
                     type="button"
                     class="mt-2"
                     @click.prevent="deletePhoto">
-                    Remove Photo
+                    Fjern foto
                 </SecondaryButton>
 
                 <InputError
@@ -143,7 +143,7 @@ const clearPhotoFileInput = () => {
             <div class="col-span-6 sm:col-span-4">
                 <InputLabel
                     for="name"
-                    value="Name" />
+                    value="Navn" />
                 <TextInput
                     id="name"
                     v-model="form.name"
@@ -174,7 +174,7 @@ const clearPhotoFileInput = () => {
 
                 <div v-if="$page.props.jetstream.hasEmailVerification && user.email_verified_at === null">
                     <p class="mt-2 text-sm dark:text-white">
-                        Your email address is unverified.
+                        Din e-mailadresse er ikke verificeret.
 
                         <Link
                             :href="route('verification.send')"
@@ -182,14 +182,14 @@ const clearPhotoFileInput = () => {
                             as="button"
                             class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:text-gray-400 dark:hover:text-gray-100 dark:focus:ring-offset-gray-800"
                             @click.prevent="sendEmailVerification">
-                            Click here to re-send the verification email.
+                            Klik her for at sende verificeringsmailen igen.
                         </Link>
                     </p>
 
                     <div
                         v-show="verificationLinkSent"
                         class="mt-2 text-sm font-medium text-green-600 dark:text-green-400">
-                        A new verification link has been sent to your email address.
+                        Der er sendt et nyt verificeringslink til din e-mailadresse.
                     </div>
                 </div>
             </div>
@@ -199,13 +199,13 @@ const clearPhotoFileInput = () => {
             <ActionMessage
                 :on="form.recentlySuccessful"
                 class="me-3">
-                Saved.
+                Gemt.
             </ActionMessage>
 
             <PrimaryButton
                 :class="{ 'opacity-25': form.processing }"
                 :disabled="form.processing">
-                Save
+                Gem
             </PrimaryButton>
         </template>
     </FormSection>

@@ -21,7 +21,7 @@ const verificationLinkSent = computed(() => props.status === "verification-link-
 </script>
 
 <template>
-    <Head title="Email Verification" />
+    <Head title="E-mailverifikation" />
 
     <AuthenticationCard>
         <template #logo>
@@ -29,14 +29,14 @@ const verificationLinkSent = computed(() => props.status === "verification-link-
         </template>
 
         <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">
-            Before continuing, could you verify your email address by clicking on the link we just emailed to you? If
-            you didn't receive the email, we will gladly send you another.
+            Før du fortsætter, kan du venligst bekræfte din e-mailadresse ved at klikke på det link, vi lige har sendt
+            til dig? Hvis du ikke modtog e-mailen, sender vi gerne en ny.
         </div>
 
         <div
             v-if="verificationLinkSent"
             class="mb-4 text-sm font-medium text-green-600 dark:text-green-400">
-            A new verification link has been sent to the email address you provided in your profile settings.
+            Et nyt verifikationslink er blevet sendt til den e-mailadresse, du angav i dine profilindstillinger.
         </div>
 
         <form @submit.prevent="submit">
@@ -44,14 +44,14 @@ const verificationLinkSent = computed(() => props.status === "verification-link-
                 <PrimaryButton
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing">
-                    Resend Verification Email
+                    Send verifikations-e-mail igen
                 </PrimaryButton>
 
                 <div>
                     <Link
                         :href="route('profile.show')"
                         class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:text-gray-400 dark:hover:text-gray-100 dark:focus:ring-offset-gray-800">
-                        Edit Profile
+                        Rediger profil
                     </Link>
 
                     <Link
@@ -59,7 +59,7 @@ const verificationLinkSent = computed(() => props.status === "verification-link-
                         method="post"
                         as="button"
                         class="ms-2 rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:text-gray-400 dark:hover:text-gray-100 dark:focus:ring-offset-gray-800">
-                        Log Out
+                        Log ud
                     </Link>
                 </div>
             </div>

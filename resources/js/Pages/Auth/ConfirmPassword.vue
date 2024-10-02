@@ -26,7 +26,7 @@ const submit = () => {
 </script>
 
 <template>
-    <Head title="Secure Area" />
+    <Head title="Sikker område" />
 
     <AuthenticationCard>
         <template #logo>
@@ -34,14 +34,14 @@ const submit = () => {
         </template>
 
         <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">
-            This is a secure area of the application. Please confirm your password before continuing.
+            Dette er et sikkert område af applikationen. Bekræft venligst din adgangskode, før du fortsætter.
         </div>
 
         <form @submit.prevent="submit">
             <div>
                 <InputLabel
                     for="password"
-                    value="Password" />
+                    value="Adgangskode" />
                 <TextInput
                     id="password"
                     ref="passwordInput"
@@ -61,7 +61,7 @@ const submit = () => {
                     class="ms-4"
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing">
-                    Confirm
+                    Bekræft
                 </PrimaryButton>
             </div>
         </form>

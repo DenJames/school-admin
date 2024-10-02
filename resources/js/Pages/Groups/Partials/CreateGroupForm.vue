@@ -23,13 +23,13 @@ const createGroup = () => {
 
 <template>
     <FormSection @submitted="createGroup">
-        <template #title>Group Details</template>
+        <template #title>Gruppeoplysninger</template>
 
-        <template #description> Create a new group to collaborate with others on projects.</template>
+        <template #description> Opret en ny gruppe for at samarbejde med andre om projekter.</template>
 
         <template #form>
             <div class="col-span-6">
-                <InputLabel value="Group Owner" />
+                <InputLabel value="Gruppe ejer" />
 
                 <div class="mt-2 flex items-center">
                     <img
@@ -49,7 +49,7 @@ const createGroup = () => {
             <div class="col-span-6 sm:col-span-4">
                 <InputLabel
                     for="name"
-                    value="Group Name" />
+                    value="Gruppe navn" />
                 <TextInput
                     id="name"
                     v-model="form.name"
@@ -66,7 +66,7 @@ const createGroup = () => {
             <PrimaryButton
                 :class="{ 'opacity-25': form.processing }"
                 :disabled="form.processing">
-                Create
+                Opret
             </PrimaryButton>
         </template>
     </FormSection>

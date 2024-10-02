@@ -69,7 +69,7 @@ const logout = () => {
                                 <NavLink
                                     :href="route('dashboard')"
                                     :active="route().current('dashboard')">
-                                    Dashboard
+                                    Forside
                                 </NavLink>
                             </div>
 
@@ -77,7 +77,7 @@ const logout = () => {
                                 <NavLink
                                     :href="route('messages.index')"
                                     :active="route().current('messages.*')">
-                                    Messages
+                                    Beskeder
                                 </NavLink>
                             </div>
 
@@ -85,7 +85,7 @@ const logout = () => {
                                 <NavLink
                                     :href="route('lessons.index')"
                                     :active="route().current('lessons.*')">
-                                    Lessons
+                                    Skema
                                 </NavLink>
                             </div>
 
@@ -93,7 +93,7 @@ const logout = () => {
                                 <NavLink
                                     :href="route('homework.index')"
                                     :active="route().current('homework.*')">
-                                    Homework
+                                    Lektier
                                 </NavLink>
                             </div>
                         </div>
@@ -110,7 +110,9 @@ const logout = () => {
                                                 class="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:bg-gray-50 focus:outline-none active:bg-gray-50 dark:bg-gray-800 dark:text-gray-400 dark:hover:text-gray-300 dark:focus:bg-gray-700 dark:active:bg-gray-700">
                                                 <GroupIcon class="mr-1 size-6" />
                                                 {{
-                                                    $page.props.current_group ? $page.props.current_group.name : "Group"
+                                                    $page.props.current_group
+                                                        ? $page.props.current_group.name
+                                                        : "Gruppe"
                                                 }}
 
                                                 <svg
@@ -132,26 +134,26 @@ const logout = () => {
                                     <template #content>
                                         <div class="w-60">
                                             <!-- Team Management -->
-                                            <div class="block px-4 py-2 text-xs text-gray-400">Manage Group</div>
+                                            <div class="block px-4 py-2 text-xs text-gray-400">Administrer gruppe</div>
 
                                             <!-- Team Settings -->
                                             <DropdownLink
                                                 v-if="$page.props.auth.user.current_group_id"
                                                 :href="route('groups.show', $page.props.auth.user.current_group_id)">
-                                                Group Settings
+                                                Gruppe indstillinger
                                             </DropdownLink>
 
                                             <DropdownLink
                                                 v-if="$page.props.jetstream.canCreateTeams"
                                                 :href="route('groups.create')">
-                                                Create New Group
+                                                Opret ny gruppe
                                             </DropdownLink>
 
                                             <!-- Team Switcher -->
                                             <template v-if="$page.props.groups.length > 0">
                                                 <div class="border-t border-gray-200 dark:border-gray-600" />
 
-                                                <div class="block px-4 py-2 text-xs text-gray-400">Switch Groups</div>
+                                                <div class="block px-4 py-2 text-xs text-gray-400">Skift gruppe</div>
 
                                                 <template
                                                     v-for="group in $page.props.groups"
@@ -217,25 +219,25 @@ const logout = () => {
                                     <template #content>
                                         <div class="w-60">
                                             <!-- Team Management -->
-                                            <div class="block px-4 py-2 text-xs text-gray-400">Manage Team</div>
+                                            <div class="block px-4 py-2 text-xs text-gray-400">Administrer team</div>
 
                                             <!-- Team Settings -->
                                             <DropdownLink
                                                 :href="route('teams.show', $page.props.auth.user.current_team)">
-                                                Team Settings
+                                                Team indstillinger
                                             </DropdownLink>
 
                                             <DropdownLink
                                                 v-if="$page.props.jetstream.canCreateTeams"
                                                 :href="route('teams.create')">
-                                                Create New Team
+                                                Opret ny team
                                             </DropdownLink>
 
                                             <!-- Team Switcher -->
                                             <template v-if="$page.props.auth.user.all_teams.length > 1">
                                                 <div class="border-t border-gray-200 dark:border-gray-600" />
 
-                                                <div class="block px-4 py-2 text-xs text-gray-400">Switch Teams</div>
+                                                <div class="block px-4 py-2 text-xs text-gray-400">Skift team</div>
 
                                                 <template
                                                     v-for="team in $page.props.auth.user.all_teams"
@@ -311,7 +313,7 @@ const logout = () => {
 
                                     <template #content>
                                         <!-- Account Management -->
-                                        <div class="block px-4 py-2 text-xs text-gray-400">Manage Account</div>
+                                        <div class="block px-4 py-2 text-xs text-gray-400">Administrer konto</div>
 
                                         <DropdownLink
                                             v-if="$page.props.can_access_admin_panel"
@@ -326,14 +328,14 @@ const logout = () => {
                                         <DropdownLink
                                             v-if="$page.props.jetstream.hasApiFeatures"
                                             :href="route('api-tokens.index')">
-                                            API Tokens
+                                            API-Tokens
                                         </DropdownLink>
 
                                         <div class="border-t border-gray-200 dark:border-gray-600" />
 
                                         <!-- Authentication -->
                                         <form @submit.prevent="logout">
-                                            <DropdownLink as="button"> Log Out</DropdownLink>
+                                            <DropdownLink as="button"> Log Ud</DropdownLink>
                                         </form>
                                     </template>
                                 </Dropdown>
@@ -382,7 +384,7 @@ const logout = () => {
                         <ResponsiveNavLink
                             :href="route('dashboard')"
                             :active="route().current('dashboard')">
-                            Dashboard
+                            Forside
                         </ResponsiveNavLink>
                     </div>
 
@@ -390,7 +392,7 @@ const logout = () => {
                         <ResponsiveNavLink
                             :href="route('messages.index')"
                             :active="route().current('messages.*')">
-                            Messages
+                            Beskeder
                         </ResponsiveNavLink>
                     </div>
 
@@ -398,7 +400,7 @@ const logout = () => {
                         <ResponsiveNavLink
                             :href="route('lessons.index')"
                             :active="route().current('lessons.*')">
-                            Lessons
+                            Skema
                         </ResponsiveNavLink>
                     </div>
 
@@ -406,7 +408,7 @@ const logout = () => {
                         <ResponsiveNavLink
                             :href="route('homework.index')"
                             :active="route().current('homework.*')">
-                            Lessons
+                            Lektier
                         </ResponsiveNavLink>
                     </div>
 
@@ -436,21 +438,21 @@ const logout = () => {
                             <ResponsiveNavLink
                                 :href="route('profile.show')"
                                 :active="route().current('profile.show')">
-                                Profile
+                                Profil
                             </ResponsiveNavLink>
 
                             <ResponsiveNavLink
                                 v-if="$page.props.jetstream.hasApiFeatures"
                                 :href="route('api-tokens.index')"
                                 :active="route().current('api-tokens.index')">
-                                API Tokens
+                                API-Tokens
                             </ResponsiveNavLink>
 
                             <!-- Authentication -->
                             <form
                                 method="POST"
                                 @submit.prevent="logout">
-                                <ResponsiveNavLink as="button"> Log Out</ResponsiveNavLink>
+                                <ResponsiveNavLink as="button"> Log Ud</ResponsiveNavLink>
                             </form>
 
                             <!-- Team Management -->
@@ -463,21 +465,21 @@ const logout = () => {
                                 <ResponsiveNavLink
                                     :href="route('teams.show', $page.props.auth.user.current_team)"
                                     :active="route().current('teams.show')">
-                                    Team Settings
+                                    Team indstillinger
                                 </ResponsiveNavLink>
 
                                 <ResponsiveNavLink
                                     v-if="$page.props.jetstream.canCreateTeams"
                                     :href="route('teams.create')"
                                     :active="route().current('teams.create')">
-                                    Create New Team
+                                    Opret ny team
                                 </ResponsiveNavLink>
 
                                 <!-- Team Switcher -->
                                 <template v-if="$page.props.auth.user.all_teams.length > 1">
                                     <div class="border-t border-gray-200 dark:border-gray-600" />
 
-                                    <div class="block px-4 py-2 text-xs text-gray-400">Switch Teams</div>
+                                    <div class="block px-4 py-2 text-xs text-gray-400">Skift team</div>
 
                                     <template
                                         v-for="team in $page.props.auth.user.all_teams"

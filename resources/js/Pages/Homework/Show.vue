@@ -67,7 +67,7 @@ const progress = computed(() => {
 </script>
 
 <template>
-    <AppLayout title="Opgave aflevering">
+    <AppLayout :title="homework.name">
         <template #header>
             <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">{{ homework.name }}</h2>
         </template>
@@ -103,7 +103,7 @@ const progress = computed(() => {
                         <div class="text-muted-foreground flex items-center gap-2 space-x-2 text-sm">
                             <Calendar />
                             <span class="text-gray-500 dark:text-gray-400"
-                                >Due date: {{ homework.dueDateForHumans }}</span
+                                >Afleverings dato: {{ homework.dueDateForHumans }}</span
                             >
                         </div>
                         <div>
@@ -111,7 +111,7 @@ const progress = computed(() => {
                             <p class="text-muted-foreground text-sm">{{ homework.description }}</p>
                         </div>
                         <div>
-                            <h4 class="bold text-lg">Opgave tekst</h4>
+                            <h4 class="bold text-lg">Opgave kommentar</h4>
                             <textarea
                                 id="comment"
                                 v-model="form.content"
@@ -178,7 +178,7 @@ const progress = computed(() => {
                                         <button
                                             type="submit"
                                             class="text-red-500 hover:text-red-700">
-                                            Delete
+                                            Slet
                                         </button>
                                     </form>
                                 </div>

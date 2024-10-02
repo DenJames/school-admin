@@ -15,9 +15,9 @@ defineProps<Props>();
 </script>
 
 <template>
-    <AppLayout title="Team Settings">
+    <AppLayout title="Team Indstillinger">
         <template #header>
-            <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">Team Settings</h2>
+            <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">Team indstillinger</h2>
         </template>
 
         <div>
