@@ -94,7 +94,7 @@ const props = defineProps<Props>();
                                     {{ absence.reason }}
                                 </td>
                                 <td class="whitespace-nowrap px-3 py-4 text-sm text-white">
-                                    {{ absence.excused ? "Ja" : "Nej" }}
+                                    {{ !!absence.excused ? "Ja" : "Nej" }}
                                 </td>
                             </tr>
                         </template>
