@@ -206,6 +206,19 @@ class DatabaseSeeder extends Seeder
                 ClassCategory::firstOrCreate(['name' => $category]);
             });
 
+            $groupRoles = [
+                [
+                    'name' => 'admin',
+                ],
+                [
+                    'name' => 'member',
+                ],
+            ];
+
+            foreach ($groupRoles as $role) {
+                GroupRole::firstOrCreate($role);
+            }
+
             return;
         }
 
