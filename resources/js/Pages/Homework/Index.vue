@@ -20,7 +20,9 @@ defineProps<Props>();
         <Card>
             <template #header>Lektier</template>
 
-            <List :homework="homework" />
+            <div class="w-full overflow-x-auto">
+                <List :homework="homework" />
+            </div>
         </Card>
     </AppLayout>
 </template>

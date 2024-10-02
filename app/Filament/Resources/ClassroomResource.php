@@ -23,7 +23,7 @@ class ClassroomResource extends Resource
 
     public static function shouldRegisterNavigation(): bool
     {
-        return Auth::user()->hasAnyRole(['admin', 'school']);
+        return Auth::user()->hasAnyRole(['admin', 'school', 'teacher']);
     }
 
     public static function canCreate(): bool

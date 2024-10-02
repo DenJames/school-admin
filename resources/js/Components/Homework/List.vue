@@ -42,7 +42,7 @@ const props = defineProps<Props>();
                 </th>
             </tr>
         </thead>
-        <tbody class="divide-y divide-gray-200 bg-white dark:bg-gray-700">
+        <tbody class="divide-y divide-gray-200 overflow-x-auto bg-white dark:bg-gray-700">
             <tr
                 v-for="item in homework"
                 :key="item.id">
@@ -57,7 +57,7 @@ const props = defineProps<Props>();
                 <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500 dark:text-white">
                     {{ item.name }}
                 </td>
-                <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500 dark:text-white">
+                <td class="max-w-96 truncate whitespace-nowrap px-6 py-4 text-sm text-gray-500 dark:text-white">
                     {{ item.description }}
                 </td>
                 <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500 dark:text-white">

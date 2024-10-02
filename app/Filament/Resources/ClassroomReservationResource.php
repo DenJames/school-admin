@@ -11,6 +11,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Auth;
 
 class ClassroomReservationResource extends Resource
 {
@@ -20,9 +21,11 @@ class ClassroomReservationResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?int $navigationSort = 10;
+
     public static function shouldRegisterNavigation(): bool
     {
-        return false;
+        return Auth::user()->hasAnyRole(['teacher']);
     }
 
     public static function canCreate(): bool

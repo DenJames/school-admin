@@ -12,17 +12,17 @@ class LessonPolicy
 
     public function viewAny(User $user): bool
     {
-        return $user->hasRole('admin');
+        return $user->hasAnyRole(['admin', 'school', 'teacher']);
     }
 
     public function view(User $user, Lesson $lesson): bool
     {
-        return $user->hasRole('admin') || $user->current_team_id === $lesson->team_id || $lesson->teacher->user_id === $user->id;
+        return $user->hasAnyRole(['admin', 'school', 'teacher']) || $user->current_team_id === $lesson->team_id || $lesson->teacher->user_id === $user->id;
     }
 
     public function create(User $user): bool
     {
-        return $user->hasRole('admin') || $user->hasRole('teacher');
+        return $user->hasAnyRole(['admin', 'school', 'teacher']);
     }
 
     public function update(User $user, Lesson $lesson): bool
