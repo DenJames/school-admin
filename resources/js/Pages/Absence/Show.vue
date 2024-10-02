@@ -50,6 +50,11 @@ const props = defineProps<Props>();
                                 class="px-3 py-3.5 text-left text-sm font-semibold text-white">
                                 Årsag
                             </th>
+                            <th
+                                scope="col"
+                                class="px-3 py-3.5 text-left text-sm font-semibold text-white">
+                                Lovligt fravær
+                            </th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-700">
@@ -87,6 +92,9 @@ const props = defineProps<Props>();
                                 </td>
                                 <td class="whitespace-nowrap px-3 py-4 text-sm text-white">
                                     {{ absence.reason }}
+                                </td>
+                                <td class="whitespace-nowrap px-3 py-4 text-sm text-white">
+                                    {{ absence.excused ? "Ja" : "Nej" }}
                                 </td>
                             </tr>
                         </template>
