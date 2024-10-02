@@ -78,7 +78,7 @@ class LessonController extends Controller
 
         $start = new Carbon();
         $end = (clone($start))->addMonths(12);
-        $start->subMonths();
+        $start->subMonths(2);
 
         $user = User::where('uuid', $uuid)->firstOrFail();
 
@@ -92,11 +92,11 @@ class LessonController extends Controller
             $lessons = $team->lessons()->whereBetween('starts_at', [$start, $end])->get();
 
             foreach ($lessons as $lesson) {
-                $dateTime = new \DateTime($lesson->starts_at, new \DateTimeZone('Europe/Copenhagen'));
+                $dateTime = new DateTime($lesson->starts_at, new DateTimeZone('Europe/Copenhagen'));
                 $vcalendar->add('VEVENT', [
                     'SUMMARY' => $lesson->name . ' • ' . $lesson->teacher->user->name . ' • ' . $lesson->classroom()->name,
                     'DTSTART' => $dateTime,
-                    'DTEND' => new \DateTime($lesson->ends_at),
+                    'DTEND' => new DateTime($lesson->ends_at),
                 ]);
             }
         }
