@@ -30,6 +30,19 @@ class DatabaseSeeder extends Seeder
 
         // check if app is in production
         if (config('app.env') === 'production') {
+            $groupRoles = [
+                [
+                    'name' => 'admin',
+                ],
+                [
+                    'name' => 'member',
+                ],
+            ];
+
+            foreach ($groupRoles as $role) {
+                GroupRole::firstOrCreate($role);
+            }
+
             if (User::count()) {
                 return;
             }
@@ -205,19 +218,6 @@ class DatabaseSeeder extends Seeder
             $classCategories->each(function ($category) {
                 ClassCategory::firstOrCreate(['name' => $category]);
             });
-
-            $groupRoles = [
-                [
-                    'name' => 'admin',
-                ],
-                [
-                    'name' => 'member',
-                ],
-            ];
-
-            foreach ($groupRoles as $role) {
-                GroupRole::firstOrCreate($role);
-            }
 
             return;
         }

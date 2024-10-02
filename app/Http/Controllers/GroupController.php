@@ -31,7 +31,7 @@ class GroupController extends Controller
 
         $group->members()->create([
             'user_id' => Auth::id(),
-            'group_role_id' => GroupRole::where('name', 'admin')->first()?->id,
+            'group_role_id' => GroupRole::where('name', 'owner')->first()->id,
         ]);
 
         $group->setToCurrent();
