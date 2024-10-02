@@ -76,6 +76,7 @@ class AbsenceController extends Controller
             ->addSelect('l.name as lesson_name')
             ->addSelect('u.name as teacher_name')
             ->addSelect('absences.reason')
+            ->addSelect('absences.excused')
             ->orderBy('l.starts_at', 'desc')
             ->get();
 
