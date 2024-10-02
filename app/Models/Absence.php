@@ -12,6 +12,14 @@ class Absence extends Model
 
     protected $guarded = [];
 
+    protected function casts(): array
+    {
+        return [
+            'approved_at' => 'datetime',
+            'excused' => 'boolean',
+        ];
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
