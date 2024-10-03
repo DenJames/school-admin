@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\School;
 use App\Models\Team;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -64,6 +65,7 @@ class UserFactory extends Factory
                     'name' => $user->name . '\'s Team',
                     'user_id' => $user->id,
                     'personal_team' => true,
+                    'school_id' => School::factory(),
                 ])
                 ->when(is_callable($callback), $callback),
             'ownedTeams'

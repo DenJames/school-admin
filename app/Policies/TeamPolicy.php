@@ -31,7 +31,7 @@ class TeamPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasAnyRole(['admin', 'school']);
+        return true;
     }
 
     /**
