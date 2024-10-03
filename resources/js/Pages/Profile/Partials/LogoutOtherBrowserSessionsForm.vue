@@ -108,7 +108,7 @@ const closeModal = () => {
                                 <span
                                     v-if="session.is_current_device"
                                     class="font-semibold text-green-500"
-                                    >This device</span
+                                    >Denne enhed</span
                                 >
                                 <span v-else>Sidst aktiv {{ session.last_active }}</span>
                             </div>
