@@ -9,6 +9,7 @@ import NavLink from "@/Components/NavLink.vue";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink.vue";
 import GroupIcon from "../Components/Icons/GroupIcon.vue";
 import TeamIcon from "../Components/Icons/TeamIcon.vue";
+import { can } from "momentum-lock";
 
 interface Props {
     title: string;
@@ -228,9 +229,9 @@ const logout = () => {
                                             </DropdownLink>
 
                                             <DropdownLink
-                                                v-if="$page.props.jetstream.canCreateTeams"
+                                                v-if="can($page.props.auth.user.current_team, 'create')"
                                                 :href="route('teams.create')">
-                                                Opret ny team
+                                                Opret nyt team
                                             </DropdownLink>
 
                                             <!-- Team Switcher -->
@@ -469,10 +470,10 @@ const logout = () => {
                                 </ResponsiveNavLink>
 
                                 <ResponsiveNavLink
-                                    v-if="$page.props.jetstream.canCreateTeams"
+                                    v-if="can($page.props.auth.user.current_team, 'create')"
                                     :href="route('teams.create')"
                                     :active="route().current('teams.create')">
-                                    Opret ny team
+                                    Opret nyt team
                                 </ResponsiveNavLink>
 
                                 <!-- Team Switcher -->
