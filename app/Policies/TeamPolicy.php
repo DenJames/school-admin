@@ -15,7 +15,7 @@ class TeamPolicy
      */
     public function viewAny(User $user): bool
     {
-        return true;
+        return $user->hasAnyRole(['admin']);
     }
 
     /**
@@ -23,7 +23,7 @@ class TeamPolicy
      */
     public function view(User $user, Team $team): bool
     {
-        return $user->belongsToTeam($team);
+        return $user->belongsToTeam($team) || $user->hasAnyRole(['admin']);
     }
 
     /**
@@ -31,7 +31,7 @@ class TeamPolicy
      */
     public function create(User $user): bool
     {
-        return true;
+        return $user->hasAnyRole(['admin', 'school']);
     }
 
     /**
@@ -39,7 +39,7 @@ class TeamPolicy
      */
     public function update(User $user, Team $team): bool
     {
-        return $user->ownsTeam($team);
+        return $user->ownsTeam($team) || $user->hasAnyRole(['admin', 'school']);
     }
 
     /**
@@ -47,7 +47,7 @@ class TeamPolicy
      */
     public function addTeamMember(User $user, Team $team): bool
     {
-        return $user->ownsTeam($team);
+        return $user->ownsTeam($team) || $user->hasAnyRole(['admin', 'school']);
     }
 
     /**
@@ -55,7 +55,7 @@ class TeamPolicy
      */
     public function updateTeamMember(User $user, Team $team): bool
     {
-        return $user->ownsTeam($team);
+        return $user->ownsTeam($team) || $user->hasAnyRole(['admin', 'school']);
     }
 
     /**
@@ -63,7 +63,7 @@ class TeamPolicy
      */
     public function removeTeamMember(User $user, Team $team): bool
     {
-        return $user->ownsTeam($team);
+        return $user->ownsTeam($team) || $user->hasAnyRole(['admin', 'school']);
     }
 
     /**
@@ -71,6 +71,6 @@ class TeamPolicy
      */
     public function delete(User $user, Team $team): bool
     {
-        return $user->ownsTeam($team);
+        return $user->ownsTeam($team) || $user->hasAnyRole(['admin', 'school']);
     }
 }
