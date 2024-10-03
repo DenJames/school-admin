@@ -50,7 +50,7 @@ const closeModal = () => {
             </div>
 
             <div class="mt-5">
-                <DangerButton @click="confirmUserDeletion"> Delete Account</DangerButton>
+                <DangerButton @click="confirmUserDeletion"> Slet konto</DangerButton>
             </div>
 
             <!-- Delete Account Confirmation Modal -->
