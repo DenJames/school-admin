@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\ClassroomResource\RelationManagers;
 
+use App\Models\ClassroomReservation;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -17,9 +18,42 @@ class ReservationsRelationManager extends RelationManager
         return $form
             ->schema([
                 Forms\Components\DateTimePicker::make('booked_from')
-                    ->required(),
+                    ->required()
+                    ->rules([
+                        fn ($get) => function ($attribute, $value, $fail) use ($get) {
+                            $classroomId = $this->ownerRecord->id;
+
+                            $conflict = ClassroomReservation::where('classroom_id', $classroomId)
+                                ->where(function ($query) use ($value) {
+                                    $query->where('booked_from', '<=', $value)
+                                        ->where('booked_to', '>=', $value);
+                                })
+                                ->exists();
+
+                            if ($conflict) {
+                                $fail("The classroom is already booked at the selected start time.");
+                            }
+                        },
+                    ]),
                 Forms\Components\DateTimePicker::make('booked_to')
-                    ->required(),
+                    ->required()
+                    ->afterOrEqual('booked_from')
+                    ->rules([
+                        fn ($get) => function ($attribute, $value, $fail) use ($get) {
+                            $classroomId = $this->ownerRecord->id;
+
+                            $conflict = ClassroomReservation::where('classroom_id', $classroomId)
+                                ->where(function ($query) use ($value) {
+                                    $query->where('booked_from', '<=', $value)
+                                        ->where('booked_to', '>=', $value);
+                                })
+                                ->exists();
+
+                            if ($conflict) {
+                                $fail("The classroom is already booked at the selected end time.");
+                            }
+                        },
+                    ]),
             ]);
     }
 
