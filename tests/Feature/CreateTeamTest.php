@@ -1,9 +1,12 @@
 <?php
 
 use App\Models\User;
+use Spatie\Permission\Models\Role;
 
 test('teams can be created', function () {
     $this->actingAs($user = User::factory()->withPersonalTeam()->create());
+
+    Role::create(['name' => 'admin']);
 
     $user->assignRole('admin');
 
