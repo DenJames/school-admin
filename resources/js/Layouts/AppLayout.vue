@@ -323,7 +323,7 @@ const logout = () => {
                                             Admin panel</DropdownLink
                                         >
                                         <DropdownLink :href="route('absences.index')"> Fraværsoversigt</DropdownLink>
-                                        <DropdownLink :href="route('profile.show')"> Profile</DropdownLink>
+                                        <DropdownLink :href="route('profile.show')"> Profil indstillinger</DropdownLink>
 
                                         <DropdownLink
                                             v-if="$page.props.jetstream.hasApiFeatures"
