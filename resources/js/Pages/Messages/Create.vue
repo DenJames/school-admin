@@ -51,7 +51,7 @@ function setRecipient(recipient) {
                 <div class="relative">
                     <InputLabel
                         for="receiver"
-                        value="Receiver" />
+                        value="Modtager" />
                     <LiveUserSearchInput @selected-recipient="setRecipient($event)" />
                     <InputError
                         class="mt-2"
