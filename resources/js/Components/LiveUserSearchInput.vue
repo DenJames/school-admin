@@ -52,7 +52,7 @@ watch(
         v-model="recipientName"
         type="text"
         class="mt-1 block w-full"
-        placeholder="Start typing to search for a user"
+        placeholder="Begynd at skrive for at søge efter en bruger"
         required
         autofocus
         autocomplete="off" />
