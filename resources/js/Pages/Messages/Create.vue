@@ -46,9 +46,9 @@ function setRecipient(recipient) {
             :has-header="false"
             content-classes="p-2">
             <form
-                class="grid grid-cols-2 gap-4"
+                class="grid grid-cols-1 gap-4 lg:grid-cols-2"
                 @submit.prevent="submit">
-                <div class="relative">
+                <div class="relative col-span-2 lg:col-span-1">
                     <InputLabel
                         for="receiver"
                         value="Modtager" />
@@ -58,7 +58,7 @@ function setRecipient(recipient) {
                         :message="form.errors.recipient" />
                 </div>
 
-                <div>
+                <div class="col-span-2 lg:col-span-1">
                     <InputLabel
                         for="subject"
                         value="Emne" />

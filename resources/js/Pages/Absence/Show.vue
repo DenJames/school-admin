@@ -21,7 +21,7 @@ const props = defineProps<Props>();
         <Card>
             <template #header> Fravær for hold {{ team.name }}</template>
 
-            <div class="inline-block max-h-[800px] min-w-full overflow-y-auto p-4 align-middle">
+            <div class="max-h-[800px] min-w-full overflow-y-auto p-4 align-middle">
                 <table class="min-w-full divide-y divide-gray-700">
                     <thead>
                         <tr>

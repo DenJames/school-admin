@@ -22,7 +22,7 @@ defineProps<Props>();
             <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">Forside</h2>
         </template>
 
-        <div class="mb-2 grid grid-cols-2 gap-4 overflow-hidden sm:rounded-lg">
+        <div class="mb-2 grid grid-cols-1 gap-4 overflow-hidden sm:rounded-lg lg:grid-cols-2">
             <div class="flex flex-col gap-4">
                 <Card>
                     <template #header> Nyheder </template>
@@ -33,7 +33,7 @@ defineProps<Props>();
                             :key="article.id">
                             <Link
                                 :href="route('articles.show', article.id)"
-                                class="flex items-center justify-between gap-4 border-b border-b-gray-600 p-2 text-sm text-white transition-all hover:bg-custom-primary">
+                                class="hover:bg-custom-primary flex items-center justify-between gap-4 border-b border-b-gray-600 p-2 text-sm text-white transition-all">
                                 {{ article.title }}
                             </Link>
                         </template>
@@ -49,7 +49,7 @@ defineProps<Props>();
                             :key="message.id">
                             <Link
                                 :href="route('messages.show', message.id)"
-                                class="flex items-center justify-between gap-4 border-b border-b-gray-600 p-2 text-sm text-white transition-all hover:bg-custom-primary">
+                                class="hover:bg-custom-primary flex items-center justify-between gap-4 border-b border-b-gray-600 p-2 text-sm text-white transition-all">
                                 <p class="truncate">{{ message.subject }}</p>
 
                                 <span

@@ -29,9 +29,14 @@ class GroupController extends Controller
             'name' => $request->name,
         ]);
 
+        $adminRole = GroupRole::where('name', 'admin')->firstOrCreate([
+            'name' => 'admin',
+        ]);
+
+
         $group->members()->create([
             'user_id' => Auth::id(),
-            'group_role_id' => GroupRole::where('name', 'admin')->first()?->id ?? GroupRole::first()->id,
+            'group_role_id' => $adminRole->id,
         ]);
 
         $group->setToCurrent();

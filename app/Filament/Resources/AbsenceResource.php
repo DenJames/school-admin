@@ -56,7 +56,6 @@ class AbsenceResource extends Resource
                     ->relationship('user', 'name')
                     ->preload()
                     ->searchable()
-                    ->hidden(fn($record) => $record !== null)
                     ->required(),
                 Forms\Components\Select::make('teacher_id')
                     ->label('Teacher')

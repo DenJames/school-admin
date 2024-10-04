@@ -19,8 +19,8 @@ const props = defineProps<Props>();
         <Card>
             <template #header> Fravær</template>
 
-            <div class="inline-block max-h-[800px] min-w-full overflow-y-auto p-4 align-middle">
-                <table class="min-w-full divide-y divide-gray-700">
+            <div class="max-h-[800px] min-w-full overflow-y-auto p-4 align-middle">
+                <table class="min-w-full divide-y divide-gray-700 overflow-x-auto">
                     <thead>
                         <tr>
                             <th
@@ -51,36 +51,34 @@ const props = defineProps<Props>();
                             </th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-gray-700">
-                        <template
+                    <tbody class="divide-y divide-gray-700 overflow-x-auto">
+                        <tr
                             v-for="absence in absences"
                             :key="absence.id">
-                            <tr>
-                                <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-white sm:pl-0">
-                                    <Link
-                                        :href="route('absences.show', absence.team_id)"
-                                        class="hover:underline">
-                                        {{ absence.team_name }}
-                                    </Link>
-                                </td>
-                                <td class="whitespace-nowrap px-3 py-4 text-sm text-white">
-                                    {{ absence.absence_for_lesson_percentage }}%
-                                </td>
-                                <td class="whitespace-nowrap px-3 py-4 text-sm text-white">
-                                    {{ absence.total_absence_count }} /
-                                    {{ absence.total_lessons }}
-                                </td>
+                            <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-white sm:pl-0">
+                                <Link
+                                    :href="route('absences.show', absence.team_id)"
+                                    class="hover:underline">
+                                    {{ absence.team_name }}
+                                </Link>
+                            </td>
+                            <td class="whitespace-nowrap px-3 py-4 text-sm text-white">
+                                {{ absence.absence_for_lesson_percentage }}%
+                            </td>
+                            <td class="whitespace-nowrap px-3 py-4 text-sm text-white">
+                                {{ absence.total_absence_count }} /
+                                {{ absence.total_lessons }}
+                            </td>
 
-                                <td class="whitespace-nowrap px-3 py-4 text-sm text-white">
-                                    {{ absence.absence_for_year_percentage }}%
-                                </td>
+                            <td class="whitespace-nowrap px-3 py-4 text-sm text-white">
+                                {{ absence.absence_for_year_percentage }}%
+                            </td>
 
-                                <td class="whitespace-nowrap px-3 py-4 text-sm text-white">
-                                    {{ absence.absence_count_year }} /
-                                    {{ absence.total_lessons_year }}
-                                </td>
-                            </tr>
-                        </template>
+                            <td class="whitespace-nowrap px-3 py-4 text-sm text-white">
+                                {{ absence.absence_count_year }} /
+                                {{ absence.total_lessons_year }}
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>

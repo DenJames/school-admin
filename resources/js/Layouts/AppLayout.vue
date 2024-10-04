@@ -28,7 +28,8 @@ const switchToTeam = (team) => {
     );
 };
 
-const swithToGroup = (group) => {
+const switchToGroup = (group) => {
+    console.log(group, "here");
     router.put(
         route("groups.switch"),
         {
@@ -149,7 +150,7 @@ const logout = () => {
                                                 Opret ny gruppe
                                             </DropdownLink>
 
-                                            <!-- Team Switcher -->
+                                            <!-- group Switcher -->
                                             <template v-if="$page.props.groups.length > 0">
                                                 <div class="border-t border-gray-200 dark:border-gray-600" />
 
@@ -158,7 +159,7 @@ const logout = () => {
                                                 <template
                                                     v-for="group in $page.props.groups"
                                                     :key="group.id">
-                                                    <form @submit.prevent="swithToGroup(group)">
+                                                    <form @submit.prevent="switchToGroup(group)">
                                                         <DropdownLink as="button">
                                                             <div class="flex items-center">
                                                                 <svg
@@ -436,10 +437,14 @@ const logout = () => {
 
                         <div class="mt-3 space-y-1">
                             <ResponsiveNavLink
-                                :href="route('profile.show')"
-                                :active="route().current('profile.show')">
-                                Profil
-                            </ResponsiveNavLink>
+                                v-if="$page.props.can_access_admin_panel"
+                                href="/admin"
+                                as="a"
+                                target="_blank">
+                                Admin panel</ResponsiveNavLink
+                            >
+                            <ResponsiveNavLink :href="route('absences.index')"> Fraværsoversigt</ResponsiveNavLink>
+                            <ResponsiveNavLink :href="route('profile.show')"> Profil indstillinger</ResponsiveNavLink>
 
                             <ResponsiveNavLink
                                 v-if="$page.props.jetstream.hasApiFeatures"
@@ -454,6 +459,58 @@ const logout = () => {
                                 @submit.prevent="logout">
                                 <ResponsiveNavLink as="button"> Log Ud</ResponsiveNavLink>
                             </form>
+
+                            <template v-if="$page.props.jetstream.hasTeamFeatures">
+                                <div class="border-t border-gray-200 dark:border-gray-600" />
+
+                                <div class="block px-4 py-2 text-xs text-gray-400">Håndter gruppe</div>
+
+                                <!-- Team Settings -->
+                                <ResponsiveNavLink
+                                    :href="route('teams.show', $page.props.auth.user.current_team)"
+                                    :active="route().current('groups.show')">
+                                    Gruppe indstillinger
+                                </ResponsiveNavLink>
+
+                                <ResponsiveNavLink
+                                    v-if="$page.props.jetstream.canCreateTeams"
+                                    :href="route('groups.create')"
+                                    :active="route().current('teams.create')">
+                                    Opret ny gruppe
+                                </ResponsiveNavLink>
+
+                                <!-- Team Switcher -->
+                                <template v-if="$page.props.groups.length > 0">
+                                    <div class="border-t border-gray-200 dark:border-gray-600" />
+
+                                    <div class="block px-4 py-2 text-xs text-gray-400">Skift gruppe</div>
+
+                                    <template
+                                        v-for="group in $page.props.groups"
+                                        :key="group.id">
+                                        <form @submit.prevent="switchToGroup(group)">
+                                            <ResponsiveNavLink as="button">
+                                                <div class="flex items-center">
+                                                    <svg
+                                                        v-if="group.id == $page.props.current_group?.id"
+                                                        class="me-2 h-5 w-5 text-green-400"
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        fill="none"
+                                                        viewBox="0 0 24 24"
+                                                        stroke-width="1.5"
+                                                        stroke="currentColor">
+                                                        <path
+                                                            stroke-linecap="round"
+                                                            stroke-linejoin="round"
+                                                            d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                    </svg>
+                                                    <div>{{ group.name }} 123</div>
+                                                </div>
+                                            </ResponsiveNavLink>
+                                        </form>
+                                    </template>
+                                </template>
+                            </template>
 
                             <!-- Team Management -->
                             <template v-if="$page.props.jetstream.hasTeamFeatures">
@@ -484,7 +541,7 @@ const logout = () => {
                                     <template
                                         v-for="team in $page.props.auth.user.all_teams"
                                         :key="team.id">
-                                        <form @submit.prevent="swithToGroup(team)">
+                                        <form @submit.prevent="switchToTeam(team)">
                                             <ResponsiveNavLink as="button">
                                                 <div class="flex items-center">
                                                     <svg
@@ -523,7 +580,7 @@ const logout = () => {
 
             <!-- Page Content -->
             <main class="py-12">
-                <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
+                <div class="mx-auto max-w-7xl px-4 lg:px-8">
                     <slot />
                 </div>
             </main>
