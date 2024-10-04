@@ -207,7 +207,9 @@ function remove() {
                 <Card>
                     <template #header>Lektier</template>
 
-                    <List :homework="lesson.homeworks ?? []" />
+                    <div class="w-full overflow-x-auto">
+                        <List :homework="lesson.homeworks ?? []" />
+                    </div>
                 </Card>
             </div>
         </div>
