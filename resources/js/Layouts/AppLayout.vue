@@ -134,7 +134,7 @@ const logout = () => {
 
                                     <template #content>
                                         <div class="w-60">
-                                            <!-- Team Management -->
+                                            <!-- group Management -->
                                             <div class="block px-4 py-2 text-xs text-gray-400">Administrer gruppe</div>
 
                                             <!-- Team Settings -->
@@ -144,9 +144,7 @@ const logout = () => {
                                                 Gruppe indstillinger
                                             </DropdownLink>
 
-                                            <DropdownLink
-                                                v-if="$page.props.jetstream.canCreateTeams"
-                                                :href="route('groups.create')">
+                                            <DropdownLink :href="route('groups.create')">
                                                 Opret ny gruppe
                                             </DropdownLink>
 
@@ -229,9 +227,9 @@ const logout = () => {
                                             </DropdownLink>
 
                                             <DropdownLink
-                                                v-if="$page.props.jetstream.canCreateTeams"
+                                                v-if="$page.props.isAdminOrTeacher"
                                                 :href="route('teams.create')">
-                                                Opret ny team
+                                                Opret nyt team
                                             </DropdownLink>
 
                                             <!-- Team Switcher -->
@@ -473,7 +471,6 @@ const logout = () => {
                                 </ResponsiveNavLink>
 
                                 <ResponsiveNavLink
-                                    v-if="$page.props.jetstream.canCreateTeams"
                                     :href="route('groups.create')"
                                     :active="route().current('teams.create')">
                                     Opret ny gruppe
@@ -504,7 +501,7 @@ const logout = () => {
                                                             stroke-linejoin="round"
                                                             d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                                     </svg>
-                                                    <div>{{ group.name }} 123</div>
+                                                    <div>{{ group.name }}</div>
                                                 </div>
                                             </ResponsiveNavLink>
                                         </form>
@@ -526,10 +523,10 @@ const logout = () => {
                                 </ResponsiveNavLink>
 
                                 <ResponsiveNavLink
-                                    v-if="$page.props.jetstream.canCreateTeams"
+                                    v-if="$page.props.isAdminOrTeacher"
                                     :href="route('teams.create')"
                                     :active="route().current('teams.create')">
-                                    Opret ny team
+                                    Opret nyt team
                                 </ResponsiveNavLink>
 
                                 <!-- Team Switcher -->

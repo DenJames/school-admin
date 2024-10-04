@@ -42,6 +42,7 @@ class HandleInertiaRequests extends Middleware
             'groups' => Auth::user()?->groups,
             'is_current_group_admin' => Auth::user()?->isCurrentGroupAdmin(),
             'can_access_admin_panel' => Auth::user()?->hasAnyRole(['admin', 'teacher']),
+            'isAdminOrTeacher' => Auth::user()?->hasAnyRole(['admin', 'teacher']),
         ]);
     }
 }
