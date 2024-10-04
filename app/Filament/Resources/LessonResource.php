@@ -59,20 +59,24 @@ class LessonResource extends Resource
                     ->relationship('classCategory', 'name')
                     ->preload()
                     ->searchable()
-                    ->default(null),
+                    ->default(null)
+                    ->required(),
                 Forms\Components\Select::make('classroom_reservation_id')
                     ->label('Classroom')
                     ->options(function () {
                         return \App\Models\ClassroomReservation::all()->load('classroom')->pluck('classroom.name', 'id');
                     })
                     ->searchable()
-                    ->default(null),
+                    ->default(null)
+                    ->required(),
                 Forms\Components\Select::make('teacher_id')
+                    ->label('Teacher')
                     ->options(function () {
                         return \App\Models\Teacher::all()->load('user')->pluck('user.name', 'id');
                     })
                     ->searchable()
-                    ->default(null),
+                    ->default(null)
+                    ->required(),
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
