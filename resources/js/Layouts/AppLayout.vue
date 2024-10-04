@@ -97,6 +97,14 @@ const logout = () => {
                                     Lektier
                                 </NavLink>
                             </div>
+
+                            <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                                <NavLink
+                                    :href="route('grades.index')"
+                                    :active="route().current('grades.*')">
+                                    Karakteroversigt
+                                </NavLink>
+                            </div>
                         </div>
 
                         <div class="hidden sm:ms-6 sm:flex sm:items-center">
@@ -408,6 +416,14 @@ const logout = () => {
                             :href="route('homework.index')"
                             :active="route().current('homework.*')">
                             Lektier
+                        </ResponsiveNavLink>
+                    </div>
+
+                    <div class="space-y-1 pb-3 pt-2">
+                        <ResponsiveNavLink
+                            :href="route('grades.index')"
+                            :active="route().current('grades.*')">
+                            Karakteroversigt
                         </ResponsiveNavLink>
                     </div>
 

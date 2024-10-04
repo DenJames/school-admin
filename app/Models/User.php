@@ -136,6 +136,11 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
         return $this->morphMany(Document::class, 'documentable');
     }
 
+    public function grades(): HasMany
+    {
+        return $this->hasMany(AssignedGrade::class);
+    }
+
     public function canAccessPanel(Panel $panel): bool
     {
         return $this->hasAnyRole(['admin', 'school', 'teacher']);

@@ -45,6 +45,16 @@ name: string;
 iso: string;
 cities?: App.Data.CityData;
 };
+export type GradeData = {
+id: number;
+grade: string;
+comment: string;
+createdAt: string;
+updatedAt: string;
+user?: App.Data.UserData;
+team?: App.Data.TeamData;
+teacher?: App.Data.TeacherData;
+};
 export type GroupData = {
 id: number;
 userId: number;
